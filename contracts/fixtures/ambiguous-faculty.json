@@ -1,0 +1,39 @@
+{
+  "conversation_id": "fixture-conversation",
+  "turn_id": "fixture-turn",
+  "request_id": "fixture-request",
+  "status": "clarification_required",
+  "intent": "find_faculty_office_hours",
+  "message": "Which Professor Rao do you mean?",
+  "interpreted_query": {
+    "intent": "find_faculty_office_hours",
+    "filters": {
+      "date": "2026-11-05"
+    }
+  },
+  "applied_context": {},
+  "results": [],
+  "clarification": {
+    "id": "clarification-faculty",
+    "field": "faculty_id",
+    "prompt": "Which Professor Rao do you mean?",
+    "options": [
+      {
+        "id": "faculty-rao-anil",
+        "label": "Dr. Anil Rao"
+      },
+      {
+        "id": "faculty-rao-kavita",
+        "label": "Dr. Kavita Rao"
+      }
+    ]
+  },
+  "answered_at": "2026-11-04T10:00:00+05:30",
+  "campus_timezone": "Asia/Kolkata",
+  "warnings": [],
+  "data_coverage": {
+    "status": "complete",
+    "message": "Fictional demo campus records."
+  },
+  "next_cursor": null
+}

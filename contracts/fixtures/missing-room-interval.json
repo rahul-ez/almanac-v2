@@ -1,0 +1,28 @@
+{
+  "conversation_id": "fixture-conversation",
+  "turn_id": "fixture-turn",
+  "request_id": "fixture-request",
+  "status": "clarification_required",
+  "intent": "find_available_rooms",
+  "message": "What date and time do you need the room?",
+  "interpreted_query": {
+    "intent": "find_available_rooms",
+    "filters": {}
+  },
+  "applied_context": {},
+  "results": [],
+  "clarification": {
+    "id": "clarification-interval",
+    "field": "interval",
+    "prompt": "What date and time do you need the room?",
+    "options": []
+  },
+  "answered_at": "2026-11-04T10:00:00+05:30",
+  "campus_timezone": "Asia/Kolkata",
+  "warnings": [],
+  "data_coverage": {
+    "status": "complete",
+    "message": "Fictional demo campus records."
+  },
+  "next_cursor": null
+}

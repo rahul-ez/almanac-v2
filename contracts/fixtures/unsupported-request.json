@@ -1,0 +1,23 @@
+{
+  "conversation_id": "fixture-conversation",
+  "turn_id": "fixture-turn",
+  "request_id": "fixture-request",
+  "status": "unsupported",
+  "intent": null,
+  "message": "I can help with events, scheduled room availability, and published office hours.",
+  "interpreted_query": {
+    "intent": null,
+    "filters": {}
+  },
+  "applied_context": {},
+  "results": [],
+  "clarification": null,
+  "answered_at": "2026-11-04T10:00:00+05:30",
+  "campus_timezone": "Asia/Kolkata",
+  "warnings": [],
+  "data_coverage": {
+    "status": "complete",
+    "message": "Fictional demo campus records."
+  },
+  "next_cursor": null
+}
