@@ -1,0 +1,27 @@
+# Backend contracts — API 0.7.0
+
+`openapi.json` describes implemented health/demo, session/profile/reference, event CRUD/search and the standalone event/room/faculty rule assistant. Room scheduling and structured availability are implemented in Phase 3. Faculty publication is implemented in Phase 4; full conversations remain later work.
+
+`assistant-response.schema.json` describes future assistant responses; `error.schema.json` is the shared error envelope. The twelve original fixtures in `fixtures/` are synthetic future assistant/error examples, not NLP quality evidence. Phase 1 adds seven identity schemas and matching examples in `identity-fixtures/`. The example password/token values in these fixtures are placeholders and never authenticate.
+
+Run `make contract-check` to verify schema drift, Pydantic invariants and JSON Schema formats. Run `make contract-export` after intentional schema changes, and share the diff with the frontend owner.
+
+Implemented CSRF wire contract: `GET /api/v1/auth/csrf` returns `{csrf_token, expires_at}` and establishes or reuses an HTTP-only server-side session cookie, `almanac_session`, path `/api/v1`. Mutations, including login/logout, send `X-CSRF-Token` plus an exact allowed `Origin`. Login rotates the cookie and token and returns `{user, csrf_token}`; clients must use the new token. `GET /auth/me` returns `{id, username, role, session_expires_at}`. Identity and role come exclusively from the server. All API responses are marked no-store. Use credentialed requests (`credentials: "include"`) in a separate frontend origin.
+
+Profile PATCH accepts only department_id, year, section and interests. Omitted fields retain their values; nullable fields accept explicit null; an empty interests list clears it. There is no client-settable owner or role. Reference IDs come from `GET /reference-data`. Profile, reference and admin-access calls require login; profiles require a student role.
+
+Cookie/CSRF walkthrough and local development origin settings: `docs/phase-1-testing.md`.
+
+Phase 2 adds six event/request schemas and examples in `event-fixtures/`. Event response cards now have explicit eligibility rule mode (`unknown`, `unrestricted`, `restricted`) and registration_status. Re-exported assistant fixtures include that rule mode; frontend consumers must review this contract change. Event list filters and admin version semantics are documented in `docs/phase-2-testing.md`.
+
+Phase 3 adds room/booking/exception/closure schemas plus structured availability, with 17 examples in `room-fixtures/`. Null opening_hours means unknown, while an empty array means explicitly closed. Availability responses contain confirmed available items, separate unknown_rooms and candidate-page warnings; they do not imply physical vacancy. Facilities and campus_timezone are now additive reference-data fields. Migration 0004 is owned by Person 1; coordinate later migrations. Phase 5 adds standalone room language queries. See `docs/phase-3-testing.md`.
+
+Phase 4 adds faculty/alias/office-hour/exception schemas and 19 fixtures in `faculty-fixtures/`, including explicit ambiguous-name and missing-publication outcomes. Office-hour results use canonical faculty IDs and concrete slots; no class-timetable availability inference is performed. Admin faculty timezone is assigned by the server; rule timezones must match it. Complete publication requires explicit local coverage dates. Alias changes increment faculty version; exception changes increment rule version. Migration 0005 belongs to Person 1. Phase 5 adds standalone faculty language queries. See `docs/phase-4-testing.md`.
+
+Phase 5 adds `POST /assistant/interpret`, `interpretation.schema.json` and six fixed-clock synthetic examples in `interpretation-fixtures/`. Reports distinguish typed executable queries from missing/ambiguous/unsupported input and include original character offsets. Assistant context overrides now also accept canonical room/building/faculty/facility IDs and capacity; meaning filters add facility_ids and venue. Existing response snapshots replay verbatim. Inspecting standalone text never saves a turn. Full clarification replies/follow-ups are still pending. See `docs/phase-5-testing.md`.
+
+Optional hybrid mode adds model_version and intent_confidence diagnostics to Interpretation and allows nlp_mode=hybrid in readiness. Missing/incompatible configured models report nlp unavailable (503); there is no silent rule fallback. Model selection is server configuration, not a request override. Baseline mode remains the default.
+
+Phase 6 adds owned `GET /conversations`, `GET/DELETE /conversations/{id}`, and `GET /me/saved`, `PUT/DELETE /me/saved/{kind}/{id}`. Assistant requests may carry conversation_version for optimistic concurrency; new responses expose it. Clarification replies must match the conversation's active clarification ID and selected options. History responses preserve raw historical snapshots without injecting current defaults. Deleted requests return 410 on retry using text-free hashed request-ID receipts. Saves reference `event`, `room`, or `faculty` records and show current status/changed metadata; hidden draft/archived targets have current=null. See `docs/phase-6-testing.md` and `personal-fixtures/`.
+
+The original frontend mock API proposal and its fixtures are preserved under `frontend-proposal/`; frontend export/check commands target that directory. This implemented backend contract remains authoritative for live integration.

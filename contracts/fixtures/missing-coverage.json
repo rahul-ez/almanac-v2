@@ -1,27 +1,25 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "information_unavailable",
   "intent": "find_available_rooms",
-  "message": "There is not enough timetable coverage to answer confidently.",
-  "interpreted_query": {
-    "intent": "find_available_rooms",
-    "filters": {
-      "building_id": "a"
+  "message": "Timetable coverage is missing.",
+  "interpreted_query": null,
+  "applied_context": [
+    {
+      "field": "student_year",
+      "value": 2,
+      "origin": "explicit_question"
     }
-  },
-  "applied_context": {},
+  ],
   "results": [],
   "clarification": null,
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
   "warnings": [
-    "Missing schedules do not establish availability."
+    "Synthetic demo data"
   ],
-  "data_coverage": {
-    "status": "unknown",
-    "message": "A Block timetable coverage is incomplete."
-  },
+  "data_coverage": "unknown",
   "next_cursor": null
 }

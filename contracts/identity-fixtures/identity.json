@@ -1,0 +1,6 @@
+{
+  "id": "demo-student-a",
+  "username": "student-a",
+  "role": "student",
+  "session_expires_at": "2026-11-04T18:00:00+05:30"
+}

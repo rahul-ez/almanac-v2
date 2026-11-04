@@ -1,0 +1,81 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "alias": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Alias",
+      "type": "string"
+    },
+    "canonical_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Canonical Id",
+      "type": "string"
+    },
+    "entity_type": {
+      "const": "faculty",
+      "default": "faculty",
+      "title": "Entity Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "matching_faculty_count": {
+      "title": "Matching Faculty Count",
+      "type": "integer"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_label",
+    "canonical_id",
+    "alias",
+    "id",
+    "version",
+    "updated_at",
+    "matching_faculty_count"
+  ],
+  "title": "AliasView",
+  "type": "object"
+}

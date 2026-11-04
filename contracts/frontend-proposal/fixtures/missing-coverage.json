@@ -1,0 +1,27 @@
+{
+  "conversation_id": "fixture-conversation",
+  "turn_id": "fixture-turn",
+  "request_id": "fixture-request",
+  "status": "information_unavailable",
+  "intent": "find_available_rooms",
+  "message": "There is not enough timetable coverage to answer confidently.",
+  "interpreted_query": {
+    "intent": "find_available_rooms",
+    "filters": {
+      "building_id": "a"
+    }
+  },
+  "applied_context": {},
+  "results": [],
+  "clarification": null,
+  "answered_at": "2026-11-04T10:00:00+05:30",
+  "campus_timezone": "Asia/Kolkata",
+  "warnings": [
+    "Missing schedules do not establish availability."
+  ],
+  "data_coverage": {
+    "status": "unknown",
+    "message": "A Block timetable coverage is incomplete."
+  },
+  "next_cursor": null
+}

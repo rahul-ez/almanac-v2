@@ -1,0 +1,160 @@
+{
+  "model_version": "tfidf-4d99512a8b52",
+  "dataset_sha256": "e888a250e0421805e47e7e7a0f2500f00bc098961435e788969b399cacb3b2ef",
+  "synthetic_only": true,
+  "limitations": [
+    "Small synthetic prototype; not a student-data accuracy claim.",
+    "Paraphrase/conversation/duplicate connected groups remain intact.",
+    "Actual split fractions differ from 70/15/15 because class coverage requires whole groups.",
+    "Final independent test corpus must be frozen before production tuning."
+  ],
+  "selection": {
+    "C": 1.0,
+    "threshold": 0.35,
+    "validation_macro_f1": 0.5595238095238095
+  },
+  "partitions": {
+    "test": {
+      "count": 24,
+      "fraction": 0.3076923076923077,
+      "class_counts": {
+        "find_events": 6,
+        "find_available_rooms": 6,
+        "find_faculty_office_hours": 6,
+        "unsupported": 6
+      }
+    },
+    "validation": {
+      "count": 24,
+      "fraction": 0.3076923076923077,
+      "class_counts": {
+        "find_events": 6,
+        "find_available_rooms": 6,
+        "find_faculty_office_hours": 6,
+        "unsupported": 6
+      }
+    },
+    "train": {
+      "count": 30,
+      "fraction": 0.38461538461538464,
+      "class_counts": {
+        "find_events": 6,
+        "find_available_rooms": 6,
+        "find_faculty_office_hours": 6,
+        "unsupported": 12
+      }
+    }
+  },
+  "keyword_baseline_holdout": {
+    "find_events": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 6.0
+    },
+    "find_available_rooms": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 6.0
+    },
+    "find_faculty_office_hours": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 6.0
+    },
+    "unsupported": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 6.0
+    },
+    "accuracy": 1.0,
+    "macro avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 24.0
+    },
+    "weighted avg": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 24.0
+    }
+  },
+  "holdout": {
+    "find_events": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1-score": 0.0,
+      "support": 6.0
+    },
+    "find_available_rooms": {
+      "precision": 1.0,
+      "recall": 0.5,
+      "f1-score": 0.6666666666666666,
+      "support": 6.0
+    },
+    "find_faculty_office_hours": {
+      "precision": 1.0,
+      "recall": 0.6666666666666666,
+      "f1-score": 0.8,
+      "support": 6.0
+    },
+    "unsupported": {
+      "precision": 0.35294117647058826,
+      "recall": 1.0,
+      "f1-score": 0.5217391304347826,
+      "support": 6.0
+    },
+    "accuracy": 0.5416666666666666,
+    "macro avg": {
+      "precision": 0.5882352941176471,
+      "recall": 0.5416666666666666,
+      "f1-score": 0.4971014492753624,
+      "support": 24.0
+    },
+    "weighted avg": {
+      "precision": 0.5882352941176471,
+      "recall": 0.5416666666666666,
+      "f1-score": 0.4971014492753623,
+      "support": 24.0
+    }
+  },
+  "confusion_matrix": {
+    "labels": [
+      "find_events",
+      "find_available_rooms",
+      "find_faculty_office_hours",
+      "unsupported"
+    ],
+    "counts": [
+      [
+        0,
+        0,
+        0,
+        6
+      ],
+      [
+        0,
+        3,
+        0,
+        3
+      ],
+      [
+        0,
+        0,
+        4,
+        2
+      ],
+      [
+        0,
+        0,
+        0,
+        6
+      ]
+    ]
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "canonical_id": "campus-demo-anita-rao",
+  "alias": "Rao",
+  "source_label": "Synthetic published faculty timetable v1",
+  "source_url": null,
+  "status": "active",
+  "entity_type": "faculty",
+  "id": "campus-demo-anita-alias",
+  "version": 1,
+  "updated_at": "2026-11-04T10:00:00+05:30",
+  "matching_faculty_count": 2
+}

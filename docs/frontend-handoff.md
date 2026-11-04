@@ -41,3 +41,5 @@ Human student collection/consent, independent double annotation and adjudication
 4. Run admin creates event → student natural-language retrieval, then all three domains, recurrence boundaries, exceptions, clarification, follow-ups, saves, and deletion against maintained records.
 5. Backend tests must independently verify CSRF, rate/input bounds, authorization/ownership, transactional schedule conflicts, semantic correctness, and persistence. Mock checks are not proof of backend security.
 6. Validate migrations/seeds on a fresh database and smoke-test the deployed HTTPS origin. The frontend does not deploy a backend or create production accounts.
+
+Backend merge note: frontend mock contract exports now live in `contracts/frontend-proposal/`. The implemented API in `contracts/openapi.json` is authoritative for live integration. This merge preserves mock behavior; client/schema alignment and end-to-end integration remain pending.

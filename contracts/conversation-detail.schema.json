@@ -1,0 +1,189 @@
+{
+  "$defs": {
+    "Clarification": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "prompt": {
+          "title": "Prompt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "field",
+        "prompt",
+        "options"
+      ],
+      "title": "Clarification",
+      "type": "object"
+    },
+    "ConversationSummary": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "last_turn_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Last Turn At"
+        },
+        "state_expires_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "State Expires At"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "turn_count": {
+          "title": "Turn Count",
+          "type": "integer"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "created_at",
+        "last_turn_at",
+        "turn_count",
+        "version",
+        "state_expires_at"
+      ],
+      "title": "ConversationSummary",
+      "type": "object"
+    },
+    "HistoryTurn": {
+      "additionalProperties": false,
+      "properties": {
+        "created_at": {
+          "format": "date-time",
+          "title": "Created At",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "question": {
+          "title": "Question",
+          "type": "string"
+        },
+        "response": {
+          "additionalProperties": true,
+          "title": "Response",
+          "type": "object"
+        }
+      },
+      "required": [
+        "id",
+        "question",
+        "created_at",
+        "response"
+      ],
+      "title": "HistoryTurn",
+      "type": "object"
+    },
+    "Option": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "Option",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "active_clarification": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Clarification"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "conversation": {
+      "$ref": "#/$defs/ConversationSummary"
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Offset"
+    },
+    "turns": {
+      "items": {
+        "$ref": "#/$defs/HistoryTurn"
+      },
+      "title": "Turns",
+      "type": "array"
+    }
+  },
+  "required": [
+    "conversation",
+    "active_clarification",
+    "turns",
+    "next_offset"
+  ],
+  "title": "ConversationDetail",
+  "type": "object"
+}

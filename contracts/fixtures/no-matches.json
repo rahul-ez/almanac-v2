@@ -1,36 +1,31 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "no_results",
   "intent": "find_events",
-  "message": "No matching events were found. Try another date.",
+  "message": "No matching events.",
   "interpreted_query": {
     "intent": "find_events",
     "filters": {
       "event_type": "workshop",
-      "year": 2,
-      "date": "2026-11-02/2026-11-09"
+      "student_year": 2
     }
   },
-  "applied_context": {
-    "year": {
+  "applied_context": [
+    {
+      "field": "student_year",
       "value": 2,
-      "origin": "profile"
-    },
-    "event_type": {
-      "value": "workshop",
       "origin": "explicit_question"
     }
-  },
+  ],
   "results": [],
   "clarification": null,
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
-  "warnings": [],
-  "data_coverage": {
-    "status": "complete",
-    "message": "Fictional demo campus records."
-  },
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
   "next_cursor": null
 }

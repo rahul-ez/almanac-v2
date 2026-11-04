@@ -1,15 +1,13 @@
 {
-  "status": 422,
-  "body": {
-    "error": {
-      "code": "validation_error",
-      "message": "Check the highlighted fields.",
-      "field_errors": {
-        "ends_at": [
-          "End must be after start."
-        ]
-      },
-      "request_id": "fixture-validation"
-    }
+  "error": {
+    "code": "validation_error",
+    "message": "Request validation failed.",
+    "field_errors": [
+      {
+        "field": "body.text",
+        "message": "Invalid value"
+      }
+    ],
+    "request_id": "fixture-request"
   }
 }

@@ -1,0 +1,54 @@
+{
+  "$defs": {
+    "Identity": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "student",
+            "admin"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "session_expires_at": {
+          "format": "date-time",
+          "title": "Session Expires At",
+          "type": "string"
+        },
+        "username": {
+          "title": "Username",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "role",
+        "session_expires_at"
+      ],
+      "title": "Identity",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "csrf_token": {
+      "title": "Csrf Token",
+      "type": "string"
+    },
+    "user": {
+      "$ref": "#/$defs/Identity"
+    }
+  },
+  "required": [
+    "user",
+    "csrf_token"
+  ],
+  "title": "LoginResponse",
+  "type": "object"
+}

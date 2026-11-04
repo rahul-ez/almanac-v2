@@ -74,3 +74,5 @@ tests/browser/            Desktop/mobile user workflows and live errors
 Only the mock adapter interprets example questions locally. Its deterministic demo dispatcher is not an NLP model. Live mode delegates all interpretation and domain decisions to the backend.
 
 Demo data persists under `campus.demo.v1`; the demo session uses `campus.demo.session`. To reset the demo, sign out and remove those two keys in the browser's storage inspector, then reload. No reset runs during normal startup. Drafts and interrupted requests use per-user `sessionStorage` keys so an expired login can resume safely. A retry reuses its original `client_request_id` and does not silently resubmit a changed payload.
+
+Backend merge note: frontend mock contract exports now live in `contracts/frontend-proposal/`. The implemented API in `contracts/openapi.json` is authoritative for live integration. This merge preserves mock behavior; client/schema alignment and end-to-end integration remain pending.

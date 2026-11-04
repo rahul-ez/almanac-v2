@@ -1,45 +1,52 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "answered",
   "intent": "find_faculty_office_hours",
-  "message": "Here are the published office hours.",
+  "message": "Synthetic demonstration answer.",
   "interpreted_query": {
     "intent": "find_faculty_office_hours",
     "filters": {
-      "faculty_id": "faculty-rao-anil",
-      "date": "2026-11-05"
+      "faculty_id": "demo-faculty-rao",
+      "interval": {
+        "start": "2026-11-06T14:00:00+05:30",
+        "end": "2026-11-06T16:00:00+05:30"
+      }
     }
   },
-  "applied_context": {},
+  "applied_context": [
+    {
+      "field": "student_year",
+      "value": 2,
+      "origin": "explicit_question"
+    }
+  ],
   "results": [
     {
-      "kind": "faculty",
-      "record_id": "faculty-rao-anil",
-      "title": "Dr. Anil Rao",
-      "faculty_name": "Dr. Anil Rao",
-      "department": "AI & Machine Learning",
-      "location": "Faculty Wing, B-308",
-      "meeting_interval": {
-        "starts_at": "2026-11-05T14:00:00+05:30",
-        "ends_at": "2026-11-05T16:00:00+05:30"
-      },
-      "exception_note": null,
-      "saved": false,
-      "record_status": "active",
-      "source_label": "Demo campus records",
+      "record_id": "demo-faculty-rao",
+      "title": "[DEMO] Professor Rao office hours",
+      "source_label": "Synthetic campus demo v1",
       "source_url": null,
-      "record_updated_at": "2026-11-03T09:00:00+05:30"
+      "record_updated_at": "2026-11-04T10:00:00+05:30",
+      "saved": false,
+      "kind": "office_hours",
+      "faculty_id": "demo-faculty-rao",
+      "faculty_name": "Professor Rao",
+      "location": "Faculty block 102",
+      "interval": {
+        "start": "2026-11-06T14:00:00+05:30",
+        "end": "2026-11-06T16:00:00+05:30"
+      },
+      "exception": null
     }
   ],
   "clarification": null,
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
-  "warnings": [],
-  "data_coverage": {
-    "status": "complete",
-    "message": "Fictional demo campus records."
-  },
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
   "next_cursor": null
 }

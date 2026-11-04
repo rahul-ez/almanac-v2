@@ -1,0 +1,71 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "building_id": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Building Id"
+    },
+    "cursor": {
+      "anyOf": [
+        {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cursor"
+    },
+    "facility_ids": {
+      "items": {
+        "maxLength": 80,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 30,
+      "title": "Facility Ids",
+      "type": "array"
+    },
+    "from_at": {
+      "format": "date-time",
+      "title": "From At",
+      "type": "string"
+    },
+    "limit": {
+      "default": 20,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Limit",
+      "type": "integer"
+    },
+    "min_capacity": {
+      "default": 1,
+      "maximum": 100000,
+      "minimum": 1,
+      "title": "Min Capacity",
+      "type": "integer"
+    },
+    "to_at": {
+      "format": "date-time",
+      "title": "To At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "from_at",
+    "to_at"
+  ],
+  "title": "AvailabilityQuery",
+  "type": "object"
+}

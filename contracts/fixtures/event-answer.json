@@ -1,61 +1,60 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "answered",
   "intent": "find_events",
-  "message": "Here is an event to explore.",
+  "message": "Synthetic demonstration answer.",
   "interpreted_query": {
     "intent": "find_events",
     "filters": {
       "event_type": "workshop",
-      "year": 2,
-      "date": "2026-11-02/2026-11-09"
+      "student_year": 2
     }
   },
-  "applied_context": {
-    "year": {
+  "applied_context": [
+    {
+      "field": "student_year",
       "value": 2,
-      "origin": "profile"
-    },
-    "event_type": {
-      "value": "workshop",
       "origin": "explicit_question"
     }
-  },
+  ],
   "results": [
     {
-      "kind": "event",
-      "record_id": "event-ai",
-      "title": "Build something with AI",
-      "source_label": "Demo campus records",
+      "record_id": "demo-event-ml-workshop",
+      "title": "[DEMO] Intro to Machine Learning",
+      "source_label": "Synthetic campus demo v1",
       "source_url": null,
-      "record_updated_at": "2026-11-03T09:00:00+05:30",
-      "record_status": "published",
+      "record_updated_at": "2026-11-04T10:00:00+05:30",
       "saved": false,
-      "description": "An afternoon of small ideas and hands-on machine learning. Bring your laptop; leave with a working project.",
-      "starts_at": "2026-11-06T14:00:00+05:30",
-      "ends_at": "2026-11-06T17:00:00+05:30",
-      "venue": "Innovation Lab, B Block",
+      "kind": "event",
+      "interval": {
+        "start": "2026-11-06T14:00:00+05:30",
+        "end": "2026-11-06T16:00:00+05:30"
+      },
+      "venue": "B-201",
+      "topic": "machine_learning",
       "event_type": "workshop",
-      "topics": [
-        "Artificial intelligence",
-        "Machine learning"
-      ],
       "cost_minor": 0,
       "currency": "INR",
       "eligibility": "eligible",
-      "eligibility_basis": "Open to all students.",
-      "registration_deadline": "2026-11-05T18:00:00+05:30"
+      "eligibility_rules": {
+        "years": [
+          2
+        ],
+        "departments": null,
+        "mode": "restricted"
+      },
+      "registration_deadline": "2026-11-05T18:00:00+05:30",
+      "cancelled": false
     }
   ],
   "clarification": null,
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
-  "warnings": [],
-  "data_coverage": {
-    "status": "complete",
-    "message": "Fictional demo campus records."
-  },
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
   "next_cursor": null
 }

@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic-settings
+SQLAlchemy
+alembic
+psycopg[binary]
+httpx
+pytest
+jsonschema
+pwdlib[argon2]
+scikit-learn

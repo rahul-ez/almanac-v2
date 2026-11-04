@@ -1,0 +1,9 @@
+{
+  "version": "semantic-smoke-v1",
+  "files": {
+    "data/evaluation/semantic-smoke.json": "fb5047a52bd288def6201d5dec68c028e5a75a888637de87f8e887f710a47ca2",
+    "data/demo/campus-events.json": "56c78597da55ce05514e06f128f548560758d7cfb277138b8ec1a76e14de9515",
+    "data/demo/rooms.json": "405c2496ce8db8821e417142291e207bbd28f592164daac11947a240fe3ba88c",
+    "data/demo/faculty.json": "d97fa468c7ddbe36523f7adf40d8f1968e8389a5d1d92c59ee31a7ac58c4a84a"
+  }
+}

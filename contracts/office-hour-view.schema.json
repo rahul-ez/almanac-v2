@@ -1,0 +1,107 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "effective_from": {
+      "format": "date",
+      "title": "Effective From",
+      "type": "string"
+    },
+    "effective_until": {
+      "format": "date",
+      "title": "Effective Until",
+      "type": "string"
+    },
+    "end_time": {
+      "pattern": "^(?:(?:[01]\\d|2[0-3]):[0-5]\\d|24:00)$",
+      "title": "End Time",
+      "type": "string"
+    },
+    "faculty_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Faculty Id",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "location": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Location",
+      "type": "string"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "start_time": {
+      "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+      "title": "Start Time",
+      "type": "string"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "cancelled",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    },
+    "weekday": {
+      "maximum": 6,
+      "minimum": 0,
+      "title": "Weekday",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_label",
+    "faculty_id",
+    "location",
+    "weekday",
+    "start_time",
+    "end_time",
+    "effective_from",
+    "effective_until",
+    "timezone",
+    "id",
+    "version",
+    "updated_at"
+  ],
+  "title": "OfficeHourView",
+  "type": "object"
+}

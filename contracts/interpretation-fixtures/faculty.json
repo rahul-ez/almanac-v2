@@ -1,0 +1,77 @@
+{
+  "status": "ready",
+  "intent": "find_faculty_office_hours",
+  "meaning": {
+    "intent": "find_faculty_office_hours",
+    "filters": {
+      "event_type": null,
+      "topic": null,
+      "student_year": null,
+      "department_id": null,
+      "building_id": null,
+      "faculty_id": "campus-demo-anita-rao",
+      "room_id": null,
+      "interval": {
+        "start": "2026-11-05T00:00:00+05:30",
+        "end": "2026-11-06T00:00:00+05:30"
+      },
+      "capacity": null,
+      "facility_ids": [],
+      "venue": null,
+      "eligible_only": false,
+      "max_cost_minor": null
+    }
+  },
+  "execution": {
+    "kind": "office_hours",
+    "query": {
+      "from_at": "2026-11-05T00:00:00+05:30",
+      "to_at": "2026-11-06T00:00:00+05:30",
+      "limit": 20,
+      "cursor": null
+    },
+    "faculty_id": "campus-demo-anita-rao"
+  },
+  "entities": [
+    {
+      "label": "faculty",
+      "start": 10,
+      "end": 19,
+      "text": "Anita Rao",
+      "normalized": "campus-demo-anita-rao",
+      "canonical_id": "campus-demo-anita-rao",
+      "candidate_ids": []
+    },
+    {
+      "label": "date",
+      "start": 33,
+      "end": 41,
+      "text": "tomorrow",
+      "normalized": "2026-11-05T00:00:00+05:30/2026-11-06T00:00:00+05:30",
+      "canonical_id": null,
+      "candidate_ids": []
+    }
+  ],
+  "applied_context": [
+    {
+      "field": "faculty_id",
+      "value": "campus-demo-anita-rao",
+      "origin": "explicit_question"
+    },
+    {
+      "field": "interval",
+      "value": [
+        "2026-11-05T00:00:00+05:30",
+        "2026-11-06T00:00:00+05:30"
+      ],
+      "origin": "explicit_question"
+    }
+  ],
+  "missing_fields": [],
+  "ambiguities": [],
+  "unsupported_constraints": [],
+  "message": "Validated find faculty office hours.",
+  "warnings": [],
+  "intent_source": "rules",
+  "interpreter_version": "campus-rules-v1"
+}

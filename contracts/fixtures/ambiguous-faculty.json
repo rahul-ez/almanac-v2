@@ -1,39 +1,39 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "clarification_required",
   "intent": "find_faculty_office_hours",
-  "message": "Which Professor Rao do you mean?",
-  "interpreted_query": {
-    "intent": "find_faculty_office_hours",
-    "filters": {
-      "date": "2026-11-05"
+  "message": "Please clarify.",
+  "interpreted_query": null,
+  "applied_context": [
+    {
+      "field": "student_year",
+      "value": 2,
+      "origin": "explicit_question"
     }
-  },
-  "applied_context": {},
+  ],
   "results": [],
   "clarification": {
-    "id": "clarification-faculty",
+    "id": "demo-clarification",
     "field": "faculty_id",
-    "prompt": "Which Professor Rao do you mean?",
+    "prompt": "Which name?",
     "options": [
       {
-        "id": "faculty-rao-anil",
-        "label": "Dr. Anil Rao"
+        "id": "demo-rao-a",
+        "label": "A. Rao"
       },
       {
-        "id": "faculty-rao-kavita",
-        "label": "Dr. Kavita Rao"
+        "id": "demo-rao-b",
+        "label": "B. Rao"
       }
     ]
   },
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
-  "warnings": [],
-  "data_coverage": {
-    "status": "complete",
-    "message": "Fictional demo campus records."
-  },
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
   "next_cursor": null
 }

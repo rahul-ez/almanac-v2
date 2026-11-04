@@ -1,0 +1,12 @@
+{
+  "status": "no_results",
+  "items": [],
+  "unknown_rooms": [],
+  "checked_count": 1,
+  "next_cursor": null,
+  "data_coverage": "complete",
+  "warnings": [
+    "Scheduled availability is not proof of physical vacancy."
+  ],
+  "availability_basis": "scheduled_bookings"
+}

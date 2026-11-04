@@ -1,0 +1,20 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "deleted": {
+      "const": true,
+      "default": true,
+      "title": "Deleted",
+      "type": "boolean"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    }
+  },
+  "required": [
+    "id"
+  ],
+  "title": "DeletedConversation",
+  "type": "object"
+}

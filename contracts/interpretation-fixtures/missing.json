@@ -1,0 +1,23 @@
+{
+  "status": "clarification_required",
+  "intent": "find_available_rooms",
+  "meaning": null,
+  "execution": null,
+  "entities": [],
+  "applied_context": [],
+  "missing_fields": [
+    "date_and_time_interval"
+  ],
+  "ambiguities": [
+    {
+      "field": "date_and_time_interval",
+      "prompt": "Supply a date and start/end time, or say \u201cright now\u201d.",
+      "options": []
+    }
+  ],
+  "unsupported_constraints": [],
+  "message": "Supply a date and start/end time, or say \u201cright now\u201d.",
+  "warnings": [],
+  "intent_source": "rules",
+  "interpreter_version": "campus-rules-v1"
+}

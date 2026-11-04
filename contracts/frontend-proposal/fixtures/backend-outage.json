@@ -1,0 +1,11 @@
+{
+  "status": 503,
+  "body": {
+    "error": {
+      "code": "service_unavailable",
+      "message": "The campus service is temporarily unavailable. Try again shortly.",
+      "field_errors": {},
+      "request_id": "fixture-outage"
+    }
+  }
+}

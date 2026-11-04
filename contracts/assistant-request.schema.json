@@ -1,0 +1,198 @@
+{
+  "$defs": {
+    "ClarificationReply": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "option_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Option Id"
+        }
+      },
+      "required": [
+        "id"
+      ],
+      "title": "ClarificationReply",
+      "type": "object"
+    },
+    "ContextOverrides": {
+      "additionalProperties": false,
+      "properties": {
+        "building_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "facility_ids": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "type": "string"
+              },
+              "maxItems": 30,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Facility Ids"
+        },
+        "faculty_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Faculty Id"
+        },
+        "room_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Room Id"
+        },
+        "year": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Year"
+        }
+      },
+      "title": "ContextOverrides",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "clarification": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/ClarificationReply"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "client_request_id": {
+      "maxLength": 128,
+      "minLength": 1,
+      "title": "Client Request Id",
+      "type": "string"
+    },
+    "context_overrides": {
+      "$ref": "#/$defs/ContextOverrides"
+    },
+    "conversation_id": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversation Id"
+    },
+    "conversation_version": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversation Version"
+    },
+    "text": {
+      "maxLength": 1000,
+      "minLength": 1,
+      "title": "Text",
+      "type": "string"
+    }
+  },
+  "required": [
+    "text",
+    "client_request_id"
+  ],
+  "title": "AssistantRequest",
+  "type": "object"
+}

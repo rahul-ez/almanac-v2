@@ -212,19 +212,19 @@ async function output(relative: string, value: unknown) {
     await writeFile(target, contents);
   }
 }
-await output('contracts/openapi.json', contract);
+await output('contracts/frontend-proposal/openapi.json', contract);
 for (const [name, value] of Object.entries(answerFixtures)) {
   s.answerSchema.parse(value);
-  await output(`contracts/fixtures/${name}.json`, value);
+  await output(`contracts/frontend-proposal/fixtures/${name}.json`, value);
 }
 for (const [name, value] of Object.entries(errorFixtures)) {
   s.errorSchema.parse(value.body);
-  await output(`contracts/fixtures/${name}.json`, value);
+  await output(`contracts/frontend-proposal/fixtures/${name}.json`, value);
 }
 s.savedSchema.parse(savedFixture);
 s.conversationSchema.parse(historicalFixture);
-await output('contracts/fixtures/changed-cancelled-saved-item.json', savedFixture);
-await output('contracts/fixtures/historical-snapshot.json', historicalFixture);
+await output('contracts/frontend-proposal/fixtures/changed-cancelled-saved-item.json', savedFixture);
+await output('contracts/frontend-proposal/fixtures/historical-snapshot.json', historicalFixture);
 process.stdout.write(
   check
     ? 'Contract and all 15 fixtures are current and schema-valid.\n'

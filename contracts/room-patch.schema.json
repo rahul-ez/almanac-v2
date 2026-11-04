@@ -1,0 +1,194 @@
+{
+  "$defs": {
+    "OpeningHour": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "pattern": "^(?:(?:[01]\\d|2[0-3]):[0-5]\\d|24:00)$",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Start",
+          "type": "string"
+        },
+        "weekday": {
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Weekday",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "weekday",
+        "start",
+        "end"
+      ],
+      "title": "OpeningHour",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "building_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Building Id"
+    },
+    "capacity": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Capacity"
+    },
+    "code": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Code"
+    },
+    "coverage_complete": {
+      "anyOf": [
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Coverage Complete"
+    },
+    "coverage_end": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Coverage End"
+    },
+    "coverage_start": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Coverage Start"
+    },
+    "facility_ids": {
+      "anyOf": [
+        {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Facility Ids"
+    },
+    "opening_hours": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/OpeningHour"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Opening Hours"
+    },
+    "source_label": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Label"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 2083,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "status": {
+      "anyOf": [
+        {
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Status"
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "version"
+  ],
+  "title": "RoomPatch",
+  "type": "object"
+}

@@ -1,11 +1,8 @@
 {
-  "status": 401,
-  "body": {
-    "error": {
-      "code": "session_expired",
-      "message": "Your session has expired. Sign in to continue.",
-      "field_errors": {},
-      "request_id": "fixture-expired"
-    }
+  "error": {
+    "code": "unauthenticated",
+    "message": "Please sign in again.",
+    "field_errors": [],
+    "request_id": "fixture-request"
   }
 }

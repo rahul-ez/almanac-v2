@@ -1,0 +1,11 @@
+# Frozen synthetic engineering evaluation
+
+`semantic-smoke.json` contains 24 author-written gold cases. It was authored separately from interpreter outputs and uses the clock 2026-11-04 10:00 Asia/Kolkata. `manifest.json` fixes the corpus and the three synthetic record files by SHA-256, normalizing CRLF to LF for cross-platform identity. Evaluation rejects changed inputs rather than silently changing the gold.
+
+This is a known regression suite, not independent or held-out student evaluation. It covers events/prices/eligibility, room booking boundaries/closures/unknown coverage, faculty publication/cancellation/ambiguity, unsupported input and three prior-meaning transitions. Gold spans are complete for all 16 cases with executable expected meanings; uncertain inputs are not scored as fully annotated entities. There are 40 gold entity spans. Normalization uses only explicitly specified gold filter slots; exact meaning compares every normalized field, including default/null fields. Result checks compare complete sets of kinds, IDs and intervals, response status, and the requested clarification field.
+
+Both modes use the same production pipeline, typed retrieval services, clock, records and prior meanings. The benchmark never fits or tunes a model. New PostgreSQL databases have a generated `almanac_eval_` name and are dropped in a finally block. The local demo database is never seeded, reset or queried for scoring. Fresh migrations build each evaluation database. Private sessions/history are checked separately by regression tests and live Phase 6 acceptance, not inferred from pure prior-meaning cases.
+
+A first run detected the time span swallowing a subsequently masked capacity phrase. The interpreter was corrected against unchanged gold and a focused regression assertion was added. This is normal regression-driven development, not tuning against an untouched final test set. The prototype classifier was not changed in response to scores.
+
+To evolve this engineering suite, intentionally review and version both the gold and manifest; never regenerate gold from current predictions. A final academic corpus must be separately collected/reviewed, grouped and frozen before tuning. Keep its claims separate from these synthetic results.

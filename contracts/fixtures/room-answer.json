@@ -1,50 +1,54 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "answered",
   "intent": "find_available_rooms",
-  "message": "B-204 has no scheduled booking for your interval.",
+  "message": "Synthetic demonstration answer.",
   "interpreted_query": {
     "intent": "find_available_rooms",
     "filters": {
-      "starts_at": "2026-11-04T14:00:00+05:30",
-      "ends_at": "2026-11-04T15:00:00+05:30"
+      "interval": {
+        "start": "2026-11-06T14:00:00+05:30",
+        "end": "2026-11-06T16:00:00+05:30"
+      }
     }
   },
-  "applied_context": {},
+  "applied_context": [
+    {
+      "field": "student_year",
+      "value": 2,
+      "origin": "explicit_question"
+    }
+  ],
   "results": [
     {
-      "kind": "room",
-      "record_id": "room-b204",
-      "title": "B-204",
-      "building": "B Block",
-      "capacity": 60,
+      "record_id": "demo-room-b201",
+      "title": "[DEMO] B-201",
+      "source_label": "Synthetic campus demo v1",
+      "source_url": null,
+      "record_updated_at": "2026-11-04T10:00:00+05:30",
+      "saved": false,
+      "kind": "room_availability",
+      "building": "B",
+      "capacity": 40,
       "facilities": [
-        "Projector",
-        "Whiteboard",
-        "Air conditioning"
+        "projector"
       ],
       "requested_interval": {
-        "starts_at": "2026-11-04T14:00:00+05:30",
-        "ends_at": "2026-11-04T15:00:00+05:30"
+        "start": "2026-11-06T14:00:00+05:30",
+        "end": "2026-11-06T16:00:00+05:30"
       },
       "schedule_coverage": "complete",
-      "availability_basis": "scheduled_bookings",
-      "saved": false,
-      "record_status": "active",
-      "source_label": "Demo campus records",
-      "source_url": null,
-      "record_updated_at": "2026-11-03T09:00:00+05:30"
+      "availability_basis": "scheduled_bookings"
     }
   ],
   "clarification": null,
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
-  "warnings": [],
-  "data_coverage": {
-    "status": "complete",
-    "message": "Fictional demo campus records."
-  },
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
   "next_cursor": null
 }

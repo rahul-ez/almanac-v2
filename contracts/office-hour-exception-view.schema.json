@@ -1,0 +1,110 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "action": {
+      "enum": [
+        "cancel",
+        "replace"
+      ],
+      "title": "Action",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "note": {
+      "default": "",
+      "maxLength": 500,
+      "title": "Note",
+      "type": "string"
+    },
+    "occurrence_date": {
+      "format": "date",
+      "title": "Occurrence Date",
+      "type": "string"
+    },
+    "office_hour_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Office Hour Id",
+      "type": "string"
+    },
+    "replacement_end": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replacement End"
+    },
+    "replacement_start": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Replacement Start"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_label",
+    "office_hour_id",
+    "occurrence_date",
+    "action",
+    "id",
+    "version",
+    "updated_at"
+  ],
+  "title": "OfficeExceptionView",
+  "type": "object"
+}

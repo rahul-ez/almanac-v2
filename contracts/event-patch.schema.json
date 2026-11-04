@@ -1,0 +1,268 @@
+{
+  "$defs": {
+    "EligibilityRules": {
+      "additionalProperties": false,
+      "properties": {
+        "departments": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Departments"
+        },
+        "mode": {
+          "enum": [
+            "unknown",
+            "unrestricted",
+            "restricted"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "years": {
+          "anyOf": [
+            {
+              "items": {
+                "maximum": 4,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxItems": 4,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Years"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "title": "EligibilityRules",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cost_minor": {
+      "anyOf": [
+        {
+          "maximum": 100000000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cost Minor"
+    },
+    "currency": {
+      "anyOf": [
+        {
+          "const": "INR",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Currency"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "maxLength": 4000,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "eligibility_rules": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EligibilityRules"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "ends_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Ends At"
+    },
+    "event_type": {
+      "anyOf": [
+        {
+          "enum": [
+            "workshop",
+            "seminar",
+            "hackathon",
+            "lecture"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Event Type"
+    },
+    "registration_deadline": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Registration Deadline"
+    },
+    "source_label": {
+      "anyOf": [
+        {
+          "maxLength": 100,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Label"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "starts_at": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Starts At"
+    },
+    "status": {
+      "anyOf": [
+        {
+          "enum": [
+            "draft",
+            "published",
+            "cancelled",
+            "archived"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Status"
+    },
+    "title": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Title"
+    },
+    "topic_id": {
+      "anyOf": [
+        {
+          "maxLength": 80,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Topic Id"
+    },
+    "venue": {
+      "anyOf": [
+        {
+          "maxLength": 200,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Venue"
+    },
+    "version": {
+      "minimum": 1,
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "version"
+  ],
+  "title": "EventPatch",
+  "type": "object"
+}

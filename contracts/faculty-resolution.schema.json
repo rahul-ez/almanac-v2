@@ -1,0 +1,171 @@
+{
+  "$defs": {
+    "FacultyView": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "department_id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Department Id",
+          "type": "string"
+        },
+        "email": {
+          "anyOf": [
+            {
+              "maxLength": 254,
+              "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Email"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "location": {
+          "default": "",
+          "maxLength": 200,
+          "title": "Location",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "office_hours_complete": {
+          "default": false,
+          "title": "Office Hours Complete",
+          "type": "boolean"
+        },
+        "office_hours_coverage_end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Office Hours Coverage End"
+        },
+        "office_hours_coverage_start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Office Hours Coverage Start"
+        },
+        "source_label": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_label",
+        "name",
+        "department_id",
+        "id",
+        "version",
+        "updated_at",
+        "timezone",
+        "aliases"
+      ],
+      "title": "FacultyView",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "candidates": {
+      "items": {
+        "$ref": "#/$defs/FacultyView"
+      },
+      "title": "Candidates",
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "resolved",
+        "clarification_required",
+        "no_results"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "candidates",
+    "warnings"
+  ],
+  "title": "FacultyResolution",
+  "type": "object"
+}

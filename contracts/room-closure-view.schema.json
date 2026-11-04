@@ -1,0 +1,82 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ends_at": {
+      "format": "date-time",
+      "title": "Ends At",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "reason": {
+      "maxLength": 300,
+      "minLength": 1,
+      "title": "Reason",
+      "type": "string"
+    },
+    "room_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Room Id",
+      "type": "string"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "starts_at": {
+      "format": "date-time",
+      "title": "Starts At",
+      "type": "string"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_label",
+    "room_id",
+    "reason",
+    "starts_at",
+    "ends_at",
+    "id",
+    "version",
+    "updated_at"
+  ],
+  "title": "ClosureView",
+  "type": "object"
+}

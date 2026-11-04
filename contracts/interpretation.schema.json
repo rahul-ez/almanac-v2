@@ -1,0 +1,865 @@
+{
+  "$defs": {
+    "Ambiguity": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "prompt": {
+          "title": "Prompt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "field",
+        "prompt"
+      ],
+      "title": "Ambiguity",
+      "type": "object"
+    },
+    "AvailabilityQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "building_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "cursor": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cursor"
+        },
+        "facility_ids": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Facility Ids",
+          "type": "array"
+        },
+        "from_at": {
+          "format": "date-time",
+          "title": "From At",
+          "type": "string"
+        },
+        "limit": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "min_capacity": {
+          "default": 1,
+          "maximum": 100000,
+          "minimum": 1,
+          "title": "Min Capacity",
+          "type": "integer"
+        },
+        "to_at": {
+          "format": "date-time",
+          "title": "To At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from_at",
+        "to_at"
+      ],
+      "title": "AvailabilityQuery",
+      "type": "object"
+    },
+    "ContextValue": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "explicit_question",
+            "override",
+            "prior_turn",
+            "profile",
+            "default"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "field",
+        "value",
+        "origin"
+      ],
+      "title": "ContextValue",
+      "type": "object"
+    },
+    "EventExecution": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "event",
+          "default": "event",
+          "title": "Kind",
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/$defs/EventSearch"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "EventExecution",
+      "type": "object"
+    },
+    "EventSearch": {
+      "additionalProperties": false,
+      "properties": {
+        "cursor": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cursor"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "eligible_only": {
+          "default": false,
+          "title": "Eligible Only",
+          "type": "boolean"
+        },
+        "event_type": {
+          "anyOf": [
+            {
+              "enum": [
+                "workshop",
+                "seminar",
+                "hackathon",
+                "lecture"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Type"
+        },
+        "from_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "From At"
+        },
+        "limit": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "max_cost_minor": {
+          "anyOf": [
+            {
+              "maximum": 100000000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Minor"
+        },
+        "q": {
+          "anyOf": [
+            {
+              "maxLength": 100,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Q"
+        },
+        "student_year": {
+          "anyOf": [
+            {
+              "maximum": 4,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Student Year"
+        },
+        "to_at": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "To At"
+        },
+        "topic_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Topic Id"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "maxLength": 200,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Venue"
+        }
+      },
+      "title": "EventSearch",
+      "type": "object"
+    },
+    "ExtractedEntity": {
+      "additionalProperties": false,
+      "properties": {
+        "candidate_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Candidate Ids",
+          "type": "array"
+        },
+        "canonical_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Canonical Id"
+        },
+        "end": {
+          "exclusiveMinimum": 0,
+          "title": "End",
+          "type": "integer"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        },
+        "normalized": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Normalized"
+        },
+        "start": {
+          "minimum": 0,
+          "title": "Start",
+          "type": "integer"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "label",
+        "start",
+        "end",
+        "text",
+        "normalized"
+      ],
+      "title": "ExtractedEntity",
+      "type": "object"
+    },
+    "FacultyExecution": {
+      "additionalProperties": false,
+      "properties": {
+        "faculty_id": {
+          "title": "Faculty Id",
+          "type": "string"
+        },
+        "kind": {
+          "const": "office_hours",
+          "default": "office_hours",
+          "title": "Kind",
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/$defs/OfficeHoursQuery"
+        }
+      },
+      "required": [
+        "query",
+        "faculty_id"
+      ],
+      "title": "FacultyExecution",
+      "type": "object"
+    },
+    "Filters": {
+      "additionalProperties": false,
+      "properties": {
+        "building_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "eligible_only": {
+          "default": false,
+          "title": "Eligible Only",
+          "type": "boolean"
+        },
+        "event_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Type"
+        },
+        "facility_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Facility Ids",
+          "type": "array"
+        },
+        "faculty_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Faculty Id"
+        },
+        "interval": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Interval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "max_cost_minor": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Minor"
+        },
+        "room_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Room Id"
+        },
+        "student_year": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Student Year"
+        },
+        "topic": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Topic"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Venue"
+        }
+      },
+      "title": "Filters",
+      "type": "object"
+    },
+    "Interval": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Interval",
+      "type": "object"
+    },
+    "Meaning": {
+      "additionalProperties": false,
+      "properties": {
+        "filters": {
+          "$ref": "#/$defs/Filters"
+        },
+        "intent": {
+          "enum": [
+            "find_events",
+            "find_available_rooms",
+            "find_faculty_office_hours"
+          ],
+          "title": "Intent",
+          "type": "string"
+        }
+      },
+      "required": [
+        "intent",
+        "filters"
+      ],
+      "title": "Meaning",
+      "type": "object"
+    },
+    "OfficeHoursQuery": {
+      "additionalProperties": false,
+      "properties": {
+        "cursor": {
+          "anyOf": [
+            {
+              "maxLength": 1024,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cursor"
+        },
+        "from_at": {
+          "format": "date-time",
+          "title": "From At",
+          "type": "string"
+        },
+        "limit": {
+          "default": 20,
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "type": "integer"
+        },
+        "to_at": {
+          "format": "date-time",
+          "title": "To At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "from_at",
+        "to_at"
+      ],
+      "title": "OfficeHoursQuery",
+      "type": "object"
+    },
+    "Option": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "Option",
+      "type": "object"
+    },
+    "RoomExecution": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "room",
+          "default": "room",
+          "title": "Kind",
+          "type": "string"
+        },
+        "query": {
+          "$ref": "#/$defs/AvailabilityQuery"
+        },
+        "room_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Room Id"
+        }
+      },
+      "required": [
+        "query"
+      ],
+      "title": "RoomExecution",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "ambiguities": {
+      "items": {
+        "$ref": "#/$defs/Ambiguity"
+      },
+      "title": "Ambiguities",
+      "type": "array"
+    },
+    "applied_context": {
+      "items": {
+        "$ref": "#/$defs/ContextValue"
+      },
+      "title": "Applied Context",
+      "type": "array"
+    },
+    "entities": {
+      "items": {
+        "$ref": "#/$defs/ExtractedEntity"
+      },
+      "title": "Entities",
+      "type": "array"
+    },
+    "execution": {
+      "anyOf": [
+        {
+          "discriminator": {
+            "mapping": {
+              "event": "#/$defs/EventExecution",
+              "office_hours": "#/$defs/FacultyExecution",
+              "room": "#/$defs/RoomExecution"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/EventExecution"
+            },
+            {
+              "$ref": "#/$defs/RoomExecution"
+            },
+            {
+              "$ref": "#/$defs/FacultyExecution"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Execution"
+    },
+    "intent": {
+      "anyOf": [
+        {
+          "enum": [
+            "find_events",
+            "find_available_rooms",
+            "find_faculty_office_hours"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Intent"
+    },
+    "intent_confidence": {
+      "anyOf": [
+        {
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Intent Confidence"
+    },
+    "intent_source": {
+      "default": "rules",
+      "enum": [
+        "rules",
+        "model"
+      ],
+      "title": "Intent Source",
+      "type": "string"
+    },
+    "interpreter_version": {
+      "default": "campus-rules-v1",
+      "title": "Interpreter Version",
+      "type": "string"
+    },
+    "meaning": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Meaning"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "missing_fields": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Missing Fields",
+      "type": "array"
+    },
+    "model_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Model Version"
+    },
+    "status": {
+      "enum": [
+        "ready",
+        "clarification_required",
+        "unsupported"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "unsupported_constraints": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unsupported Constraints",
+      "type": "array"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "intent",
+    "meaning",
+    "execution",
+    "entities",
+    "applied_context",
+    "message"
+  ],
+  "title": "Interpretation",
+  "type": "object"
+}

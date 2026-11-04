@@ -1,28 +1,30 @@
 {
-  "conversation_id": "fixture-conversation",
-  "turn_id": "fixture-turn",
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
   "request_id": "fixture-request",
   "status": "clarification_required",
   "intent": "find_available_rooms",
-  "message": "What date and time do you need the room?",
-  "interpreted_query": {
-    "intent": "find_available_rooms",
-    "filters": {}
-  },
-  "applied_context": {},
+  "message": "Please clarify.",
+  "interpreted_query": null,
+  "applied_context": [
+    {
+      "field": "student_year",
+      "value": 2,
+      "origin": "explicit_question"
+    }
+  ],
   "results": [],
   "clarification": {
-    "id": "clarification-interval",
+    "id": "demo-clarification",
     "field": "interval",
-    "prompt": "What date and time do you need the room?",
+    "prompt": "What date and interval?",
     "options": []
   },
   "answered_at": "2026-11-04T10:00:00+05:30",
   "campus_timezone": "Asia/Kolkata",
-  "warnings": [],
-  "data_coverage": {
-    "status": "complete",
-    "message": "Fictional demo campus records."
-  },
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
   "next_cursor": null
 }

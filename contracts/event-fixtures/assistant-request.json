@@ -1,0 +1,7 @@
+{
+  "text": "Any ML workshops for second years this week?",
+  "client_request_id": "demo-question-1",
+  "context_overrides": {
+    "year": 2
+  }
+}

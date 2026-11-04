@@ -1,8 +1,15 @@
+.env
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc
+.DS_Store
+.local/
+*.joblib
+*.pkl
 node_modules/
 dist/
-.env
 .env.local
 *.tsbuildinfo
 frontend/test-results/
 frontend/playwright-report/
-.DS_Store

@@ -1,0 +1,36 @@
+{
+  "conversation_id": "fixture-conversation",
+  "turn_id": "fixture-turn",
+  "request_id": "fixture-request",
+  "status": "no_results",
+  "intent": "find_events",
+  "message": "No matching events were found. Try another date.",
+  "interpreted_query": {
+    "intent": "find_events",
+    "filters": {
+      "event_type": "workshop",
+      "year": 2,
+      "date": "2026-11-02/2026-11-09"
+    }
+  },
+  "applied_context": {
+    "year": {
+      "value": 2,
+      "origin": "profile"
+    },
+    "event_type": {
+      "value": "workshop",
+      "origin": "explicit_question"
+    }
+  },
+  "results": [],
+  "clarification": null,
+  "answered_at": "2026-11-04T10:00:00+05:30",
+  "campus_timezone": "Asia/Kolkata",
+  "warnings": [],
+  "data_coverage": {
+    "status": "complete",
+    "message": "Fictional demo campus records."
+  },
+  "next_cursor": null
+}
