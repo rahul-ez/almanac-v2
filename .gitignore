@@ -7,3 +7,9 @@ __pycache__/
 .local/
 *.joblib
 *.pkl
+node_modules/
+dist/
+.env.local
+*.tsbuildinfo
+frontend/test-results/
+frontend/playwright-report/

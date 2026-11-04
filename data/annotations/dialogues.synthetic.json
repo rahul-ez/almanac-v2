@@ -1,0 +1,144 @@
+{
+  "provenance": "Synthetic draft, not independently reviewed or frozen",
+  "reference_clock": "2026-11-04T10:00:00+05:30",
+  "seed_version": "frontend-demo-v1",
+  "split": "unassigned",
+  "dialogues": [
+    {
+      "id": "dialogue-events-friday",
+      "turns": [
+        {
+          "text": "Any workshops this week?",
+          "expected": {
+            "intent": "find_events",
+            "event_type": "workshop",
+            "date_range": [
+              "2026-11-02",
+              "2026-11-09"
+            ]
+          }
+        },
+        {
+          "text": "Only Friday",
+          "expected": {
+            "intent": "find_events",
+            "event_type": "workshop",
+            "date": "2026-11-06"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue-faculty-clarify",
+      "turns": [
+        {
+          "text": "Professor Rao office hours tomorrow?",
+          "expected": {
+            "status": "clarification_required",
+            "field": "faculty_id",
+            "candidates": [
+              "faculty-rao-anil",
+              "faculty-rao-kavita"
+            ]
+          }
+        },
+        {
+          "text": "Anil Rao",
+          "expected": {
+            "faculty_id": "faculty-rao-anil",
+            "date": "2026-11-05",
+            "status": "answered"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue-room-interval",
+      "turns": [
+        {
+          "text": "Room in B Block?",
+          "expected": {
+            "status": "clarification_required",
+            "missing": [
+              "interval"
+            ]
+          }
+        },
+        {
+          "text": "Today from 2 to 3 PM",
+          "expected": {
+            "building_id": "b",
+            "result_ids": [
+              "room-b204"
+            ],
+            "starts_at": "2026-11-04T14:00:00+05:30",
+            "ends_at": "2026-11-04T15:00:00+05:30"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue-domain-switch",
+      "turns": [
+        {
+          "text": "Any free workshops this week?",
+          "expected": {
+            "intent": "find_events",
+            "free": true,
+            "event_type": "workshop"
+          }
+        },
+        {
+          "text": "Professor Rao office hours tomorrow?",
+          "expected": {
+            "intent": "find_faculty_office_hours",
+            "removed_filters": [
+              "free",
+              "event_type"
+            ],
+            "status": "clarification_required"
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue-clear-year",
+      "turns": [
+        {
+          "text": "Workshops for second years",
+          "expected": {
+            "year": 2,
+            "origin": "explicit_question"
+          }
+        },
+        {
+          "text": "Update the search without this filter.",
+          "context_overrides": {
+            "year": null
+          },
+          "expected": {
+            "year": null,
+            "origin": "override",
+            "permanent_profile_year": 2
+          }
+        }
+      ]
+    },
+    {
+      "id": "dialogue-office-exception",
+      "turns": [
+        {
+          "text": "Priya Nair office hours tomorrow?",
+          "expected": {
+            "faculty_id": "faculty-nair",
+            "meeting_interval": [
+              "2026-11-05T15:00:00+05:30",
+              "2026-11-05T16:00:00+05:30"
+            ],
+            "exception": "replacement"
+          }
+        }
+      ]
+    }
+  ]
+}

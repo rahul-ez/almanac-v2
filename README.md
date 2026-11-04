@@ -1,6 +1,6 @@
-# Almanac backend
+# Almanac — frontend and backend
 
-Phase 4 adds faculty records, exact alias resolution, published weekly office hours and dated exceptions to the existing rooms/events/session backend. The localhost test bench supports Phases 0–4. Language understanding for rooms/faculty remains later work.
+The backend is implemented through conversations, history and saved records, with local evaluation and packaged-install checks. The existing frontend is included in `frontend/` and currently defaults to mock mode. Live integration and joint testing remain pending.
 
 Requires Docker Desktop with Compose and Make. Python runs inside Docker (3.13); no host Python installation is needed.
 
@@ -47,3 +47,15 @@ Intent-model checkpoint: [train and test optional hybrid mode](docs/phase-5-inte
 Latest backend checkpoint: [Phase 6 conversations, history and saves](docs/phase-6-testing.md). Local test bench sections 6 and 12 exercise the real API at localhost:8000.
 
 Backend engineering verification: [Phase 7 evaluation and fresh packaged installation](docs/phase-7-testing.md), plus [release/integration handoff](docs/backend-release-handoff.md). Commands: `make evaluate`, `make acceptance-all`, `make verify-fresh`. These do not publish or deploy the application.
+
+## Frontend
+
+```sh
+cd frontend
+npm ci
+npm run dev
+```
+
+Open http://127.0.0.1:5173. See [frontend setup](frontend/README.md) and [integration handoff](docs/frontend-handoff.md). Mock accounts and data remain fictional. The backend test bench runs independently at http://localhost:8000/.
+
+The implemented API is [contracts/openapi.json](contracts/openapi.json). The frontend's existing mock proposal and fixtures are preserved separately under [contracts/frontend-proposal](contracts/frontend-proposal/README.md). Align the frontend client/schema with the implemented API before enabling live workflows; merging code does not complete that integration.
