@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "dependency_unavailable",
+    "message": "Database unavailable.",
+    "field_errors": [],
+    "request_id": "fixture-request"
+  }
+}

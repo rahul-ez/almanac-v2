@@ -1,0 +1,9 @@
+{
+  "user_id": "demo-student-a",
+  "department_id": "aiml",
+  "year": 2,
+  "section": "A",
+  "interests": [
+    "machine_learning"
+  ]
+}

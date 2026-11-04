@@ -1,0 +1,68 @@
+{
+  "conversation_id": "demo-conversation",
+  "turn_id": "demo-turn",
+  "request_id": "fixture-request",
+  "status": "answered",
+  "intent": "find_events",
+  "message": "Synthetic demonstration answer.",
+  "interpreted_query": {
+    "intent": "find_events",
+    "filters": {
+      "event_type": "workshop",
+      "interval": {
+        "start": "2026-11-06T00:00:00+05:30",
+        "end": "2026-11-07T00:00:00+05:30"
+      }
+    }
+  },
+  "applied_context": [
+    {
+      "field": "event_type",
+      "value": "workshop",
+      "origin": "prior_turn"
+    },
+    {
+      "field": "date",
+      "value": "2026-11-06",
+      "origin": "explicit_question"
+    }
+  ],
+  "results": [
+    {
+      "record_id": "demo-event-ml-workshop",
+      "title": "[DEMO] Intro to Machine Learning",
+      "source_label": "Synthetic campus demo v1",
+      "source_url": null,
+      "record_updated_at": "2026-11-04T10:00:00+05:30",
+      "saved": false,
+      "kind": "event",
+      "interval": {
+        "start": "2026-11-06T14:00:00+05:30",
+        "end": "2026-11-06T16:00:00+05:30"
+      },
+      "venue": "B-201",
+      "topic": "machine_learning",
+      "event_type": "workshop",
+      "cost_minor": 0,
+      "currency": "INR",
+      "eligibility": "eligible",
+      "eligibility_rules": {
+        "years": [
+          2
+        ],
+        "departments": null,
+        "mode": "restricted"
+      },
+      "registration_deadline": "2026-11-05T18:00:00+05:30",
+      "cancelled": false
+    }
+  ],
+  "clarification": null,
+  "answered_at": "2026-11-04T10:00:00+05:30",
+  "campus_timezone": "Asia/Kolkata",
+  "warnings": [
+    "Synthetic demo data"
+  ],
+  "data_coverage": "complete",
+  "next_cursor": null
+}

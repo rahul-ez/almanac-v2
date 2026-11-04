@@ -1,0 +1,792 @@
+{
+  "$defs": {
+    "Clarification": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "options": {
+          "items": {
+            "$ref": "#/$defs/Option"
+          },
+          "title": "Options",
+          "type": "array"
+        },
+        "prompt": {
+          "title": "Prompt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "field",
+        "prompt",
+        "options"
+      ],
+      "title": "Clarification",
+      "type": "object"
+    },
+    "ContextValue": {
+      "additionalProperties": false,
+      "properties": {
+        "field": {
+          "title": "Field",
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "explicit_question",
+            "override",
+            "prior_turn",
+            "profile",
+            "default"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "title": "Value"
+        }
+      },
+      "required": [
+        "field",
+        "value",
+        "origin"
+      ],
+      "title": "ContextValue",
+      "type": "object"
+    },
+    "EligibilityRules": {
+      "additionalProperties": false,
+      "properties": {
+        "departments": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Departments"
+        },
+        "mode": {
+          "enum": [
+            "unknown",
+            "unrestricted",
+            "restricted"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "years": {
+          "anyOf": [
+            {
+              "items": {
+                "maximum": 4,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxItems": 4,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Years"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "title": "EligibilityRules",
+      "type": "object"
+    },
+    "EventCard": {
+      "additionalProperties": false,
+      "properties": {
+        "cancelled": {
+          "title": "Cancelled",
+          "type": "boolean"
+        },
+        "cost_minor": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cost Minor"
+        },
+        "currency": {
+          "default": "INR",
+          "title": "Currency",
+          "type": "string"
+        },
+        "eligibility": {
+          "enum": [
+            "eligible",
+            "ineligible",
+            "unknown"
+          ],
+          "title": "Eligibility",
+          "type": "string"
+        },
+        "eligibility_rules": {
+          "$ref": "#/$defs/EligibilityRules"
+        },
+        "event_type": {
+          "title": "Event Type",
+          "type": "string"
+        },
+        "interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "kind": {
+          "const": "event",
+          "title": "Kind",
+          "type": "string"
+        },
+        "record_id": {
+          "title": "Record Id",
+          "type": "string"
+        },
+        "record_updated_at": {
+          "format": "date-time",
+          "title": "Record Updated At",
+          "type": "string"
+        },
+        "registration_deadline": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Registration Deadline"
+        },
+        "registration_status": {
+          "default": "unknown",
+          "enum": [
+            "open",
+            "closed",
+            "unknown"
+          ],
+          "title": "Registration Status",
+          "type": "string"
+        },
+        "saved": {
+          "default": false,
+          "title": "Saved",
+          "type": "boolean"
+        },
+        "source_label": {
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        },
+        "topic": {
+          "title": "Topic",
+          "type": "string"
+        },
+        "venue": {
+          "title": "Venue",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "title",
+        "source_label",
+        "record_updated_at",
+        "kind",
+        "interval",
+        "venue",
+        "topic",
+        "event_type",
+        "cost_minor",
+        "eligibility",
+        "eligibility_rules",
+        "registration_deadline",
+        "cancelled"
+      ],
+      "title": "EventCard",
+      "type": "object"
+    },
+    "Filters": {
+      "additionalProperties": false,
+      "properties": {
+        "building_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "exclusiveMinimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity"
+        },
+        "department_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Department Id"
+        },
+        "eligible_only": {
+          "default": false,
+          "title": "Eligible Only",
+          "type": "boolean"
+        },
+        "event_type": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Event Type"
+        },
+        "faculty_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Faculty Id"
+        },
+        "interval": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Interval"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        },
+        "max_cost_minor": {
+          "anyOf": [
+            {
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Max Cost Minor"
+        },
+        "room_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Room Id"
+        },
+        "student_year": {
+          "anyOf": [
+            {
+              "maximum": 8,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Student Year"
+        },
+        "topic": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Topic"
+        }
+      },
+      "title": "Filters",
+      "type": "object"
+    },
+    "Interval": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "Interval",
+      "type": "object"
+    },
+    "Meaning": {
+      "additionalProperties": false,
+      "properties": {
+        "filters": {
+          "$ref": "#/$defs/Filters"
+        },
+        "intent": {
+          "enum": [
+            "find_events",
+            "find_available_rooms",
+            "find_faculty_office_hours"
+          ],
+          "title": "Intent",
+          "type": "string"
+        }
+      },
+      "required": [
+        "intent",
+        "filters"
+      ],
+      "title": "Meaning",
+      "type": "object"
+    },
+    "OfficeHoursCard": {
+      "additionalProperties": false,
+      "properties": {
+        "exception": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Exception"
+        },
+        "faculty_id": {
+          "title": "Faculty Id",
+          "type": "string"
+        },
+        "faculty_name": {
+          "title": "Faculty Name",
+          "type": "string"
+        },
+        "interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "kind": {
+          "const": "office_hours",
+          "title": "Kind",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "record_id": {
+          "title": "Record Id",
+          "type": "string"
+        },
+        "record_updated_at": {
+          "format": "date-time",
+          "title": "Record Updated At",
+          "type": "string"
+        },
+        "saved": {
+          "default": false,
+          "title": "Saved",
+          "type": "boolean"
+        },
+        "source_label": {
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "title",
+        "source_label",
+        "record_updated_at",
+        "kind",
+        "faculty_id",
+        "faculty_name",
+        "location",
+        "interval",
+        "exception"
+      ],
+      "title": "OfficeHoursCard",
+      "type": "object"
+    },
+    "Option": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "Option",
+      "type": "object"
+    },
+    "RoomCard": {
+      "additionalProperties": false,
+      "properties": {
+        "availability_basis": {
+          "const": "scheduled_bookings",
+          "title": "Availability Basis",
+          "type": "string"
+        },
+        "building": {
+          "title": "Building",
+          "type": "string"
+        },
+        "capacity": {
+          "exclusiveMinimum": 0,
+          "title": "Capacity",
+          "type": "integer"
+        },
+        "facilities": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Facilities",
+          "type": "array"
+        },
+        "kind": {
+          "const": "room_availability",
+          "title": "Kind",
+          "type": "string"
+        },
+        "record_id": {
+          "title": "Record Id",
+          "type": "string"
+        },
+        "record_updated_at": {
+          "format": "date-time",
+          "title": "Record Updated At",
+          "type": "string"
+        },
+        "requested_interval": {
+          "$ref": "#/$defs/Interval"
+        },
+        "saved": {
+          "default": false,
+          "title": "Saved",
+          "type": "boolean"
+        },
+        "schedule_coverage": {
+          "const": "complete",
+          "title": "Schedule Coverage",
+          "type": "string"
+        },
+        "source_label": {
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 2083,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "title": {
+          "title": "Title",
+          "type": "string"
+        }
+      },
+      "required": [
+        "record_id",
+        "title",
+        "source_label",
+        "record_updated_at",
+        "kind",
+        "building",
+        "capacity",
+        "facilities",
+        "requested_interval",
+        "schedule_coverage",
+        "availability_basis"
+      ],
+      "title": "RoomCard",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "answered_at": {
+      "format": "date-time",
+      "title": "Answered At",
+      "type": "string"
+    },
+    "applied_context": {
+      "items": {
+        "$ref": "#/$defs/ContextValue"
+      },
+      "title": "Applied Context",
+      "type": "array"
+    },
+    "campus_timezone": {
+      "title": "Campus Timezone",
+      "type": "string"
+    },
+    "clarification": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Clarification"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "conversation_id": {
+      "title": "Conversation Id",
+      "type": "string"
+    },
+    "data_coverage": {
+      "enum": [
+        "complete",
+        "partial",
+        "unknown",
+        "not_applicable"
+      ],
+      "title": "Data Coverage",
+      "type": "string"
+    },
+    "intent": {
+      "anyOf": [
+        {
+          "enum": [
+            "find_events",
+            "find_available_rooms",
+            "find_faculty_office_hours"
+          ],
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Intent"
+    },
+    "interpreted_query": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/Meaning"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "message": {
+      "title": "Message",
+      "type": "string"
+    },
+    "next_cursor": {
+      "default": null,
+      "title": "Next Cursor",
+      "type": "null"
+    },
+    "request_id": {
+      "title": "Request Id",
+      "type": "string"
+    },
+    "results": {
+      "items": {
+        "discriminator": {
+          "mapping": {
+            "event": "#/$defs/EventCard",
+            "office_hours": "#/$defs/OfficeHoursCard",
+            "room_availability": "#/$defs/RoomCard"
+          },
+          "propertyName": "kind"
+        },
+        "oneOf": [
+          {
+            "$ref": "#/$defs/EventCard"
+          },
+          {
+            "$ref": "#/$defs/RoomCard"
+          },
+          {
+            "$ref": "#/$defs/OfficeHoursCard"
+          }
+        ]
+      },
+      "title": "Results",
+      "type": "array"
+    },
+    "status": {
+      "enum": [
+        "answered",
+        "no_results",
+        "clarification_required",
+        "unsupported",
+        "information_unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "turn_id": {
+      "title": "Turn Id",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "conversation_id",
+    "turn_id",
+    "request_id",
+    "status",
+    "intent",
+    "message",
+    "interpreted_query",
+    "applied_context",
+    "results",
+    "clarification",
+    "answered_at",
+    "campus_timezone",
+    "warnings",
+    "data_coverage"
+  ],
+  "title": "AssistantResponse",
+  "type": "object"
+}

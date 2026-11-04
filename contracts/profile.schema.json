@@ -1,0 +1,58 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "department_id": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Department Id"
+    },
+    "interests": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Interests",
+      "type": "array"
+    },
+    "section": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Section"
+    },
+    "user_id": {
+      "title": "User Id",
+      "type": "string"
+    },
+    "year": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Year"
+    }
+  },
+  "required": [
+    "user_id",
+    "department_id",
+    "year",
+    "section",
+    "interests"
+  ],
+  "title": "Profile",
+  "type": "object"
+}

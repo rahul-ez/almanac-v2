@@ -1,0 +1,13 @@
+{
+  "error": {
+    "code": "validation_error",
+    "message": "Request validation failed.",
+    "field_errors": [
+      {
+        "field": "body.text",
+        "message": "Invalid value"
+      }
+    ],
+    "request_id": "fixture-request"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "error": {
+    "code": "unauthenticated",
+    "message": "Please sign in again.",
+    "field_errors": [],
+    "request_id": "fixture-request"
+  }
+}

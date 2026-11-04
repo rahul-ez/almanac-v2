@@ -1,0 +1,27 @@
+{
+  "departments": [
+    {
+      "id": "aiml",
+      "label": "Artificial Intelligence and Machine Learning"
+    }
+  ],
+  "buildings": [
+    {
+      "id": "block-b",
+      "label": "B Block"
+    }
+  ],
+  "topics": [
+    {
+      "id": "machine_learning",
+      "label": "Machine Learning"
+    }
+  ],
+  "supported_years": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "demo": true
+}

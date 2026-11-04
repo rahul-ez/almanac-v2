@@ -1,0 +1,68 @@
+{
+  "$defs": {
+    "ReferenceItem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "title": "Label",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "label"
+      ],
+      "title": "ReferenceItem",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "buildings": {
+      "items": {
+        "$ref": "#/$defs/ReferenceItem"
+      },
+      "title": "Buildings",
+      "type": "array"
+    },
+    "demo": {
+      "const": true,
+      "default": true,
+      "title": "Demo",
+      "type": "boolean"
+    },
+    "departments": {
+      "items": {
+        "$ref": "#/$defs/ReferenceItem"
+      },
+      "title": "Departments",
+      "type": "array"
+    },
+    "supported_years": {
+      "items": {
+        "type": "integer"
+      },
+      "title": "Supported Years",
+      "type": "array"
+    },
+    "topics": {
+      "items": {
+        "$ref": "#/$defs/ReferenceItem"
+      },
+      "title": "Topics",
+      "type": "array"
+    }
+  },
+  "required": [
+    "departments",
+    "buildings",
+    "topics",
+    "supported_years"
+  ],
+  "title": "ReferenceData",
+  "type": "object"
+}

@@ -1,0 +1,225 @@
+{
+  "$defs": {
+    "EligibilityRules": {
+      "additionalProperties": false,
+      "properties": {
+        "departments": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Departments"
+        },
+        "mode": {
+          "enum": [
+            "unknown",
+            "unrestricted",
+            "restricted"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "years": {
+          "anyOf": [
+            {
+              "items": {
+                "maximum": 4,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxItems": 4,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Years"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "title": "EligibilityRules",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "cost_minor": {
+      "anyOf": [
+        {
+          "maximum": 100000000,
+          "minimum": 0,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cost Minor"
+    },
+    "currency": {
+      "const": "INR",
+      "default": "INR",
+      "title": "Currency",
+      "type": "string"
+    },
+    "description": {
+      "default": "",
+      "maxLength": 4000,
+      "title": "Description",
+      "type": "string"
+    },
+    "eligibility": {
+      "enum": [
+        "eligible",
+        "ineligible",
+        "unknown"
+      ],
+      "title": "Eligibility",
+      "type": "string"
+    },
+    "eligibility_reason": {
+      "title": "Eligibility Reason",
+      "type": "string"
+    },
+    "eligibility_rules": {
+      "$ref": "#/$defs/EligibilityRules"
+    },
+    "ends_at": {
+      "format": "date-time",
+      "title": "Ends At",
+      "type": "string"
+    },
+    "event_type": {
+      "enum": [
+        "workshop",
+        "seminar",
+        "hackathon",
+        "lecture"
+      ],
+      "title": "Event Type",
+      "type": "string"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "registration_deadline": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Registration Deadline"
+    },
+    "registration_status": {
+      "enum": [
+        "open",
+        "closed",
+        "unknown"
+      ],
+      "title": "Registration Status",
+      "type": "string"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "starts_at": {
+      "format": "date-time",
+      "title": "Starts At",
+      "type": "string"
+    },
+    "status": {
+      "default": "draft",
+      "enum": [
+        "draft",
+        "published",
+        "cancelled",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "topic_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Topic Id",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "venue": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Venue",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "title",
+    "event_type",
+    "topic_id",
+    "venue",
+    "starts_at",
+    "ends_at",
+    "source_label",
+    "id",
+    "version",
+    "updated_at",
+    "eligibility",
+    "eligibility_reason",
+    "registration_status"
+  ],
+  "title": "EventView",
+  "type": "object"
+}
