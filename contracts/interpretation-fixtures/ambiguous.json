@@ -1,0 +1,52 @@
+{
+  "status": "clarification_required",
+  "intent": "find_faculty_office_hours",
+  "meaning": null,
+  "execution": null,
+  "entities": [
+    {
+      "label": "faculty",
+      "start": 10,
+      "end": 13,
+      "text": "Rao",
+      "normalized": null,
+      "canonical_id": null,
+      "candidate_ids": [
+        "campus-demo-anita-rao",
+        "campus-demo-bharat-rao"
+      ]
+    },
+    {
+      "label": "date",
+      "start": 27,
+      "end": 35,
+      "text": "tomorrow",
+      "normalized": "2026-11-05T00:00:00+05:30/2026-11-06T00:00:00+05:30",
+      "canonical_id": null,
+      "candidate_ids": []
+    }
+  ],
+  "applied_context": [],
+  "missing_fields": [],
+  "ambiguities": [
+    {
+      "field": "faculty_id",
+      "prompt": "Which faculty do you mean?",
+      "options": [
+        {
+          "id": "campus-demo-anita-rao",
+          "label": "[DEMO] Anita Rao \u00b7 aiml"
+        },
+        {
+          "id": "campus-demo-bharat-rao",
+          "label": "[DEMO] Bharat Rao \u00b7 cse"
+        }
+      ]
+    }
+  ],
+  "unsupported_constraints": [],
+  "message": "Which faculty do you mean?",
+  "warnings": [],
+  "intent_source": "rules",
+  "interpreter_version": "campus-rules-v1"
+}

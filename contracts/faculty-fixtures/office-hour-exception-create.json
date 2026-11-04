@@ -1,0 +1,11 @@
+{
+  "office_hour_id": "campus-demo-rao-friday-hours",
+  "occurrence_date": "2026-11-13",
+  "action": "cancel",
+  "note": "[DEMO] Published cancellation",
+  "source_label": "Synthetic published faculty timetable v1",
+  "source_url": null,
+  "status": "active",
+  "replacement_start": null,
+  "replacement_end": null
+}

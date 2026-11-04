@@ -1,0 +1,12 @@
+{
+  "faculty":[
+    {"id":"campus-demo-anita-rao","name":"[DEMO] Anita Rao","department_id":"aiml","location":"Faculty Block 101","email":null,"office_hours_coverage_start":"2026-11-02","office_hours_coverage_end":"2026-12-31","office_hours_complete":true},
+    {"id":"campus-demo-bharat-rao","name":"[DEMO] Bharat Rao","department_id":"cse","location":"Faculty Block 202","email":null,"office_hours_coverage_start":null,"office_hours_coverage_end":null,"office_hours_complete":false}
+  ],
+  "aliases":[
+    {"id":"campus-demo-anita-alias","canonical_id":"campus-demo-anita-rao","alias":"Rao"},
+    {"id":"campus-demo-bharat-alias","canonical_id":"campus-demo-bharat-rao","alias":"Rao"}
+  ],
+  "office-hours":[{"id":"campus-demo-rao-friday-hours","faculty_id":"campus-demo-anita-rao","location":"Faculty Block 101","weekday":4,"start_time":"13:00","end_time":"14:00","effective_from":"2026-11-02","effective_until":"2026-12-25"}],
+  "exceptions":[{"id":"campus-demo-rao-cancellation","office_hour_id":"campus-demo-rao-friday-hours","occurrence_date":"2026-11-13","action":"cancel","note":"[DEMO] Published cancellation"}]
+}

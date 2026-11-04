@@ -9,6 +9,7 @@ from app.repositories.profiles import read_profile, patch_profile
 from app.schemas.identity import (LoginRequest, LoginResponse, Identity, CsrfResponse,
     LogoutResponse, Profile, ProfilePatch, ReferenceData, AdminAccess)
 from app.schemas.contracts import ErrorResponse
+from app.db.room_models import Facility
 
 router = APIRouter(prefix='/api/v1', responses={code: {'model': ErrorResponse} for code in (401, 403, 413, 422, 429, 503)})
 
@@ -68,10 +69,10 @@ def profile_update(payload: ProfilePatch, conn: Db, user: Student, session: Csrf
     return patch_profile(conn, user['id'], payload)
 
 @router.get('/reference-data', response_model=ReferenceData, tags=['reference'])
-def reference_data(conn: Db, user: CurrentUser):
+def reference_data(request: Request, conn: Db, user: CurrentUser):
     def rows(model):
         return list(conn.execute(select(model.__table__).order_by(model.id)).mappings())
-    return ReferenceData(departments=rows(Department), buildings=rows(Building), topics=rows(Topic), supported_years=[1, 2, 3, 4])
+    return ReferenceData(departments=rows(Department), buildings=rows(Building), topics=rows(Topic), facilities=rows(Facility), campus_timezone=request.app.state.settings.campus_timezone, supported_years=[1, 2, 3, 4])
 
 @router.get('/admin/access', response_model=AdminAccess, tags=['admin'])
 def admin_access(user: Admin):

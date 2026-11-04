@@ -1,0 +1,169 @@
+{
+  "$defs": {
+    "OpeningHour": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "pattern": "^(?:(?:[01]\\d|2[0-3]):[0-5]\\d|24:00)$",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Start",
+          "type": "string"
+        },
+        "weekday": {
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Weekday",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "weekday",
+        "start",
+        "end"
+      ],
+      "title": "OpeningHour",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "building_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Building Id",
+      "type": "string"
+    },
+    "capacity": {
+      "exclusiveMinimum": 0,
+      "maximum": 100000,
+      "title": "Capacity",
+      "type": "integer"
+    },
+    "code": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Code",
+      "type": "string"
+    },
+    "coverage_complete": {
+      "default": false,
+      "title": "Coverage Complete",
+      "type": "boolean"
+    },
+    "coverage_end": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Coverage End"
+    },
+    "coverage_start": {
+      "anyOf": [
+        {
+          "format": "date-time",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Coverage Start"
+    },
+    "facility_ids": {
+      "items": {
+        "maxLength": 80,
+        "minLength": 1,
+        "type": "string"
+      },
+      "maxItems": 30,
+      "title": "Facility Ids",
+      "type": "array"
+    },
+    "id": {
+      "title": "Id",
+      "type": "string"
+    },
+    "opening_hours": {
+      "anyOf": [
+        {
+          "items": {
+            "$ref": "#/$defs/OpeningHour"
+          },
+          "maxItems": 50,
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Opening Hours"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "timezone": {
+      "title": "Timezone",
+      "type": "string"
+    },
+    "updated_at": {
+      "format": "date-time",
+      "title": "Updated At",
+      "type": "string"
+    },
+    "version": {
+      "title": "Version",
+      "type": "integer"
+    }
+  },
+  "required": [
+    "source_label",
+    "code",
+    "building_id",
+    "capacity",
+    "id",
+    "version",
+    "updated_at",
+    "timezone"
+  ],
+  "title": "RoomView",
+  "type": "object"
+}

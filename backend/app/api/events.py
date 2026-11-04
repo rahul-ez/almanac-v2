@@ -1,14 +1,17 @@
 from typing import Annotated
 from fastapi import APIRouter, Query, Request
+from fastapi.responses import JSONResponse
 from app.auth.dependencies import Db, CurrentUser, Student, Admin, CsrfSession
 from app.auth.sessions import rate_limit
 from app.schemas.contracts import ErrorResponse, AssistantResponse
 from app.schemas.events import EventCreate, EventPatch, EventView, EventList, EventSearch, AssistantRequest
 from app.services.events import create_event, patch_event, get_event, search_events
-from app.services.assistant import answer_event_question
+from app.services.assistant import answer_question
+from app.services.interpretation import interpret_question
+from app.schemas.interpretation import Interpretation
 from app.repositories.profiles import read_profile
 
-router = APIRouter(prefix='/api/v1', responses={code:{'model':ErrorResponse} for code in (401,403,404,409,413,422,429,503)})
+router = APIRouter(prefix='/api/v1', responses={code:{'model':ErrorResponse} for code in (401,403,404,409,410,413,422,429,503)})
 Search = Annotated[EventSearch, Query()]
 
 def context(conn, user):
@@ -46,4 +49,13 @@ def archive(event_id: str, version: Annotated[int,Query(ge=1)], request: Request
 @router.post('/assistant/query', response_model=AssistantResponse, tags=['assistant'])
 def assistant(payload: AssistantRequest, request: Request, conn: Db, user: Student, session: CsrfSession):
     rate_limit(request,'assistant',user['id'],30)
-    return answer_event_question(conn,payload,user['id'],request.state.request_id,request.app.state.now(),request.app.state.settings.campus_timezone)
+    return JSONResponse(content=answer_question(conn,payload,user['id'],request.state.request_id,request.app.state.now(),request.app.state.settings.campus_timezone,nlp_mode=request.app.state.settings.nlp_mode,intent_model=request.app.state.intent_model))
+
+@router.post('/assistant/interpret',response_model=Interpretation,tags=['assistant'])
+def inspect_meaning(payload: AssistantRequest,request: Request,conn: Db,user: Student,session: CsrfSession):
+    if payload.conversation_id is not None or payload.clarification is not None or payload.conversation_version is not None:
+        from app.api.errors import ApiError
+        raise ApiError(422,'standalone_interpretation','Interpretation inspection accepts standalone questions only')
+    rate_limit(request,'interpreter-inspect',user['id'],60)
+    report,_=interpret_question(conn,payload,user['id'],request.app.state.now(),request.app.state.settings.campus_timezone,nlp_mode=request.app.state.settings.nlp_mode,intent_model=request.app.state.intent_model)
+    return report

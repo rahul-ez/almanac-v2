@@ -1,0 +1,30 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "kind": {
+      "enum": [
+        "event",
+        "room",
+        "faculty"
+      ],
+      "title": "Kind",
+      "type": "string"
+    },
+    "record_id": {
+      "title": "Record Id",
+      "type": "string"
+    },
+    "saved": {
+      "const": false,
+      "default": false,
+      "title": "Saved",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "kind",
+    "record_id"
+  ],
+  "title": "RemovedSave",
+  "type": "object"
+}

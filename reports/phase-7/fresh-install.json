@@ -1,0 +1,182 @@
+{
+  "purpose": "Fresh packaged-image engineering rehearsal, not production deployment or frontend validation",
+  "passed": true,
+  "isolated_project": "almanac-verify-f749e5173221",
+  "host_ports_published": false,
+  "source_bind_mounts": false,
+  "cleaned_up": true,
+  "elapsed_seconds": 102.78,
+  "stages": [
+    {
+      "stage": "build packaged image",
+      "passed": true,
+      "elapsed_seconds": 0.495
+    },
+    {
+      "stage": "record image identity",
+      "passed": true,
+      "elapsed_seconds": 0.023
+    },
+    {
+      "stage": "start fresh isolated database",
+      "passed": true,
+      "elapsed_seconds": 2.749
+    },
+    {
+      "stage": "migrate empty database",
+      "passed": true,
+      "elapsed_seconds": 0.774
+    },
+    {
+      "stage": "initial seed",
+      "passed": true,
+      "elapsed_seconds": 0.467
+    },
+    {
+      "stage": "initial provision",
+      "passed": true,
+      "elapsed_seconds": 0.832
+    },
+    {
+      "stage": "initial seed_events",
+      "passed": true,
+      "elapsed_seconds": 0.531
+    },
+    {
+      "stage": "initial seed_rooms",
+      "passed": true,
+      "elapsed_seconds": 0.582
+    },
+    {
+      "stage": "initial seed_faculty",
+      "passed": true,
+      "elapsed_seconds": 0.582
+    },
+    {
+      "stage": "repeat insert-only seed",
+      "passed": true,
+      "elapsed_seconds": 0.487
+    },
+    {
+      "stage": "repeat insert-only provision",
+      "passed": true,
+      "elapsed_seconds": 0.568
+    },
+    {
+      "stage": "repeat insert-only seed_events",
+      "passed": true,
+      "elapsed_seconds": 0.457
+    },
+    {
+      "stage": "repeat insert-only seed_rooms",
+      "passed": true,
+      "elapsed_seconds": 0.467
+    },
+    {
+      "stage": "repeat insert-only seed_faculty",
+      "passed": true,
+      "elapsed_seconds": 0.491
+    },
+    {
+      "stage": "contract drift and fixtures",
+      "passed": true,
+      "elapsed_seconds": 1.005
+    },
+    {
+      "stage": "train reproducible prototype",
+      "passed": true,
+      "elapsed_seconds": 1.035
+    },
+    {
+      "stage": "frozen semantic and retrieval gate",
+      "passed": true,
+      "elapsed_seconds": 1.771,
+      "metrics": [
+        {
+          "mode": "baseline",
+          "end_to_end": {
+            "correct": 24,
+            "total": 24,
+            "false_answers": 0
+          },
+          "meaning_exact": {
+            "correct": 16,
+            "gold_ready_count": 16
+          },
+          "entity_span_type": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "tp": 40,
+            "fp": 0,
+            "fn": 0
+          },
+          "warm_latency_ms": {
+            "count": 72,
+            "median": 1.0297289991285652,
+            "p95": 2.1753274504590085,
+            "max": 2.5562919981894083
+          }
+        },
+        {
+          "mode": "hybrid",
+          "end_to_end": {
+            "correct": 8,
+            "total": 24,
+            "false_answers": 0
+          },
+          "meaning_exact": {
+            "correct": 3,
+            "gold_ready_count": 16
+          },
+          "entity_span_type": {
+            "precision": 1.0,
+            "recall": 0.15,
+            "f1": 0.2608695652173913,
+            "tp": 6,
+            "fp": 0,
+            "fn": 34
+          },
+          "warm_latency_ms": {
+            "count": 72,
+            "median": 0.1490205031586811,
+            "p95": 1.7136001501057772,
+            "max": 2.587832997960504
+          }
+        }
+      ]
+    },
+    {
+      "stage": "regression suite",
+      "passed": true,
+      "elapsed_seconds": 21.851,
+      "passed_tests": 103
+    },
+    {
+      "stage": "API start to ready in baseline",
+      "passed": true,
+      "elapsed_seconds": 3.222
+    },
+    {
+      "stage": "all HTTP acceptance phases",
+      "passed": true,
+      "elapsed_seconds": 59.325
+    },
+    {
+      "stage": "API start to ready in hybrid",
+      "passed": true,
+      "elapsed_seconds": 3.749
+    },
+    {
+      "stage": "hybrid HTTP acceptance",
+      "passed": true,
+      "elapsed_seconds": 0.602
+    },
+    {
+      "stage": "remove only verification containers and volumes",
+      "passed": true,
+      "elapsed_seconds": 0.677
+    }
+  ],
+  "image_id": "sha256:d0e052b911a90c5069ab1096cef6b6080cf9ce5f19dd81f75267e048c4f11739"
+}

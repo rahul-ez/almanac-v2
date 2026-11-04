@@ -20,7 +20,7 @@ def test_config_and_intervals():
     with pytest.raises(ValidationError):
         Settings(campus_timezone='invalid/zone')
     with pytest.raises(ValidationError):
-        Settings(nlp_mode='hybrid')
+        Settings(nlp_mode='unknown')
     with pytest.raises(ValidationError):
         Interval(start='2026-11-04T10:00:00', end='2026-11-04T11:00:00')
     with pytest.raises(ValidationError):

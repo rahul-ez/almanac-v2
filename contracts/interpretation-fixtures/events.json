@@ -1,0 +1,117 @@
+{
+  "status": "ready",
+  "intent": "find_events",
+  "meaning": {
+    "intent": "find_events",
+    "filters": {
+      "event_type": "workshop",
+      "topic": "machine_learning",
+      "student_year": 2,
+      "department_id": null,
+      "building_id": null,
+      "faculty_id": null,
+      "room_id": null,
+      "interval": {
+        "start": "2026-11-02T00:00:00+05:30",
+        "end": "2026-11-09T00:00:00+05:30"
+      },
+      "capacity": null,
+      "facility_ids": [],
+      "venue": null,
+      "eligible_only": true,
+      "max_cost_minor": null
+    }
+  },
+  "execution": {
+    "kind": "event",
+    "query": {
+      "from_at": "2026-11-02T00:00:00+05:30",
+      "to_at": "2026-11-09T00:00:00+05:30",
+      "event_type": "workshop",
+      "topic_id": "machine_learning",
+      "venue": null,
+      "q": null,
+      "max_cost_minor": null,
+      "eligible_only": true,
+      "student_year": 2,
+      "department_id": null,
+      "limit": 20,
+      "cursor": null
+    }
+  },
+  "entities": [
+    {
+      "label": "topic",
+      "start": 4,
+      "end": 6,
+      "text": "ML",
+      "normalized": "machine_learning",
+      "canonical_id": "machine_learning",
+      "candidate_ids": []
+    },
+    {
+      "label": "event_type",
+      "start": 7,
+      "end": 16,
+      "text": "workshops",
+      "normalized": "workshop",
+      "canonical_id": null,
+      "candidate_ids": []
+    },
+    {
+      "label": "student_year",
+      "start": 21,
+      "end": 33,
+      "text": "second years",
+      "normalized": 2,
+      "canonical_id": null,
+      "candidate_ids": []
+    },
+    {
+      "label": "date",
+      "start": 34,
+      "end": 43,
+      "text": "this week",
+      "normalized": "2026-11-02T00:00:00+05:30/2026-11-09T00:00:00+05:30",
+      "canonical_id": null,
+      "candidate_ids": []
+    }
+  ],
+  "applied_context": [
+    {
+      "field": "topic",
+      "value": "machine_learning",
+      "origin": "explicit_question"
+    },
+    {
+      "field": "event_type",
+      "value": "workshop",
+      "origin": "explicit_question"
+    },
+    {
+      "field": "student_year",
+      "value": 2,
+      "origin": "explicit_question"
+    },
+    {
+      "field": "eligible_only",
+      "value": true,
+      "origin": "default"
+    },
+    {
+      "field": "interval",
+      "value": [
+        "2026-11-02T00:00:00+05:30",
+        "2026-11-09T00:00:00+05:30"
+      ],
+      "origin": "explicit_question"
+    }
+  ],
+  "missing_fields": [],
+  "ambiguities": [],
+  "unsupported_constraints": [],
+  "message": "Validated find events.",
+  "warnings": [],
+  "intent_source": "rules",
+  "interpreter_version": "campus-rules-v1"
+}

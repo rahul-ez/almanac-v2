@@ -29,6 +29,11 @@
       "title": "Buildings",
       "type": "array"
     },
+    "campus_timezone": {
+      "default": "Asia/Kolkata",
+      "title": "Campus Timezone",
+      "type": "string"
+    },
     "demo": {
       "const": true,
       "default": true,
@@ -40,6 +45,14 @@
         "$ref": "#/$defs/ReferenceItem"
       },
       "title": "Departments",
+      "type": "array"
+    },
+    "facilities": {
+      "default": [],
+      "items": {
+        "$ref": "#/$defs/ReferenceItem"
+      },
+      "title": "Facilities",
       "type": "array"
     },
     "supported_years": {

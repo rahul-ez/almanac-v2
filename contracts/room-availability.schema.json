@@ -1,0 +1,231 @@
+{
+  "$defs": {
+    "OpeningHour": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "pattern": "^(?:(?:[01]\\d|2[0-3]):[0-5]\\d|24:00)$",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Start",
+          "type": "string"
+        },
+        "weekday": {
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Weekday",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "weekday",
+        "start",
+        "end"
+      ],
+      "title": "OpeningHour",
+      "type": "object"
+    },
+    "RequestedInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "RequestedInterval",
+      "type": "object"
+    },
+    "RoomView": {
+      "additionalProperties": false,
+      "properties": {
+        "building_id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Building Id",
+          "type": "string"
+        },
+        "capacity": {
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Capacity",
+          "type": "integer"
+        },
+        "code": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "coverage_complete": {
+          "default": false,
+          "title": "Coverage Complete",
+          "type": "boolean"
+        },
+        "coverage_end": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage End"
+        },
+        "coverage_start": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Start"
+        },
+        "facility_ids": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Facility Ids",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "opening_hours": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OpeningHour"
+              },
+              "maxItems": 50,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Opening Hours"
+        },
+        "source_label": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_label",
+        "code",
+        "building_id",
+        "capacity",
+        "id",
+        "version",
+        "updated_at",
+        "timezone"
+      ],
+      "title": "RoomView",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "availability": {
+      "enum": [
+        "available",
+        "unavailable",
+        "unknown"
+      ],
+      "title": "Availability",
+      "type": "string"
+    },
+    "availability_basis": {
+      "const": "scheduled_bookings",
+      "default": "scheduled_bookings",
+      "title": "Availability Basis",
+      "type": "string"
+    },
+    "reasons": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+    },
+    "requested_interval": {
+      "$ref": "#/$defs/RequestedInterval"
+    },
+    "room": {
+      "$ref": "#/$defs/RoomView"
+    }
+  },
+  "required": [
+    "room",
+    "availability",
+    "reasons",
+    "requested_interval"
+  ],
+  "title": "RoomAvailability",
+  "type": "object"
+}

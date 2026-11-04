@@ -1,0 +1,105 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "department_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Department Id",
+      "type": "string"
+    },
+    "email": {
+      "anyOf": [
+        {
+          "maxLength": 254,
+          "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Email"
+    },
+    "location": {
+      "default": "",
+      "maxLength": 200,
+      "title": "Location",
+      "type": "string"
+    },
+    "name": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Name",
+      "type": "string"
+    },
+    "office_hours_complete": {
+      "default": false,
+      "title": "Office Hours Complete",
+      "type": "boolean"
+    },
+    "office_hours_coverage_end": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Office Hours Coverage End"
+    },
+    "office_hours_coverage_start": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Office Hours Coverage Start"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_label",
+    "name",
+    "department_id"
+  ],
+  "title": "FacultyData",
+  "type": "object"
+}

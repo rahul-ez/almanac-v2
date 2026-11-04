@@ -1,0 +1,35 @@
+{
+  "kind": "event",
+  "record_id": "campus-demo-ml-workshop",
+  "saved_at": "2026-11-04T10:00:00+05:30",
+  "record_status": "cancelled",
+  "changed": true,
+  "current": {
+    "title": "[DEMO] Machine Learning Workshop",
+    "description": "Synthetic campus record for backend testing.",
+    "event_type": "workshop",
+    "topic_id": "machine_learning",
+    "venue": "B-201",
+    "starts_at": "2026-11-06T14:00:00+05:30",
+    "ends_at": "2026-11-06T16:00:00+05:30",
+    "cost_minor": 0,
+    "currency": "INR",
+    "registration_deadline": "2026-11-05T18:00:00+05:30",
+    "eligibility_rules": {
+      "mode": "restricted",
+      "years": [
+        2
+      ],
+      "departments": null
+    },
+    "status": "cancelled",
+    "source_label": "Synthetic campus records v1",
+    "source_url": null,
+    "id": "campus-demo-ml-workshop",
+    "version": 2,
+    "updated_at": "2026-11-04T10:00:00+05:30",
+    "eligibility": "eligible",
+    "eligibility_reason": "Student context satisfies the published restrictions",
+    "registration_status": "open"
+  }
+}

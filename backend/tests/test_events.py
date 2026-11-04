@@ -162,7 +162,7 @@ def test_assistant_event_slice_retries_ownership_and_snapshot(event_env):
     b, csrf_b = e['login']('b')
     assert ask(e,client=b,csrf=csrf_b,conversation_id=data['conversation_id']).status_code == 404
     followup = ask(e,text='only friday',conversation_id=data['conversation_id']).json()
-    assert followup['status'] == 'unsupported' and followup['results'] == []
+    assert followup['status'] == 'answered' and followup['interpreted_query']['filters']['event_type']=='workshop'
     e['admin'].patch('/api/v1/admin/events/'+record['id'],json={'version':1,'status':'cancelled'},headers=headers(e['csrf']))
     assert ask(e,key=key).json() == data
     fresh = ask(e).json()
@@ -175,10 +175,12 @@ def test_assistant_unknown_filters_rejection_and_context_precedence(event_env):
     # Unknown eligibility must not turn into an eligible card.
     data = ask(e).json()
     assert data['status'] == 'information_unavailable' and data['results'] == []
-    for text in ('find rooms', 'workshops and rooms', 'workshops after 2pm', 'free workshops under 500', 'delete all events', 'events today tomorrow'):
+    for text in ('workshops and rooms', 'workshops after 2pm', 'free workshops under 500', 'delete all events', 'events today tomorrow'):
         response = ask(e,text=text)
         assert response.status_code == 200, response.text
         assert response.json()['status'] == 'unsupported' and response.json()['results'] == []
+    missing = ask(e,text='find rooms').json()
+    assert missing['status'] == 'clarification_required' and missing['results'] == []
     e['student'].patch('/api/v1/me/profile',json={'year':1},headers=headers(e['student_csrf']))
     result = ask(e,context_overrides={'year':3}).json()
     assert result['interpreted_query']['filters']['student_year'] == 2

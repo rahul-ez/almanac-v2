@@ -1,9 +1,9 @@
 name: Backend foundation
 on:
   push:
-    paths: ['backend/**', 'contracts/**', 'data/demo/**', 'scripts/**', 'compose.yaml', 'Makefile', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'contracts/**', 'data/demo/**', 'data/annotations/**', 'data/evaluation/**', 'scripts/**', 'compose.yaml', 'compose.verify.yaml', 'Makefile', '.github/workflows/backend.yml']
   pull_request:
-    paths: ['backend/**', 'contracts/**', 'data/demo/**', 'scripts/**', 'compose.yaml', 'Makefile', '.github/workflows/backend.yml']
+    paths: ['backend/**', 'contracts/**', 'data/demo/**', 'data/annotations/**', 'data/evaluation/**', 'scripts/**', 'compose.yaml', 'compose.verify.yaml', 'Makefile', '.github/workflows/backend.yml']
 permissions:
   contents: read
 jobs:
@@ -11,11 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: make bootstrap migrate seed-demo provision-demo seed-events contract-check dev
-      - run: make acceptance PHASE=0
-      - run: make acceptance PHASE=1
-      - run: make acceptance PHASE=2
+      - run: make bootstrap migrate seed-demo provision-demo seed-events seed-rooms seed-faculty contract-check dev
+      - run: make acceptance-all
+      - run: make train-intent
+      - run: make evaluate
       - run: make test
+      - run: NLP_MODE=hybrid docker compose up -d --wait api
+      - run: docker compose exec -T api python /workspace/scripts/acceptance_all.py --intent
+      - run: NLP_MODE=baseline docker compose up -d --wait api
       - if: always()
         run: docker compose logs --no-color
       - if: always()

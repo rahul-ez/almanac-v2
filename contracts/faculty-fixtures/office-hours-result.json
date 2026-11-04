@@ -1,0 +1,47 @@
+{
+  "status": "answered",
+  "faculty": {
+    "name": "[DEMO] Anita Rao",
+    "department_id": "aiml",
+    "location": "Faculty Block 101",
+    "email": null,
+    "office_hours_coverage_start": "2026-11-02",
+    "office_hours_coverage_end": "2026-12-31",
+    "office_hours_complete": true,
+    "source_label": "Synthetic published faculty timetable v1",
+    "source_url": null,
+    "status": "active",
+    "id": "campus-demo-anita-rao",
+    "version": 1,
+    "updated_at": "2026-11-04T10:00:00+05:30",
+    "timezone": "Asia/Kolkata",
+    "aliases": [
+      "Rao"
+    ]
+  },
+  "items": [
+    {
+      "faculty_id": "campus-demo-anita-rao",
+      "office_hour_id": "campus-demo-rao-friday-hours",
+      "occurrence_date": "2026-11-06",
+      "starts_at": "2026-11-06T13:00:00+05:30",
+      "ends_at": "2026-11-06T14:00:00+05:30",
+      "location": "Faculty Block 101",
+      "timezone": "Asia/Kolkata",
+      "exception_id": null,
+      "exception_note": null,
+      "source_label": "Synthetic published faculty timetable v1",
+      "source_url": null,
+      "record_updated_at": "2026-11-04T10:00:00+05:30"
+    }
+  ],
+  "requested_interval": {
+    "start": "2026-11-06T00:00:00+05:30",
+    "end": "2026-11-07T00:00:00+05:30"
+  },
+  "data_coverage": "complete",
+  "next_cursor": null,
+  "warnings": [
+    "Published office hours only."
+  ]
+}

@@ -59,6 +59,9 @@
               "type": "integer"
             },
             {
+              "type": "boolean"
+            },
+            {
               "items": {
                 "type": "string"
               },
@@ -322,6 +325,13 @@
           "default": null,
           "title": "Event Type"
         },
+        "facility_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Facility Ids",
+          "type": "array"
+        },
         "faculty_id": {
           "anyOf": [
             {
@@ -395,6 +405,18 @@
           ],
           "default": null,
           "title": "Topic"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Venue"
         }
       },
       "title": "Filters",
@@ -673,6 +695,19 @@
     "conversation_id": {
       "title": "Conversation Id",
       "type": "string"
+    },
+    "conversation_version": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversation Version"
     },
     "data_coverage": {
       "enum": [

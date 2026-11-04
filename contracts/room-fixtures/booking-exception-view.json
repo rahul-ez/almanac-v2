@@ -1,0 +1,14 @@
+{
+  "booking_id": "campus-demo-weekly-class",
+  "occurrence_date": "2026-11-11",
+  "action": "cancel",
+  "note": "[DEMO] Dated class cancellation",
+  "source_label": "Synthetic room timetable v1",
+  "source_url": null,
+  "status": "active",
+  "replacement_start": null,
+  "replacement_end": null,
+  "id": "campus-demo-class-cancellation",
+  "version": 1,
+  "updated_at": "2026-11-04T10:00:00+05:30"
+}

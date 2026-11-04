@@ -29,6 +29,7 @@ async function api(path, {method = 'GET', body, protect = true} = {}) {
   if (data.csrf_token) csrf = data.csrf_token;
   if (response.status === 401) {
     csrf = null;
+    if (typeof resetPersonalView === 'function') resetPersonalView();
     el('identity').textContent = 'Signed out or session expired';
     el('profile-fields').disabled = true;
   }
@@ -75,6 +76,7 @@ el('login-form').addEventListener('submit', event => {
     csrf = null;
     el('profile-fields').disabled = true;
     el('profile-form').reset();
+    if (typeof resetPersonalView === 'function') resetPersonalView();
     const data = must(await api('/auth/login', {method:'POST', body:{username:el('username').value, password:el('password').value}}));
     el('password').value = '';
     showIdentity(data.user);
@@ -85,6 +87,7 @@ el('login-form').addEventListener('submit', event => {
 el('logout').addEventListener('click', () => run(async () => {
   must(await api('/auth/logout', {method:'POST'}));
   csrf = null;
+  if (typeof resetPersonalView === 'function') resetPersonalView();
   el('identity').textContent = 'Signed out';
   el('profile-fields').disabled = true;
   el('profile-form').reset();
@@ -185,15 +188,17 @@ el('event-next').addEventListener('click', () => run(() => searchEvents(true)));
 el('assistant-form').addEventListener('submit', event => {
   event.preventDefault();
   run(async () => {
-    lastQuestion = {text:el('event-question').value,client_request_id:crypto.randomUUID()};
+    lastQuestion = dialoguePayload(el('event-question').value);
     el('question-request').textContent = 'Request ID: '+lastQuestion.client_request_id;
     const data = must(await api('/assistant/query',{method:'POST',body:lastQuestion}));
+    showConversationState(data);
     notify(`${data.status}: ${data.message}`);
   });
 });
 el('retry-question').addEventListener('click', () => run(async () => {
   if (!lastQuestion) throw new Error('Ask a question first.');
   const data = must(await api('/assistant/query',{method:'POST',body:lastQuestion}));
+  showConversationState(data);
   notify(`Reused the same request ID: ${data.status}.`);
 }));
 function fillEvent(event) {
@@ -246,3 +251,8 @@ for (const [id,status] of [['cancel-event','cancelled'],['archive-event','archiv
   }));
 }
 newEvent();
+
+el('interpret-question').addEventListener('click', () => run(async () => {
+  const data = must(await api('/assistant/interpret', {method:'POST', body:{text:el('event-question').value,client_request_id:crypto.randomUUID()}}));
+  notify(`${data.status}: ${data.message} No turn was saved.`);
+}));

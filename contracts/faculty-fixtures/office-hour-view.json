@@ -1,0 +1,16 @@
+{
+  "faculty_id": "campus-demo-anita-rao",
+  "location": "Faculty Block 101",
+  "weekday": 4,
+  "start_time": "13:00",
+  "end_time": "14:00",
+  "effective_from": "2026-11-02",
+  "effective_until": "2026-12-25",
+  "source_label": "Synthetic published faculty timetable v1",
+  "source_url": null,
+  "status": "active",
+  "timezone": "Asia/Kolkata",
+  "id": "campus-demo-rao-friday-hours",
+  "version": 1,
+  "updated_at": "2026-11-04T10:00:00+05:30"
+}

@@ -116,15 +116,42 @@ class Conversation(Base):
     owner_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
 
+    state: Mapped[dict] = mapped_column(JSONB,default=dict,server_default='{}')
+    state_expires_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    version: Mapped[int] = mapped_column(Integer,default=1,server_default='1')
+
 class AssistantTurn(Base):
     __tablename__ = "assistant_turns"
-    __table_args__ = (UniqueConstraint("user_id", "client_request_id", name="turn_user_request_unique"),)
+    __table_args__ = (UniqueConstraint("user_id", "client_request_id", name="turn_user_request_unique"),UniqueConstraint("conversation_id","sequence",name="turn_conversation_sequence_unique"))
     id: Mapped[str] = mapped_column(String(80), primary_key=True)
     conversation_id: Mapped[str] = mapped_column(ForeignKey("conversations.id", ondelete="CASCADE"), index=True)
     user_id: Mapped[str] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
     client_request_id: Mapped[str] = mapped_column(String(128))
+    sequence: Mapped[int] = mapped_column(Integer)
     payload_hash: Mapped[str] = mapped_column(String(64))
     question: Mapped[str] = mapped_column(String(1000))
     response: Mapped[dict] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
     model_version: Mapped[str] = mapped_column(String(40))
+
+class DeletedRequest(Base):
+    """Text-free retry tombstones prevent deleted history being recreated by a delayed retry."""
+    __tablename__ = 'deleted_requests'
+    user_id: Mapped[str] = mapped_column(ForeignKey('users.id',ondelete='CASCADE'),primary_key=True)
+    request_hash: Mapped[str] = mapped_column(String(64),primary_key=True)
+
+class SavedRecord(Base):
+    __tablename__ = 'saved_records'
+    __table_args__ = (
+        UniqueConstraint('user_id','kind','record_id',name='saved_user_target_unique'),
+        CheckConstraint("(kind='event' AND event_id IS NOT NULL AND event_id=record_id AND room_id IS NULL AND faculty_id IS NULL) OR (kind='room' AND room_id IS NOT NULL AND room_id=record_id AND event_id IS NULL AND faculty_id IS NULL) OR (kind='faculty' AND faculty_id IS NOT NULL AND faculty_id=record_id AND event_id IS NULL AND room_id IS NULL)",name='saved_target_kind'),
+    )
+    id: Mapped[str] = mapped_column(String(80),primary_key=True)
+    user_id: Mapped[str] = mapped_column(ForeignKey('users.id',ondelete='CASCADE'),index=True)
+    saved_version: Mapped[int] = mapped_column(Integer)
+    kind: Mapped[str] = mapped_column(String(20))
+    record_id: Mapped[str] = mapped_column(String(80))
+    event_id: Mapped[str | None] = mapped_column(ForeignKey('events.id',ondelete='CASCADE'))
+    room_id: Mapped[str | None] = mapped_column(ForeignKey('rooms.id',ondelete='CASCADE'))
+    faculty_id: Mapped[str | None] = mapped_column(ForeignKey('faculty.id',ondelete='CASCADE'))
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))

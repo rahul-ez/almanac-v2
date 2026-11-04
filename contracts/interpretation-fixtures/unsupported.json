@@ -1,0 +1,17 @@
+{
+  "status": "unsupported",
+  "intent": null,
+  "meaning": null,
+  "execution": null,
+  "entities": [],
+  "applied_context": [],
+  "missing_fields": [],
+  "ambiguities": [],
+  "unsupported_constraints": [
+    "multiple_domains"
+  ],
+  "message": "Ask about one domain at a time; this question combines domains.",
+  "warnings": [],
+  "intent_source": "rules",
+  "interpreter_version": "campus-rules-v1"
+}

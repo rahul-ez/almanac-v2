@@ -8,7 +8,7 @@
 </style>
 </head>
 <body>
-<header><div><span class="badge">LOCAL BACKEND · PHASES 0–2</span><h1>Almanac test bench</h1></div><a href="/docs">API documentation ↗</a></header>
+<header><div><span class="badge">LOCAL BACKEND · PHASES 0–6</span><h1>Almanac test bench</h1></div><a href="/docs">API documentation ↗</a></header>
 <p>Test the running backend with real sessions and database records. Campus data is synthetic.</p>
 <div id="notice" role="status" aria-live="polite">Ready to test.</div>
 <main>
@@ -48,8 +48,9 @@
 <label><input id="search-eligible" type="checkbox" style="width:auto"> Only confirmed eligible events</label>
 <button class="primary" type="submit">Search published events</button><button type="button" id="event-next">Next page</button></form>
 <div id="event-results" aria-live="polite"></div></section>
-<section class="full"><h2>6. Ask an event question</h2><p>Limited rule baseline: try “free ML workshops this week”, “events tomorrow”, or “workshops for second years on Friday”. Questions are independent; follow-ups and room/faculty queries are not supported yet.</p>
-<form id="assistant-form"><label for="event-question">Question</label><input id="event-question" value="Any ML workshops for second years this week?" maxlength="1000" required><button class="primary" type="submit">Ask events assistant</button><button type="button" id="retry-question">Retry previous request</button></form><small id="question-request">Each new question gets a new request ID; retries reuse it.</small></section>
+<section class="full"><h2>6. Ask the campus assistant</h2><p>Rule interpreter for events, rooms, and faculty. Try “free ML workshops this week”, “rooms tomorrow from 2 to 3pm with projector”, or “Professor Anita Rao office hours tomorrow”. Interpret only shows intent, original text spans, filters, and uncertainty without saving a turn. Continue a conversation with “Only Friday”, replace a filter, or say “clear year”. Context expires after 30 minutes. Start new clears the conversation selection.</p>
+<form id="assistant-form"><label for="event-question">Question</label><input id="event-question" value="Any ML workshops for second years this week?" maxlength="1000" required><button class="primary" type="submit">Ask assistant</button><button type="button" id="interpret-question">Interpret only</button><button type="button" id="retry-question">Retry previous request</button></form><label for="conversation-id">Conversation ID (blank starts new)</label><input id="conversation-id" maxlength="80"><label for="conversation-version">Loaded conversation version</label><input id="conversation-version" readonly><button type="button" id="conversation-new">Start new conversation</button>
+<p id="clarification-prompt">No active clarification.</p><label><input type="checkbox" id="reply-active"> Reply to active clarification</label><label for="clarification-option">Clarification choice</label><select id="clarification-option"><option value="">Text reply using question field</option></select><small id="question-request">Each new question gets a new request ID; retries reuse it.</small></section>
 <section class="full"><h2>7. Admin event management</h2><p>Sign in as admin. Create a record, switch to a student and search for it. Load the record before editing; stale versions return 409. Prices are in paise (100 paise = ₹1). All demo timestamps include an explicit UTC offset.</p>
 <button type="button" id="list-admin-events">Load admin events</button><button type="button" id="new-event">New event form</button>
 <form id="event-form"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
@@ -71,7 +72,52 @@
 <div><label for="event-source-url">Source URL (optional)</label><input id="event-source-url" type="url" maxlength="1000"></div></div>
 <label for="event-description">Description</label><textarea id="event-description" maxlength="4000" rows="2"></textarea>
 <button type="submit" class="primary" id="save-event">Create event</button><button type="button" id="cancel-event">Cancel loaded event</button><button type="button" id="archive-event">Archive loaded event</button></form></section>
+<section class="full"><h2>8. Room availability</h2><p>Scheduled availability is not proof of physical vacancy. A room needs opening hours, complete timetable coverage and no overlapping booking or closure. Unknown information stays unknown.</p>
+<form id="room-search-form"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+<div><label for="room-from">Room interval start (ISO timestamp)</label><input id="room-from" required></div>
+<div><label for="room-to">Room interval end (ISO timestamp)</label><input id="room-to" required></div>
+<div><label for="room-building">Building ID filter</label><input id="room-building" value="block-b"></div>
+<div><label for="room-capacity">Minimum capacity</label><input id="room-capacity" type="number" min="1" max="100000" value="20"></div>
+<div><label for="room-facilities">Required facility IDs</label><input id="room-facilities" value="projector" placeholder="Comma-separated IDs"></div>
+<div><label for="room-check-id">Specific room ID (optional)</label><input id="room-check-id" maxlength="80" placeholder="Blank searches matching rooms"></div></div>
+<button class="primary" type="submit">Check room availability</button><button type="button" id="room-next">Next candidate page</button></form>
+<div id="room-results" aria-live="polite"></div></section>
+<section class="full"><h2>9. Admin room scheduling</h2><p>Admin only. Choose a resource and use its JSON template to create a record. Load a record before editing; updates and archives use the loaded version. Dates need UTC offsets. Weekly bookings require an inclusive recurrence_until local date.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px">
+<div><label for="room-resource">Room scheduling resource</label><select id="room-resource"><option value="rooms">Rooms</option><option value="bookings">Bookings</option><option value="booking-exceptions">Booking exceptions</option><option value="room-closures">Room closures</option></select></div>
+<div><label for="schedule-room-filter">Admin list room ID filter</label><input id="schedule-room-filter" placeholder="Optional"></div>
+<div><label for="schedule-id">Schedule record ID</label><input id="schedule-id" maxlength="80"></div>
+<div><label for="schedule-version">Schedule loaded version</label><input id="schedule-version" readonly></div></div>
+<button type="button" id="schedule-list">List scheduling records</button><button type="button" id="schedule-load">Load scheduling record</button><button type="button" id="schedule-new">New scheduling template</button>
+<label for="schedule-json">Scheduling payload (JSON)</label><textarea id="schedule-json" rows="16" spellcheck="false" style="font-family:monospace"></textarea>
+<button type="button" class="primary" id="schedule-save">Create scheduling record</button><button type="button" id="schedule-archive">Archive loaded scheduling record</button>
+<p><small>Rooms: opening_hours=null means unknown; [] means explicitly closed. Coverage completeness needs both bounds. Exceptions refer to the original campus-local occurrence date and use cancel or replace. Closures may overlap bookings and still block availability. Reference data supplies building/facility IDs.</small></p></section>
+<section class="full"><h2>10. Faculty office hours</h2><p>Resolve a name or alias before choosing a faculty ID. Ambiguous names return candidates. Published office hours and dated exceptions are the only basis for meeting slots.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+<div><label for="faculty-name">Faculty name or alias</label><input id="faculty-name" value="Rao" maxlength="200"></div>
+<div><label for="faculty-department">Resolution department ID (optional)</label><input id="faculty-department" placeholder="e.g. aiml"></div>
+<div><label for="faculty-query-id">Selected faculty ID</label><input id="faculty-query-id" maxlength="80"></div>
+<div><label for="faculty-from">Office-hour query start (ISO)</label><input id="faculty-from"></div>
+<div><label for="faculty-to">Office-hour query end (ISO)</label><input id="faculty-to"></div></div>
+<button type="button" id="faculty-resolve">Resolve faculty name</button><button type="button" class="primary" id="faculty-hours">Find published office hours</button><button type="button" id="faculty-next">Next office-hour page</button>
+<div id="faculty-results" aria-live="polite"></div></section>
+<section class="full"><h2>11. Admin faculty publication</h2><p>Admin only. Create a faculty record, then aliases, weekly office-hour rules and dated exceptions. Complete publication coverage is an explicit statement over local dates; missing publication is never treated as no slots.</p>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+<div><label for="faculty-resource">Faculty publication resource</label><select id="faculty-resource"><option value="faculty">Faculty</option><option value="aliases">Faculty aliases</option><option value="office-hours">Office-hour rules</option><option value="office-hour-exceptions">Office-hour exceptions</option></select></div>
+<div><label for="faculty-admin-filter">Admin faculty ID filter</label><input id="faculty-admin-filter"></div>
+<div><label for="faculty-record-id">Faculty publication record ID</label><input id="faculty-record-id" maxlength="80"></div>
+<div><label for="faculty-record-version">Faculty publication loaded version</label><input id="faculty-record-version" readonly></div></div>
+<button type="button" id="faculty-admin-list">List faculty publication records</button><button type="button" id="faculty-admin-load">Load faculty publication record</button><button type="button" id="faculty-admin-new">New faculty publication template</button>
+<label for="faculty-json">Faculty publication payload (JSON)</label><textarea id="faculty-json" rows="15" spellcheck="false" style="font-family:monospace"></textarea>
+<button type="button" class="primary" id="faculty-admin-save">Create faculty publication record</button><button type="button" id="faculty-admin-archive">Archive loaded faculty publication record</button>
+<p><small>Weekdays: Monday=0 to Sunday=6. Effective/coverage dates are inclusive. An exception targets an original local occurrence date; replace needs concrete replacement_start/end. Alias changes increment faculty version; exception changes increment office-hour-rule version. Reload parent records before editing.</small></p></section>
+<section class="full"><h2>12. Private history and saved records</h2><p>Student only. Open history to restore a conversation and its active clarification. Deleting a conversation permanently removes its questions, answers and state; saved records stay independent. Saved records show current published data and changed/cancelled/archived status.</p>
+<button type="button" id="history-list">List my conversations</button><button type="button" id="history-next">Next history page</button><button type="button" id="history-load">Open selected conversation</button><button type="button" id="history-turn-next">Next turn page</button><button type="button" id="history-delete">Delete selected conversation permanently</button><div id="history-results"></div>
+<label for="saved-kind">Saved record kind</label><select id="saved-kind"><option value="event">Event</option><option value="room">Room</option><option value="faculty">Faculty</option></select><label for="saved-id">Saved record ID</label><input id="saved-id" maxlength="80"><button type="button" id="saved-put">Save record</button><button type="button" id="saved-remove">Remove save</button><button type="button" id="saved-list">List current saved records</button><button type="button" id="saved-next">Next saved page</button><div id="saved-results"></div></section>
 <section class="full"><h2>Latest API response</h2><small id="response-meta">Responses appear here. Session and CSRF tokens are hidden.</small><pre id="result" tabindex="0">No request yet.</pre></section>
 </main>
 <script src="/testing.js" defer></script>
+<script src="/rooms-testing.js" defer></script>
+<script src="/personal-testing.js" defer></script>
+<script src="/faculty-testing.js" defer></script>
 </body></html>

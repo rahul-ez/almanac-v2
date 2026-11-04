@@ -10,6 +10,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.identity import router as identity_router
 from app.api.errors import ApiError
 from app.api.events import router as events_router
+from app.api.rooms import router as rooms_router
+from app.api.faculty import router as faculty_router
+from app.api.personal import router as personal_router
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
@@ -33,8 +36,15 @@ def create_app(settings=None, now=None):
         yield
         engine.dispose()
 
-    app = FastAPI(title="Almanac API", version="0.3.0", lifespan=lifespan,
-                  description="Phase 2: event CRUD, structured search and a limited rule-based event assistant. Campus demo records are synthetic.")
+    app = FastAPI(title="Almanac API", version="0.7.0", lifespan=lifespan,
+                  description="Phase 6: owned dialogue, clarification, history and current saved records. Demo data is synthetic.")
+    app.state.intent_model = None
+    if settings.nlp_mode == 'hybrid':
+        from app.nlp.intent_model import load_model
+        try:
+            app.state.intent_model = load_model(settings.intent_model_path)
+        except (OSError, ValueError):
+            log.warning('Configured intent artifact unavailable or incompatible')
     app.state.engine = engine
     app.state.settings = settings
     app.state.now = now or (lambda: datetime.now(timezone.utc))
@@ -43,6 +53,9 @@ def create_app(settings=None, now=None):
                        allow_headers=["Content-Type", "X-CSRF-Token"], expose_headers=["X-Request-ID", "Retry-After"])
     app.include_router(identity_router)
     app.include_router(events_router)
+    app.include_router(rooms_router)
+    app.include_router(faculty_router)
+    app.include_router(personal_router)
 
     static_dir = Path(__file__).parent / "static"
 
@@ -58,6 +71,18 @@ def create_app(settings=None, now=None):
         return FileResponse(static_dir / "testing.js", media_type="text/javascript",
                             headers={"X-Content-Type-Options": "nosniff"})
 
+
+    @app.get('/rooms-testing.js',include_in_schema=False)
+    def room_testing_script():
+        return FileResponse(static_dir / 'rooms-testing.js',media_type='text/javascript',headers={'X-Content-Type-Options':'nosniff'})
+
+    @app.get('/faculty-testing.js',include_in_schema=False)
+    def faculty_testing_script():
+        return FileResponse(static_dir / 'faculty-testing.js',media_type='text/javascript',headers={'X-Content-Type-Options':'nosniff'})
+
+    @app.get('/personal-testing.js',include_in_schema=False)
+    def personal_testing_script():
+        return FileResponse(static_dir / 'personal-testing.js',media_type='text/javascript',headers={'X-Content-Type-Options':'nosniff'})
 
     def error(request, status, code, message, fields=None):
         return JSONResponse(status_code=status, content={"error": {
@@ -120,24 +145,30 @@ def create_app(settings=None, now=None):
     @app.get("/api/v1/health/ready", response_model=ReadyResponse,
              responses={503: {"model": ReadyResponse}}, tags=["operations"])
     def ready(request: Request):
-        checks = {"database": "unavailable", "schema": "unavailable", "nlp": "ok"}
+        checks = {"database": "unavailable", "schema": "unavailable", "nlp": "ok" if settings.nlp_mode=="baseline" or app.state.intent_model is not None else "unavailable"}
         try:
             with engine.connect() as conn:
                 conn.execute(text("SELECT 1"))
                 checks["database"] = "ok"
                 revision = conn.execute(text("SELECT version_num FROM alembic_version")).scalar_one()
-                if revision == "0003":
+                if revision == "0006":
                     conn.execute(text("SELECT id FROM demo_events LIMIT 0"))
                     conn.execute(text("SELECT token_hash FROM web_sessions LIMIT 0"))
                     conn.execute(text("SELECT user_id FROM student_profiles LIMIT 0"))
                     conn.execute(text("SELECT id FROM events LIMIT 0"))
-                    conn.execute(text("SELECT id FROM assistant_turns LIMIT 0"))
+                    conn.execute(text("SELECT state,version FROM conversations LIMIT 0"))
+                    conn.execute(text("SELECT id FROM rooms LIMIT 0"))
+                    conn.execute(text("SELECT id FROM booking_exceptions LIMIT 0"))
+                    conn.execute(text("SELECT id FROM faculty LIMIT 0"))
+                    conn.execute(text("SELECT id FROM office_hour_exceptions LIMIT 0"))
+                    conn.execute(text("SELECT user_id FROM deleted_requests LIMIT 0"))
+                    conn.execute(text("SELECT id FROM saved_records LIMIT 0"))
                     checks["schema"] = "ok"
         except SQLAlchemyError:
             pass
         healthy = all(v == "ok" for v in checks.values())
         body = ReadyResponse(status="ready" if healthy else "not_ready", checks=checks,
-                             request_id=request.state.request_id)
+                             request_id=request.state.request_id, nlp_mode=settings.nlp_mode)
         return JSONResponse(status_code=200 if healthy else 503, content=body.model_dump())
 
     @app.get("/api/v1/demo/event", response_model=DemoEventResponse, tags=["demo"],

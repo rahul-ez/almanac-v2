@@ -104,6 +104,12 @@ class ContextOverrides(StrictModel):
     year: int | None = Field(default=None, strict=True, ge=1, le=4)
     department_id: str | None = Field(default=None, max_length=80)
 
+    building_id: str | None = Field(default=None,max_length=80)
+    room_id: str | None = Field(default=None,max_length=80)
+    faculty_id: str | None = Field(default=None,max_length=80)
+    capacity: int | None = Field(default=None,strict=True,ge=1,le=100000)
+    facility_ids: list[Annotated[str,Field(max_length=80)]] | None = Field(default=None,max_length=30)
+
 class ClarificationReply(StrictModel):
     id: str = Field(min_length=1, max_length=80)
     option_id: str | None = Field(default=None, max_length=80)
@@ -114,6 +120,7 @@ class AssistantRequest(StrictModel):
     conversation_id: str | None = Field(default=None, max_length=80)
     context_overrides: ContextOverrides = Field(default_factory=ContextOverrides)
     clarification: ClarificationReply | None = None
+    conversation_version: int | None = Field(default=None,strict=True,ge=1)
 
     @field_validator('text')
     @classmethod

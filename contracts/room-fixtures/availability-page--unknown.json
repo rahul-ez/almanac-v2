@@ -1,0 +1,43 @@
+{
+  "status": "information_unavailable",
+  "items": [],
+  "unknown_rooms": [
+    {
+      "room": {
+        "code": "DEMO-B201",
+        "building_id": "block-b",
+        "capacity": 40,
+        "facility_ids": [
+          "projector"
+        ],
+        "coverage_complete": false,
+        "opening_hours": null,
+        "coverage_start": "2026-11-02T00:00:00+05:30",
+        "coverage_end": "2027-01-01T00:00:00+05:30",
+        "source_label": "Synthetic room timetable v1",
+        "source_url": null,
+        "status": "active",
+        "id": "campus-demo-b201",
+        "version": 1,
+        "updated_at": "2026-11-04T10:00:00+05:30",
+        "timezone": "Asia/Kolkata"
+      },
+      "availability": "unknown",
+      "reasons": [
+        "opening_hours_unavailable"
+      ],
+      "requested_interval": {
+        "start": "2026-11-04T15:00:00+05:30",
+        "end": "2026-11-04T16:00:00+05:30"
+      },
+      "availability_basis": "scheduled_bookings"
+    }
+  ],
+  "checked_count": 1,
+  "next_cursor": null,
+  "data_coverage": "unknown",
+  "warnings": [
+    "Scheduled availability is not proof of physical vacancy."
+  ],
+  "availability_basis": "scheduled_bookings"
+}

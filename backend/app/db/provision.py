@@ -8,9 +8,11 @@ from app.auth.security import passwords, new_token
 from app.config import Settings
 from app.db.connection import make_engine
 from app.db.models import User, StudentProfile, Department, Building, Topic
+from app.db.room_models import Facility
 
 CREDENTIALS = Path('/workspace/.local/demo-accounts.json')
 REFERENCES = {
+    Facility: [('projector','Projector'),('whiteboard','Whiteboard'),('computers','Computers')],
     Department: [('aiml', 'Artificial Intelligence and Machine Learning'), ('cse', 'Computer Science')],
     Building: [('block-b', 'B Block'), ('faculty-block', 'Faculty Block')],
     Topic: [('artificial_intelligence', 'Artificial Intelligence'), ('machine_learning', 'Machine Learning'), ('web_development', 'Web Development')],

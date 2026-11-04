@@ -1,0 +1,316 @@
+{
+  "$defs": {
+    "FacultyView": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "department_id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Department Id",
+          "type": "string"
+        },
+        "email": {
+          "anyOf": [
+            {
+              "maxLength": 254,
+              "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Email"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "location": {
+          "default": "",
+          "maxLength": 200,
+          "title": "Location",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "office_hours_complete": {
+          "default": false,
+          "title": "Office Hours Complete",
+          "type": "boolean"
+        },
+        "office_hours_coverage_end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Office Hours Coverage End"
+        },
+        "office_hours_coverage_start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Office Hours Coverage Start"
+        },
+        "source_label": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_label",
+        "name",
+        "department_id",
+        "id",
+        "version",
+        "updated_at",
+        "timezone",
+        "aliases"
+      ],
+      "title": "FacultyView",
+      "type": "object"
+    },
+    "OfficeHourSlot": {
+      "additionalProperties": false,
+      "properties": {
+        "ends_at": {
+          "format": "date-time",
+          "title": "Ends At",
+          "type": "string"
+        },
+        "exception_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Exception Id"
+        },
+        "exception_note": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Exception Note"
+        },
+        "faculty_id": {
+          "title": "Faculty Id",
+          "type": "string"
+        },
+        "location": {
+          "title": "Location",
+          "type": "string"
+        },
+        "occurrence_date": {
+          "format": "date",
+          "title": "Occurrence Date",
+          "type": "string"
+        },
+        "office_hour_id": {
+          "title": "Office Hour Id",
+          "type": "string"
+        },
+        "record_updated_at": {
+          "format": "date-time",
+          "title": "Record Updated At",
+          "type": "string"
+        },
+        "source_label": {
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Source Url"
+        },
+        "starts_at": {
+          "format": "date-time",
+          "title": "Starts At",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        }
+      },
+      "required": [
+        "faculty_id",
+        "office_hour_id",
+        "occurrence_date",
+        "starts_at",
+        "ends_at",
+        "location",
+        "timezone",
+        "exception_id",
+        "exception_note",
+        "source_label",
+        "source_url",
+        "record_updated_at"
+      ],
+      "title": "OfficeHourSlot",
+      "type": "object"
+    },
+    "RequestedInterval": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "format": "date-time",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "format": "date-time",
+          "title": "Start",
+          "type": "string"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "title": "RequestedInterval",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "data_coverage": {
+      "enum": [
+        "complete",
+        "partial",
+        "unknown"
+      ],
+      "title": "Data Coverage",
+      "type": "string"
+    },
+    "faculty": {
+      "$ref": "#/$defs/FacultyView"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/OfficeHourSlot"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "next_cursor": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Cursor"
+    },
+    "requested_interval": {
+      "$ref": "#/$defs/RequestedInterval"
+    },
+    "status": {
+      "enum": [
+        "answered",
+        "no_results",
+        "information_unavailable"
+      ],
+      "title": "Status",
+      "type": "string"
+    },
+    "warnings": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Warnings",
+      "type": "array"
+    }
+  },
+  "required": [
+    "status",
+    "faculty",
+    "items",
+    "requested_interval",
+    "data_coverage",
+    "next_cursor",
+    "warnings"
+  ],
+  "title": "OfficeHoursResult",
+  "type": "object"
+}

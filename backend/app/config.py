@@ -8,7 +8,8 @@ class Settings(BaseSettings):
     database_url: SecretStr
     campus_timezone: str = "Asia/Kolkata"
     app_env: Literal["development", "test"] = "development"
-    nlp_mode: Literal["baseline"] = "baseline"
+    nlp_mode: Literal["baseline", "hybrid"] = "baseline"
+    intent_model_path: str = "/workspace/.local/models/intent.json"
 
     allowed_origins: list[str] = ["http://localhost:8000", "http://127.0.0.1:8000", "http://localhost:5173", "http://127.0.0.1:5173"]
     cookie_secure: bool = False

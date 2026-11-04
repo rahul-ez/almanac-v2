@@ -23,7 +23,7 @@ class LiveResponse(StrictModel):
 class ReadyResponse(StrictModel):
     status: Literal["ready", "not_ready"]
     checks: dict[str, Literal["ok", "unavailable"]]
-    nlp_mode: Literal["baseline"] = "baseline"
+    nlp_mode: Literal["baseline", "hybrid"] = "baseline"
     request_id: str
 
 class DemoEventResponse(StrictModel):
@@ -115,6 +115,8 @@ class Filters(StrictModel):
     room_id: str | None = None
     interval: Interval | None = None
     capacity: int | None = Field(default=None, gt=0)
+    facility_ids: list[str] = Field(default_factory=list)
+    venue: str | None = None
     eligible_only: bool = False
     max_cost_minor: int | None = Field(default=None, ge=0)
 
@@ -124,7 +126,7 @@ class Meaning(StrictModel):
 
 class ContextValue(StrictModel):
     field: str
-    value: str | int | list[str]
+    value: str | int | bool | list[str]
     origin: Literal["explicit_question", "override", "prior_turn", "profile", "default"]
 
 class Option(StrictModel):
@@ -138,6 +140,7 @@ class Clarification(StrictModel):
     options: list[Option]
 
 class AssistantResponse(StrictModel):
+    conversation_version: int | None = Field(default=None,ge=1)
     conversation_id: str
     turn_id: str
     request_id: str

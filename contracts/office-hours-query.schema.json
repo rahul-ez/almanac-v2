@@ -1,0 +1,41 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "cursor": {
+      "anyOf": [
+        {
+          "maxLength": 1024,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Cursor"
+    },
+    "from_at": {
+      "format": "date-time",
+      "title": "From At",
+      "type": "string"
+    },
+    "limit": {
+      "default": 20,
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Limit",
+      "type": "integer"
+    },
+    "to_at": {
+      "format": "date-time",
+      "title": "To At",
+      "type": "string"
+    }
+  },
+  "required": [
+    "from_at",
+    "to_at"
+  ],
+  "title": "OfficeHoursQuery",
+  "type": "object"
+}

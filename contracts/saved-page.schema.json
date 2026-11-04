@@ -1,0 +1,620 @@
+{
+  "$defs": {
+    "EligibilityRules": {
+      "additionalProperties": false,
+      "properties": {
+        "departments": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "type": "string"
+              },
+              "maxItems": 20,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Departments"
+        },
+        "mode": {
+          "enum": [
+            "unknown",
+            "unrestricted",
+            "restricted"
+          ],
+          "title": "Mode",
+          "type": "string"
+        },
+        "years": {
+          "anyOf": [
+            {
+              "items": {
+                "maximum": 4,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "maxItems": 4,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Years"
+        }
+      },
+      "required": [
+        "mode"
+      ],
+      "title": "EligibilityRules",
+      "type": "object"
+    },
+    "EventView": {
+      "additionalProperties": false,
+      "properties": {
+        "cost_minor": {
+          "anyOf": [
+            {
+              "maximum": 100000000,
+              "minimum": 0,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Cost Minor"
+        },
+        "currency": {
+          "const": "INR",
+          "default": "INR",
+          "title": "Currency",
+          "type": "string"
+        },
+        "description": {
+          "default": "",
+          "maxLength": 4000,
+          "title": "Description",
+          "type": "string"
+        },
+        "eligibility": {
+          "enum": [
+            "eligible",
+            "ineligible",
+            "unknown"
+          ],
+          "title": "Eligibility",
+          "type": "string"
+        },
+        "eligibility_reason": {
+          "title": "Eligibility Reason",
+          "type": "string"
+        },
+        "eligibility_rules": {
+          "$ref": "#/$defs/EligibilityRules"
+        },
+        "ends_at": {
+          "format": "date-time",
+          "title": "Ends At",
+          "type": "string"
+        },
+        "event_type": {
+          "enum": [
+            "workshop",
+            "seminar",
+            "hackathon",
+            "lecture"
+          ],
+          "title": "Event Type",
+          "type": "string"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "registration_deadline": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Registration Deadline"
+        },
+        "registration_status": {
+          "enum": [
+            "open",
+            "closed",
+            "unknown"
+          ],
+          "title": "Registration Status",
+          "type": "string"
+        },
+        "source_label": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "starts_at": {
+          "format": "date-time",
+          "title": "Starts At",
+          "type": "string"
+        },
+        "status": {
+          "default": "draft",
+          "enum": [
+            "draft",
+            "published",
+            "cancelled",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "title": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Title",
+          "type": "string"
+        },
+        "topic_id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Topic Id",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "venue": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Venue",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "title",
+        "event_type",
+        "topic_id",
+        "venue",
+        "starts_at",
+        "ends_at",
+        "source_label",
+        "id",
+        "version",
+        "updated_at",
+        "eligibility",
+        "eligibility_reason",
+        "registration_status"
+      ],
+      "title": "EventView",
+      "type": "object"
+    },
+    "FacultyView": {
+      "additionalProperties": false,
+      "properties": {
+        "aliases": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Aliases",
+          "type": "array"
+        },
+        "department_id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Department Id",
+          "type": "string"
+        },
+        "email": {
+          "anyOf": [
+            {
+              "maxLength": 254,
+              "pattern": "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Email"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "location": {
+          "default": "",
+          "maxLength": 200,
+          "title": "Location",
+          "type": "string"
+        },
+        "name": {
+          "maxLength": 200,
+          "minLength": 1,
+          "title": "Name",
+          "type": "string"
+        },
+        "office_hours_complete": {
+          "default": false,
+          "title": "Office Hours Complete",
+          "type": "boolean"
+        },
+        "office_hours_coverage_end": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Office Hours Coverage End"
+        },
+        "office_hours_coverage_start": {
+          "anyOf": [
+            {
+              "format": "date",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Office Hours Coverage Start"
+        },
+        "source_label": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_label",
+        "name",
+        "department_id",
+        "id",
+        "version",
+        "updated_at",
+        "timezone",
+        "aliases"
+      ],
+      "title": "FacultyView",
+      "type": "object"
+    },
+    "OpeningHour": {
+      "additionalProperties": false,
+      "properties": {
+        "end": {
+          "pattern": "^(?:(?:[01]\\d|2[0-3]):[0-5]\\d|24:00)$",
+          "title": "End",
+          "type": "string"
+        },
+        "start": {
+          "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$",
+          "title": "Start",
+          "type": "string"
+        },
+        "weekday": {
+          "maximum": 6,
+          "minimum": 0,
+          "title": "Weekday",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "weekday",
+        "start",
+        "end"
+      ],
+      "title": "OpeningHour",
+      "type": "object"
+    },
+    "RoomView": {
+      "additionalProperties": false,
+      "properties": {
+        "building_id": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Building Id",
+          "type": "string"
+        },
+        "capacity": {
+          "exclusiveMinimum": 0,
+          "maximum": 100000,
+          "title": "Capacity",
+          "type": "integer"
+        },
+        "code": {
+          "maxLength": 80,
+          "minLength": 1,
+          "title": "Code",
+          "type": "string"
+        },
+        "coverage_complete": {
+          "default": false,
+          "title": "Coverage Complete",
+          "type": "boolean"
+        },
+        "coverage_end": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage End"
+        },
+        "coverage_start": {
+          "anyOf": [
+            {
+              "format": "date-time",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Coverage Start"
+        },
+        "facility_ids": {
+          "items": {
+            "maxLength": 80,
+            "minLength": 1,
+            "type": "string"
+          },
+          "maxItems": 30,
+          "title": "Facility Ids",
+          "type": "array"
+        },
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "opening_hours": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/$defs/OpeningHour"
+              },
+              "maxItems": 50,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Opening Hours"
+        },
+        "source_label": {
+          "maxLength": 100,
+          "minLength": 1,
+          "title": "Source Label",
+          "type": "string"
+        },
+        "source_url": {
+          "anyOf": [
+            {
+              "format": "uri",
+              "maxLength": 1000,
+              "minLength": 1,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Source Url"
+        },
+        "status": {
+          "default": "active",
+          "enum": [
+            "active",
+            "archived"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "timezone": {
+          "title": "Timezone",
+          "type": "string"
+        },
+        "updated_at": {
+          "format": "date-time",
+          "title": "Updated At",
+          "type": "string"
+        },
+        "version": {
+          "title": "Version",
+          "type": "integer"
+        }
+      },
+      "required": [
+        "source_label",
+        "code",
+        "building_id",
+        "capacity",
+        "id",
+        "version",
+        "updated_at",
+        "timezone"
+      ],
+      "title": "RoomView",
+      "type": "object"
+    },
+    "SavedView": {
+      "additionalProperties": false,
+      "properties": {
+        "changed": {
+          "title": "Changed",
+          "type": "boolean"
+        },
+        "current": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/EventView"
+            },
+            {
+              "$ref": "#/$defs/RoomView"
+            },
+            {
+              "$ref": "#/$defs/FacultyView"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Current"
+        },
+        "kind": {
+          "enum": [
+            "event",
+            "room",
+            "faculty"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "record_id": {
+          "title": "Record Id",
+          "type": "string"
+        },
+        "record_status": {
+          "enum": [
+            "published",
+            "cancelled",
+            "draft",
+            "active",
+            "archived"
+          ],
+          "title": "Record Status",
+          "type": "string"
+        },
+        "saved_at": {
+          "format": "date-time",
+          "title": "Saved At",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "record_id",
+        "saved_at",
+        "record_status",
+        "changed",
+        "current"
+      ],
+      "title": "SavedView",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "items": {
+      "items": {
+        "$ref": "#/$defs/SavedView"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "next_offset": {
+      "anyOf": [
+        {
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Next Offset"
+    }
+  },
+  "required": [
+    "items",
+    "next_offset"
+  ],
+  "title": "SavedPage",
+  "type": "object"
+}

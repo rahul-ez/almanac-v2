@@ -1,11 +1,11 @@
 # Backend phases and independent acceptance testing
 
-Status: Phases 0–2 are implemented locally; Phases 3–7 remain planned. See `phase-2-testing.md` for the latest runnable checkpoint.
+Status: Phases 0–6 plus Phase 7 engineering evaluation and packaged-install rehearsal are implemented locally. Final real-student evaluation, product frontend integration and actual deployment remain. See `phase-7-testing.md` and `backend-release-handoff.md` for the latest checkpoint and remaining release gates.
 Reviewed against all four repository planning documents at commit `b7e9c2a7b0a41e68073bd45244726a3554a416fb` on 4 November 2026.
 
 This document supplements `backend-build-plan.md` and uses `build-plan.md` as the shared API/behavior source of truth. Frontend work continues separately. Each phase must be demonstrable without React or a browser UI; final browser integration remains a separate release check.
 
-The updated two-person ownership split and integration tickets are in [two-person-backend-handoff.md](two-person-backend-handoff.md). The frontend is now on main; live contract reconciliation is its first parallel task.
+Backend work currently has one owner across both original work plans because Person 2 has not started. The separate handoff files remain references; their ownership boundaries do not block implementation. Product frontend integration remains a later joint check.
 
 ## Working agreement
 
@@ -33,7 +33,7 @@ Phase numbers are delivery checkpoints, not promises of equal effort. Room recur
 
 ## Testing tools delivered during implementation
 
-Setup, Phases 0–2 acceptance, event query/parser demos, test and contract targets are implemented. Full model evaluation remains a later phase:
+Setup, Phases 0–6 acceptance, event/room/faculty query demos, event parser demo, test and contract targets are implemented. Full model evaluation remains a later phase:
 
 | Interface | Intended command/access | Purpose |
 | --- | --- | --- |
@@ -86,4 +86,4 @@ Final backend acceptance is possible without the frontend. A separate joint brow
 
 ## Current next action
 
-Run the Phase 2 walkthrough in `phase-2-testing.md`. The next implementation checkpoint is Phase 3 (room scheduling), after user testing of events.
+Run the Phase 5 rule-interpreter walkthrough in `phase-5-testing.md`. Prototype intent training/model loading is now runnable via `phase-5-intent-testing.md`. Dialogue, history and saves are now available through `phase-6-testing.md`. Engineering evaluation/release rehearsal are now runnable through `phase-7-testing.md`. Continue with real corpus review/final evaluation, product frontend integration and target-specific deployment. One backend owner covers all of these until the team changes.

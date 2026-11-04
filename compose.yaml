@@ -22,6 +22,7 @@ services:
       CAMPUS_TIMEZONE: ${CAMPUS_TIMEZONE:-Asia/Kolkata}
       APP_ENV: ${APP_ENV:-development}
       NLP_MODE: ${NLP_MODE:-baseline}
+      INTENT_MODEL_PATH: ${INTENT_MODEL_PATH:-/workspace/.local/models/intent.json}
     ports:
       - "127.0.0.1:8000:8000"
     healthcheck:

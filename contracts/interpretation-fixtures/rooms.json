@@ -1,0 +1,114 @@
+{
+  "status": "ready",
+  "intent": "find_available_rooms",
+  "meaning": {
+    "intent": "find_available_rooms",
+    "filters": {
+      "event_type": null,
+      "topic": null,
+      "student_year": null,
+      "department_id": null,
+      "building_id": "block-b",
+      "faculty_id": null,
+      "room_id": null,
+      "interval": {
+        "start": "2026-11-05T08:30:00Z",
+        "end": "2026-11-05T09:30:00Z"
+      },
+      "capacity": 1,
+      "facility_ids": [
+        "projector"
+      ],
+      "venue": null,
+      "eligible_only": false,
+      "max_cost_minor": null
+    }
+  },
+  "execution": {
+    "kind": "room",
+    "query": {
+      "from_at": "2026-11-05T08:30:00Z",
+      "to_at": "2026-11-05T09:30:00Z",
+      "building_id": "block-b",
+      "min_capacity": 1,
+      "facility_ids": [
+        "projector"
+      ],
+      "limit": 100,
+      "cursor": null
+    },
+    "room_id": null
+  },
+  "entities": [
+    {
+      "label": "building",
+      "start": 9,
+      "end": 16,
+      "text": "B block",
+      "normalized": "block-b",
+      "canonical_id": "block-b",
+      "candidate_ids": []
+    },
+    {
+      "label": "date",
+      "start": 17,
+      "end": 25,
+      "text": "tomorrow",
+      "normalized": "2026-11-05T00:00:00+05:30/2026-11-06T00:00:00+05:30",
+      "canonical_id": null,
+      "candidate_ids": []
+    },
+    {
+      "label": "time_interval",
+      "start": 26,
+      "end": 39,
+      "text": "from 2 to 3pm",
+      "normalized": "14:00/15:00",
+      "canonical_id": null,
+      "candidate_ids": []
+    },
+    {
+      "label": "facility",
+      "start": 45,
+      "end": 54,
+      "text": "projector",
+      "normalized": "projector",
+      "canonical_id": "projector",
+      "candidate_ids": []
+    }
+  ],
+  "applied_context": [
+    {
+      "field": "facility_ids",
+      "value": [
+        "projector"
+      ],
+      "origin": "explicit_question"
+    },
+    {
+      "field": "building_id",
+      "value": "block-b",
+      "origin": "explicit_question"
+    },
+    {
+      "field": "capacity",
+      "value": 1,
+      "origin": "default"
+    },
+    {
+      "field": "interval",
+      "value": [
+        "2026-11-05T08:30:00+00:00",
+        "2026-11-05T09:30:00+00:00"
+      ],
+      "origin": "explicit_question"
+    }
+  ],
+  "missing_fields": [],
+  "ambiguities": [],
+  "unsupported_constraints": [],
+  "message": "Validated find available rooms.",
+  "warnings": [],
+  "intent_source": "rules",
+  "interpreter_version": "campus-rules-v1"
+}

@@ -1,0 +1,89 @@
+{
+  "additionalProperties": false,
+  "properties": {
+    "ends_at": {
+      "format": "date-time",
+      "title": "Ends At",
+      "type": "string"
+    },
+    "purpose": {
+      "maxLength": 200,
+      "minLength": 1,
+      "title": "Purpose",
+      "type": "string"
+    },
+    "recurrence": {
+      "default": "none",
+      "enum": [
+        "none",
+        "weekly"
+      ],
+      "title": "Recurrence",
+      "type": "string"
+    },
+    "recurrence_until": {
+      "anyOf": [
+        {
+          "format": "date",
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Recurrence Until"
+    },
+    "room_id": {
+      "maxLength": 80,
+      "minLength": 1,
+      "title": "Room Id",
+      "type": "string"
+    },
+    "source_label": {
+      "maxLength": 100,
+      "minLength": 1,
+      "title": "Source Label",
+      "type": "string"
+    },
+    "source_url": {
+      "anyOf": [
+        {
+          "format": "uri",
+          "maxLength": 1000,
+          "minLength": 1,
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source Url"
+    },
+    "starts_at": {
+      "format": "date-time",
+      "title": "Starts At",
+      "type": "string"
+    },
+    "status": {
+      "default": "active",
+      "enum": [
+        "active",
+        "cancelled",
+        "archived"
+      ],
+      "title": "Status",
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_label",
+    "room_id",
+    "purpose",
+    "starts_at",
+    "ends_at"
+  ],
+  "title": "BookingData",
+  "type": "object"
+}

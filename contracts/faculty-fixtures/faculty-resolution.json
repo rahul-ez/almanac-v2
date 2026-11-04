@@ -1,0 +1,25 @@
+{
+  "status": "resolved",
+  "candidates": [
+    {
+      "name": "[DEMO] Anita Rao",
+      "department_id": "aiml",
+      "location": "Faculty Block 101",
+      "email": null,
+      "office_hours_coverage_start": "2026-11-02",
+      "office_hours_coverage_end": "2026-12-31",
+      "office_hours_complete": true,
+      "source_label": "Synthetic published faculty timetable v1",
+      "source_url": null,
+      "status": "active",
+      "id": "campus-demo-anita-rao",
+      "version": 1,
+      "updated_at": "2026-11-04T10:00:00+05:30",
+      "timezone": "Asia/Kolkata",
+      "aliases": [
+        "Rao"
+      ]
+    }
+  ],
+  "warnings": []
+}

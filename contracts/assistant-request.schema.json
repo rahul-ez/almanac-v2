@@ -32,6 +32,33 @@
     "ContextOverrides": {
       "additionalProperties": false,
       "properties": {
+        "building_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Building Id"
+        },
+        "capacity": {
+          "anyOf": [
+            {
+              "maximum": 100000,
+              "minimum": 1,
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Capacity"
+        },
         "department_id": {
           "anyOf": [
             {
@@ -44,6 +71,49 @@
           ],
           "default": null,
           "title": "Department Id"
+        },
+        "facility_ids": {
+          "anyOf": [
+            {
+              "items": {
+                "maxLength": 80,
+                "type": "string"
+              },
+              "maxItems": 30,
+              "type": "array"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Facility Ids"
+        },
+        "faculty_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Faculty Id"
+        },
+        "room_id": {
+          "anyOf": [
+            {
+              "maxLength": 80,
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Room Id"
         },
         "year": {
           "anyOf": [
@@ -98,6 +168,19 @@
       ],
       "default": null,
       "title": "Conversation Id"
+    },
+    "conversation_version": {
+      "anyOf": [
+        {
+          "minimum": 1,
+          "type": "integer"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Conversation Version"
     },
     "text": {
       "maxLength": 1000,

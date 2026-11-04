@@ -53,6 +53,8 @@ class ReferenceData(StrictModel):
     buildings: list[ReferenceItem]
     topics: list[ReferenceItem]
     supported_years: list[int]
+    facilities: list[ReferenceItem] = []
+    campus_timezone: str = "Asia/Kolkata"
     demo: Literal[True] = True
 
 class AdminAccess(StrictModel):
