@@ -10,6 +10,7 @@ from app.services.interpretation import interpret_question
 from app.services.execute_meaning import execute_interpretation
 from app.nlp.interpreter import VERSION
 from app.services.dialogue import prepare,TTL
+from app.repositories.profiles import read_profile
 
 
 def canonical_payload(payload):
@@ -26,7 +27,7 @@ def canonical_payload(payload):
     return canonical
 
 
-def answer_question(conn,payload,user_id,request_id,now,campus_timezone,*,nlp_mode='baseline',intent_model=None):
+def answer_question(conn,payload,user_id,request_id,now,campus_timezone,*,nlp_mode='baseline',intent_model=None,now_minutes=30,horizon_days=30):
     fingerprint=hashlib.sha256(json.dumps(canonical_payload(payload),sort_keys=True).encode()).hexdigest()
     conn.execute(text('SELECT pg_advisory_xact_lock(hashtextextended(:key, 0))'),{'key':'assistant-owner:'+user_id})
     deleted=conn.execute(select(DeletedRequest.user_id).where(DeletedRequest.user_id==user_id,DeletedRequest.request_hash==hashlib.sha256(payload.client_request_id.encode()).hexdigest())).first()
@@ -51,13 +52,13 @@ def answer_question(conn,payload,user_id,request_id,now,campus_timezone,*,nlp_mo
         conversation_id=str(uuid4());conn.execute(insert(Conversation).values(id=conversation_id,owner_id=user_id,created_at=now))
     prepared,prior_meaning,selected,context_warnings=prepare(payload,state,expires_at,now)
     report,catalog=interpret_question(conn,prepared,user_id,now,campus_timezone,nlp_mode=nlp_mode,intent_model=intent_model,
-        prior_meaning=prior_meaning,selected_intent=selected)
+        prior_meaning=prior_meaning,selected_intent=selected,now_minutes=now_minutes,horizon_days=horizon_days)
     status=report.status;intent=report.intent;meaning=report.meaning;applied=report.applied_context;message=report.message
     cards=[];clarification=None;coverage='not_applicable'
     warnings=['Prototype trained intent with deterministic semantic checks.' if nlp_mode=='hybrid' else 'Deterministic cross-domain rules.']+context_warnings+report.warnings
     next_state={'meaning':prior_meaning.model_dump(mode='json') if prior_meaning else None}
     if report.status=='ready':
-        cards,status,message,coverage,execution_warnings=execute_interpretation(conn,report,catalog,now)
+        cards,status,message,coverage,execution_warnings=execute_interpretation(conn,report,catalog,now,interests=read_profile(conn,user_id)['interests'])
         warnings=warnings[:1]+context_warnings+execution_warnings
         next_state={'meaning':meaning.model_dump(mode='json')}
     elif report.status=='clarification_required':

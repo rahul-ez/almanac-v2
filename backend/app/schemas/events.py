@@ -74,6 +74,7 @@ class EventView(EventData):
     registration_status: Literal['open', 'closed', 'unknown']
 
 class EventSearch(StrictModel):
+    search_terms: list[Annotated[str, Field(min_length=2,max_length=100)]] = Field(default_factory=list,max_length=10)
     from_at: AwareDatetime | None = None
     to_at: AwareDatetime | None = None
     event_type: EventType | None = None

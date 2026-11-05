@@ -262,6 +262,16 @@
           "default": null,
           "title": "Q"
         },
+        "search_terms": {
+          "items": {
+            "maxLength": 100,
+            "minLength": 2,
+            "type": "string"
+          },
+          "maxItems": 10,
+          "title": "Search Terms",
+          "type": "array"
+        },
         "student_year": {
           "anyOf": [
             {
@@ -519,6 +529,13 @@
           ],
           "default": null,
           "title": "Room Id"
+        },
+        "search_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Search Terms",
+          "type": "array"
         },
         "student_year": {
           "anyOf": [

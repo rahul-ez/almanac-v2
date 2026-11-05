@@ -20,3 +20,8 @@ with httpx.Client(base_url="http://127.0.0.1:8000", timeout=10) as client:
             assert body["error"]["request_id"] == response.headers["x-request-id"]
         print(f"PASS {path}: {status}")
 print("Phase 0 live API acceptance passed")
+with httpx.Client(base_url='http://127.0.0.1:8000',timeout=10) as client:
+    for path in ('/','/login','/app','/app/history','/admin','/backend-test'):
+        page=client.get(path)
+        assert page.status_code==200 and 'text/html' in page.headers['content-type']
+    print('PASS integrated app deep links and separate backend test bench')

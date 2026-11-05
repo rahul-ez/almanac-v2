@@ -741,7 +741,7 @@ function OpeningHours({
 }) {
   return (
     <div className="opening-hours">
-      {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(
+      {['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map(
         (name, weekday) => {
           const h = value.find((x) => x.weekday === weekday);
           return (

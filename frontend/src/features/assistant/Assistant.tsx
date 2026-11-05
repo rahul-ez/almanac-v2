@@ -46,6 +46,9 @@ const examples = [
 const fieldNames: Record<string, string> = {
   department_id: 'Department',
   year: 'Year',
+  student_year: 'Year',
+  max_cost_minor: 'Maximum price',
+  facility_ids: 'Facilities',
   date: 'Date',
   event_type: 'Type',
   topic: 'Topic',
@@ -71,6 +74,10 @@ function draftRead(key: string) {
   }
 }
 export function Assistant() {
+  const {id}=useParams();
+  return <AssistantConversation key={id || "new"}/>;
+}
+function AssistantConversation() {
   const { id } = useParams();
   const { user } = useAuth();
   const { references, revision } = useWorkspace();
@@ -83,6 +90,7 @@ export function Assistant() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<unknown>(null);
   const [retry, setRetry] = useState<QueryRequest | null>(null);
+  const [replyToClarification,setReplyToClarification]=useState(true);
   const [showContext, setShowContext] = useState(true);
   const controller = useRef<AbortController | null>(null);
   const busyRef = useRef(false);
@@ -97,11 +105,7 @@ export function Assistant() {
   useEffect(() => {
     setConversation(history.data);
   }, [history.data]);
-  useEffect(() => {
-    setText(draftRead(key));
-    setError(null);
-    setRetry(null);
-  }, [key]);
+
   useEffect(() => {
     let cancelled = false;
     const raw = draftRead(outboxKey);
@@ -119,10 +123,7 @@ export function Assistant() {
           const current = await api.conversation(recovered.conversation_id);
           if (cancelled) return;
           setConversation(current);
-          if (current.turns.some((t) => t.answer.request_id === recovered.client_request_id)) {
-            sessionStorage.removeItem(outboxKey);
-            return;
-          }
+
         } else await api.conversations();
         if (!cancelled) {
           setRetry(recovered);
@@ -162,6 +163,7 @@ export function Assistant() {
       bottom.current?.scrollIntoView({ behavior: 'instant', block: 'nearest' });
   }, [conversation?.turns.length, busy]);
   const latest = conversation?.turns.at(-1)?.answer;
+  const pendingClarification=apiMode==='live' ? conversation?.active_clarification : latest?.clarification;
   async function send(request: QueryRequest) {
     if (busyRef.current) return;
     busyRef.current = true;
@@ -205,6 +207,9 @@ export function Assistant() {
         );
         setRetry(request);
       } else {
+        if(e instanceof ApiError && e.status===409 && request.conversation_id) {
+          try {setConversation(await api.conversation(request.conversation_id));} catch {}
+        }
         const retryable = e instanceof ApiError && [0, 429, 500, 502, 503, 504].includes(e.status);
         setError(e);
         setRetry(retryable ? request : null);
@@ -232,9 +237,10 @@ export function Assistant() {
     text: value,
     conversation_id: conversation?.id || id || null,
     client_request_id: crypto.randomUUID(),
+    ...(conversation?.version ? {conversation_version:conversation.version}:{}),
     context_overrides: overrides,
-    clarification: latest?.clarification
-      ? { id: latest.clarification.id, ...(optionId ? { option_id: optionId } : {}) }
+    clarification: replyToClarification && pendingClarification
+      ? { id: pendingClarification.id, ...(optionId ? { option_id: optionId } : {}) }
       : null,
   });
   const submit = (e: FormEvent) => {
@@ -268,6 +274,7 @@ export function Assistant() {
             ? `${latest.message} ${latest.results.length} result cards.`
             : ''}
       </div>
+      {apiMode==='live' && pendingClarification && <button className="text-button" onClick={()=>setReplyToClarification(v=>!v)}>{replyToClarification?'Ask a new question instead':'Reply to the pending clarification'}</button>}
       <div className="assistant-heading">
         <div>
           {home ? (
@@ -370,12 +377,12 @@ export function Assistant() {
                   <button
                     className="icon-button"
                     aria-label={`Clear ${fieldNames[field] || field} filter`}
-                    disabled={busy}
+                    disabled={busy || !['student_year','department_id','event_type','topic','max_cost_minor','faculty_id','building_id','room_id','capacity','facility_ids'].includes(field)}
                     onClick={() => {
                       const request = newRequest(
-                        'Update the search without this filter.',
+                        'clear '+({student_year:'year',max_cost_minor:'price',facility_ids:'facilities'}[field] || field.replace('_id','').replace('_',' ')),
                         undefined,
-                        { [field]: null },
+                        {},
                       );
                       request.clarification = null;
                       void send(request);
@@ -403,7 +410,7 @@ export function Assistant() {
                 : 'Ask anything about your campus…'
             }
             value={text}
-            maxLength={2000}
+            maxLength={1000}
             rows={home ? 3 : 2}
             disabled={busy || !!(id && history.loading)}
             onChange={(e) => {
@@ -424,7 +431,7 @@ export function Assistant() {
             </span>
             <div>
               <span className="char-count">
-                {text.length > 1800 ? `${text.length}/2000` : 'Enter to send'}
+                {text.length > 800 ? `${text.length}/1000` : 'Enter to send'}
               </span>
               <button
                 type="submit"
@@ -503,7 +510,7 @@ export function Assistant() {
           <button
             className="text-button"
             onClick={() => {
-              const request = newRequest('Refresh these results.');
+              const request = newRequest(apiMode==='live'?'refresh':'Refresh these results.');
               request.clarification = null;
               void send(request);
             }}

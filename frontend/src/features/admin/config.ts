@@ -40,9 +40,9 @@ export const adminConfig: Record<
         key: 'event_type',
         label: 'Event type',
         type: 'select',
-        options: ['workshop', 'talk', 'meetup', 'hackathon', 'seminar', 'other'],
+        options: ['workshop', 'lecture', 'hackathon', 'seminar'],
       },
-      { key: 'topic_ids', label: 'Topics', type: 'multi', source: 'topics' },
+      { key: 'topic_ids', label: 'Topic', type: 'multi', source: 'topics',hint:'Choose exactly one topic for the live API.' },
       { key: 'venue', label: 'Venue', type: 'text', required: true },
       { key: 'starts_at', label: 'Starts', type: 'datetime', required: true },
       { key: 'ends_at', label: 'Ends', type: 'datetime', required: true },
@@ -98,6 +98,7 @@ export const adminConfig: Record<
       },
       { key: 'capacity', label: 'Seating capacity', type: 'number', min: 1, required: true },
       { key: 'facility_ids', label: 'Facilities', type: 'multi', source: 'facilities' },
+      {key:'opening_hours_unknown',label:'Opening hours not published',type:'boolean',hint:'When enabled, hours are unknown. Disable to publish the schedule below.'},
       {
         key: 'opening_hours',
         label: 'Weekly opening hours',
@@ -184,12 +185,9 @@ export const adminConfig: Record<
         type: 'email',
         hint: 'Only include contact information approved for publication.',
       },
-      {
-        key: 'aliases',
-        label: 'Alternative names',
-        type: 'list',
-        hint: 'Separate names with commas. Shared names may require clarification.',
-      },
+      {key:'office_hours_coverage_start',label:'Publication coverage starts',type:'date',nullable:true},
+      {key:'office_hours_coverage_end',label:'Publication coverage ends',type:'date',nullable:true},
+      {key:'office_hours_complete',label:'Published hours complete for these dates',type:'boolean'},
     ],
   },
   'office-hours': {
@@ -209,7 +207,7 @@ export const adminConfig: Record<
         key: 'weekday',
         label: 'Day of week',
         type: 'select',
-        options: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        options: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       },
       { key: 'start_time', label: 'Start time', type: 'time', required: true },
       { key: 'end_time', label: 'End time', type: 'time', required: true },
@@ -241,7 +239,7 @@ export const adminConfig: Record<
         key: 'entity_type',
         label: 'Record type',
         type: 'select',
-        options: ['department', 'building', 'topic', 'room', 'faculty'],
+        options: ['faculty'],
       },
       {
         key: 'canonical_id',
@@ -363,7 +361,7 @@ export function newRecord(resource: Resource, timezone: string): Record<string, 
       replacement_end: null,
       note: '',
     },
-    aliases: { entity_type: 'department', canonical_id: '', alias: '' },
+    aliases: { entity_type: 'faculty', canonical_id: '', alias: '' },
   };
   return { ...common, ...defaults[resource] };
 }

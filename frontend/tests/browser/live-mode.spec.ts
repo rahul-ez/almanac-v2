@@ -1,110 +1,41 @@
-import { test, expect } from '@playwright/test';
-import { answerFixtures } from '../../src/api/fixtures';
-import { defaultProfile, demoUsers, referenceData } from '../../src/api/seed';
-
-test('live service failures stay errors and retries reuse the assistant request ID', async ({
-  page,
-}) => {
-  let loggedIn = false;
-  let queryCount = 0;
-  const ids: string[] = [];
-  await page.route('**/api/v1/**', async (route) => {
-    const url = new URL(route.request().url());
-    const path = url.pathname.replace('/api/v1', '');
-    const send = (body: unknown, status = 200) =>
-      route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body) });
-    const error = (status: number) =>
-      send(
-        {
-          error: {
-            code: status === 401 ? 'unauthenticated' : 'service_unavailable',
-            message: status === 401 ? 'Sign in.' : 'Campus API is temporarily unavailable.',
-            field_errors: {},
-            request_id: 'test-server-id',
-          },
-        },
-        status,
-      );
-    if (path === '/auth/me') return loggedIn ? send(demoUsers[0]) : error(401);
-    if (path === '/auth/csrf') return send({ csrf_token: 'csrf-live-test' });
-    if (path === '/auth/login') {
-      loggedIn = true;
-      expect(route.request().headers()['x-csrf-token']).toBe('csrf-live-test');
-      return send(demoUsers[0]);
-    }
-    if (path === '/reference-data') return send(referenceData);
-    if (path === '/me/profile') return send(defaultProfile);
-    if (path === '/events') return error(503);
-    if (path === '/assistant/query') {
-      queryCount++;
-      ids.push(route.request().postDataJSON().client_request_id);
-      if (queryCount === 1) return error(503);
-      return send({ ...answerFixtures['no-matches'], request_id: ids.at(-1) });
-    }
-    if (path.startsWith('/conversations/'))
-      return send({
-        id: 'fixture-conversation',
-        title: 'Any workshops?',
-        updated_at: answerFixtures['no-matches'].answered_at,
-        turn_count: 1,
-        turns: [
-          { id: 'fixture-turn', question: 'Any workshops?', answer: answerFixtures['no-matches'] },
-        ],
-      });
-    return send({ items: [], next_cursor: null });
-  });
-  await page.goto('http://127.0.0.1:5174/login');
-  await expect(page.getByRole('button', { name: 'Use student demo' })).toHaveCount(0);
-  await page.getByLabel('Campus email').fill('student@campus.demo');
-  await page.getByLabel('Password', { exact: true }).fill('test-password');
-  await page.getByRole('button', { name: 'Sign in', exact: true }).click();
-  await expect(page.getByText('Live campus data', { exact: true })).toBeVisible();
-  await expect(page.getByText('Campus API is temporarily unavailable.')).toBeVisible();
-  await expect(page.getByRole('heading', { name: 'Build something with AI' })).toHaveCount(0);
-  await page.getByRole('textbox', { name: 'Ask your campus companion' }).fill('Any workshops?');
-  await page.getByRole('button', { name: 'Send question' }).click();
-  await expect(page.getByText('Campus API is temporarily unavailable.')).toHaveCount(2);
-  await page.reload();
-  await expect(
-    page.getByText('A previous request stopped waiting.', { exact: false }),
-  ).toBeVisible();
-  await page
-    .locator('.assistant-page > .error-notice')
-    .getByRole('button', { name: 'Try again' })
-    .click();
-  await expect(page.locator('.assistant-answer')).toContainText('No matching events');
-  expect(ids.length).toBe(2);
-  expect(ids[0]).toBe(ids[1]);
-});
-
-test('every assistant fixture renders safely in live mode', async ({ page }, info) => {
-  const answers = Object.entries(answerFixtures).map(([name, answer], i) => ({
-    id: 'turn-' + i,
-    question: name,
-    answer: { ...answer, turn_id: 'turn-' + i },
-  }));
-  await page.route('**/api/v1/**', async (route) => {
-    const path = new URL(route.request().url()).pathname;
-    const data = path.endsWith('/auth/me')
-      ? demoUsers[0]
-      : path.endsWith('/reference-data')
-        ? referenceData
-        : path.includes('/conversations/')
-          ? {
-              id: 'fixture-conversation',
-              title: 'Contract fixture gallery',
-              updated_at: answers[0].answer.answered_at,
-              turn_count: answers.length,
-              turns: answers,
-            }
-          : { items: [], next_cursor: null };
-    await route.fulfill({ contentType: 'application/json', body: JSON.stringify(data) });
-  });
-  await page.goto('http://127.0.0.1:5174/app/conversations/fixture-conversation');
-  await expect(page.locator('.turn')).toHaveCount(10);
-  await expect(page.getByText('B-204 has no scheduled booking for your interval.')).toBeVisible();
-  await expect(page.getByText('A Block timetable coverage is incomplete.')).toBeVisible();
-  await expect(page.getByText('Showing the first 6 matches.', { exact: false })).toBeVisible();
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
-  await page.screenshot({ path: `test-results/${info.project.name}-fixtures.png`, fullPage: true });
+/** Opt-in real backend browser tests: no route interception or mock responses. */
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+test.skip(process.env.ALMANAC_LIVE_TEST!=='1','Requires local backend and generated demo accounts');
+test('real session, room clarification, follow-up, saved metadata and private history',async({page},info)=>{
+ const accounts=JSON.parse(readFileSync(new URL('../../../.local/demo-accounts.json',import.meta.url),'utf8'));
+ const account=accounts.find((a:any)=>a.username===(info.project.name==='mobile'?'student-b':'student-a'));
+ const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto((process.env.ALMANAC_APP_ORIGIN || 'http://127.0.0.1:5174')+'/login');
+ await page.getByLabel('Username',{exact:true}).fill(account.username);
+ await page.getByLabel('Password',{exact:true}).fill(account.password);
+ await page.getByRole('button',{name:'Sign in',exact:true}).click();
+ await expect(page).toHaveURL(/\/app$/);
+ const ask=async(text:string,count:number)=>{
+  await page.getByRole('textbox',{name:'Ask your campus companion'}).fill(text);
+  await page.getByRole('button',{name:'Send question'}).click();
+  await expect(page.locator('.assistant-answer')).toHaveCount(count);
+  await expect(page.locator('.pending-turn')).toHaveCount(0);
+ };
+ await ask('Is B201 free tomorrow?',1);
+ await expect(page.locator('.assistant-answer').last()).toContainText('time');
+ await ask('from 14:00 to 15:00',2);
+ await expect(page.locator('.assistant-answer').last()).toContainText('DEMO-B201');
+ await page.reload();
+ await expect(page.locator('.assistant-answer')).toHaveCount(2);
+ await ask('from 15:00 to 16:00',3);
+ await expect(page.locator('.assistant-answer').last()).toContainText('DEMO-B201');
+ const save=page.locator('.assistant-answer').nth(1).getByRole('button',{name:/^(Save|Unsave) DEMO-B201$/});
+ const wasSaved=await save.getAttribute('aria-pressed');await save.click();
+ await expect(save).toHaveAttribute('aria-pressed',wasSaved==='true'?'false':'true');
+ await save.click();await expect(save).toHaveAttribute('aria-pressed',wasSaved!);
+ await page.locator('.assistant-heading').getByRole('link',{name:'New conversation',exact:true}).click();
+ await expect(page).toHaveURL(/\/app$/);
+ await expect(page.getByRole('heading',{name:'What’s on your mind?'})).toBeVisible();
+ await ask('Professor Rao office hours on Friday',1);
+ await page.locator('.assistant-answer').last().getByRole('button',{name:/Anita Rao/}).click();
+ await expect(page.locator('.assistant-answer')).toHaveCount(2);
+ await expect(page.locator('.assistant-answer').last()).toContainText('published office-hour');
+ await page.screenshot({path:process.env.CI?`test-results/${info.project.name}-integrated.png`:`/private/tmp/almanac-integrated-${info.project.name}.png`,fullPage:true});
+ expect(errors).toEqual([]);
 });

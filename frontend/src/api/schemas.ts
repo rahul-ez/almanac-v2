@@ -4,7 +4,7 @@ export const id = z.string().min(1);
 export const instant = z.iso.datetime({ offset: true });
 const nullableText = z.string().nullable();
 export const roleSchema = z.enum(['student', 'admin']);
-export const userSchema = z.object({ id, name: z.string(), email: z.email(), role: roleSchema });
+export const userSchema = z.object({ id, name: z.string(), email: z.union([z.email(),z.literal('')]), role: roleSchema });
 export const profileSchema = z.object({
   department_id: id.nullable(),
   year: z.number().int().min(1).max(6).nullable(),
@@ -54,6 +54,7 @@ export const roomRecordSchema = base.extend({
   capacity: z.number().int().positive(),
   facility_ids: z.array(id),
   opening_hours: z.array(openingHourSchema),
+  opening_hours_unknown: z.boolean().optional(),
   coverage_start: instant.nullable(),
   coverage_end: instant.nullable(),
   coverage_complete: z.boolean(),
@@ -64,6 +65,9 @@ export const facultyRecordSchema = base.extend({
   location: z.string(),
   email: z.union([z.email(), z.literal('')]),
   aliases: z.array(z.string()),
+  office_hours_coverage_start: z.iso.date().nullable().optional(),
+  office_hours_coverage_end: z.iso.date().nullable().optional(),
+  office_hours_complete: z.boolean().optional(),
 });
 const interval = { starts_at: instant, ends_at: instant };
 export const bookingRecordSchema = base.extend({
@@ -192,6 +196,7 @@ export const clarificationSchema = z.object({
   options: z.array(option),
 });
 export const queryRequestSchema = z.object({
+  conversation_version: z.number().int().positive().optional(),
   text: z.string().max(2000),
   conversation_id: id.nullable(),
   client_request_id: id,
@@ -234,12 +239,14 @@ export type QueryRequest = z.infer<typeof queryRequestSchema>;
 export type Answer = z.infer<typeof answerSchema>;
 export const turnSchema = z.object({ id, question: z.string(), answer: answerSchema });
 export const conversationSummarySchema = z.object({
+  version:z.number().int().positive().optional(),
+  state_expires_at:instant.nullable().optional(),
   id,
   title: z.string(),
   updated_at: instant,
   turn_count: z.number().int(),
 });
-export const conversationSchema = conversationSummarySchema.extend({ turns: z.array(turnSchema) });
+export const conversationSchema = conversationSummarySchema.extend({ turns: z.array(turnSchema),active_clarification:clarificationSchema.nullable().optional() });
 export type Conversation = z.infer<typeof conversationSchema>;
 export const savedSchema = z.object({
   kind: z.enum(['event', 'room', 'faculty']),

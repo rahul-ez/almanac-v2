@@ -135,7 +135,7 @@ export function Profile() {
                       id="section"
                       aria-invalid={!!fieldErrors.section?.length}
                       aria-describedby={fieldErrors.section?.length ? 'section-error' : undefined}
-                      maxLength={20}
+                      maxLength={16}
                       value={form.section || ''}
                       onChange={(e) => update('section', e.target.value || null)}
                       disabled={busy}

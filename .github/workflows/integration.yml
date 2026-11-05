@@ -1,0 +1,27 @@
+name: Local live integration
+on:
+  pull_request:
+    paths: ['backend/**', 'frontend/**', 'contracts/**', 'backend/Dockerfile', '.github/workflows/integration.yml']
+  push:
+    paths: ['backend/**', 'frontend/**', 'contracts/**', '.github/workflows/integration.yml']
+permissions:
+  contents: read
+jobs:
+  live:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci --prefix frontend
+      - run: make local
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: npm run typecheck --prefix frontend
+      - run: npm run contracts:check --prefix frontend
+      - run: make integration-test
+      - if: always()
+        run: docker compose down

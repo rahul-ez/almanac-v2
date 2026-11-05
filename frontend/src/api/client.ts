@@ -26,7 +26,7 @@ export function createHttpTransport(
     }
     const headers = new Headers(init.headers);
     headers.set('Accept', 'application/json');
-    headers.set('X-Request-ID', crypto.randomUUID());
+
     if (init.body) headers.set('Content-Type', 'application/json');
     if (!['GET', 'HEAD', 'OPTIONS'].includes(method) && csrf) headers.set('X-CSRF-Token', csrf);
     let response: Response;
@@ -57,12 +57,14 @@ export function createHttpTransport(
       }
     }
     if (!response.ok) {
+      const wire = body as {error?: {field_errors?: unknown}};
+      if(Array.isArray(wire?.error?.field_errors)) wire.error.field_errors=Object.fromEntries(wire.error.field_errors.map((e:{field:string;message:string})=>[e.field.replace(/^body\./,''),[e.message]]));
       const parsed = errorSchema.safeParse(body);
       if (response.status === 401) {
         csrf = null;
         if (!path.startsWith('/auth/')) onUnauthorized();
       }
-      if (response.status === 403 && parsed.success && parsed.data.error.code === 'csrf_invalid')
+      if (response.status === 403 && parsed.success && parsed.data.error.code === 'csrf_failed')
         csrf = null;
       if (parsed.success) {
         const e = parsed.data.error;

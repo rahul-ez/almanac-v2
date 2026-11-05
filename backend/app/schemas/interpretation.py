@@ -6,7 +6,7 @@ from app.schemas.events import EventSearch
 from app.schemas.rooms import AvailabilityQuery
 from app.schemas.faculty import OfficeHoursQuery
 
-EntityKind=Literal['department','topic','building','room','facility','faculty','venue']
+EntityKind=Literal['department','topic','building','room','facility','faculty','venue','event_keyword']
 
 class CatalogEntry(StrictModel):
     kind: EntityKind

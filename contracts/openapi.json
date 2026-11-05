@@ -2444,6 +2444,16 @@
             ],
             "title": "Q"
           },
+          "search_terms": {
+            "items": {
+              "maxLength": 100,
+              "minLength": 2,
+              "type": "string"
+            },
+            "maxItems": 10,
+            "title": "Search Terms",
+            "type": "array"
+          },
           "student_year": {
             "anyOf": [
               {
@@ -3657,6 +3667,13 @@
               }
             ],
             "title": "Room Id"
+          },
+          "search_terms": {
+            "items": {
+              "type": "string"
+            },
+            "title": "Search Terms",
+            "type": "array"
           },
           "student_year": {
             "anyOf": [
@@ -8469,6 +8486,21 @@
       "get": {
         "operationId": "admin_events_api_v1_admin_events_get",
         "parameters": [
+          {
+            "in": "query",
+            "name": "search_terms",
+            "required": false,
+            "schema": {
+              "items": {
+                "maxLength": 100,
+                "minLength": 2,
+                "type": "string"
+              },
+              "maxItems": 10,
+              "title": "Search Terms",
+              "type": "array"
+            }
+          },
           {
             "in": "query",
             "name": "from_at",
@@ -14438,6 +14470,21 @@
       "get": {
         "operationId": "events_api_v1_events_get",
         "parameters": [
+          {
+            "in": "query",
+            "name": "search_terms",
+            "required": false,
+            "schema": {
+              "items": {
+                "maxLength": 100,
+                "minLength": 2,
+                "type": "string"
+              },
+              "maxItems": 10,
+              "title": "Search Terms",
+              "type": "array"
+            }
+          },
           {
             "in": "query",
             "name": "from_at",

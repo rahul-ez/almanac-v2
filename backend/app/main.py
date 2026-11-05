@@ -6,6 +6,7 @@ from uuid import uuid4
 from datetime import datetime, timezone
 from pathlib import Path
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.cors import CORSMiddleware
 from app.api.identity import router as identity_router
 from app.api.errors import ApiError
@@ -59,12 +60,24 @@ def create_app(settings=None, now=None):
 
     static_dir = Path(__file__).parent / "static"
 
-    @app.get("/", include_in_schema=False)
+    @app.get("/backend-test", include_in_schema=False)
     def testing_page():
         return FileResponse(static_dir / "testing.html", headers={
             "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'unsafe-inline'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'",
             "X-Content-Type-Options": "nosniff",
         })
+
+    frontend_dir = Path('/opt/almanac-frontend')
+    if not (frontend_dir/'index.html').exists():
+        frontend_dir=Path(__file__).resolve().parents[2]/'frontend'/'dist'
+    if (frontend_dir / 'index.html').exists():
+        app.mount('/assets',StaticFiles(directory=frontend_dir/'assets'),name='frontend-assets')
+    def product_page():
+        if not (frontend_dir/'index.html').exists(): return testing_page()
+        return FileResponse(frontend_dir/'index.html',headers={'X-Content-Type-Options':'nosniff',
+            'Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"})
+    for route in ('/','/login','/app','/app/{path:path}','/admin','/admin/{path:path}'):
+        app.add_api_route(route,product_page,methods=['GET'],include_in_schema=False)
 
     @app.get("/testing.js", include_in_schema=False)
     def testing_script():

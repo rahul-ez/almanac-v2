@@ -106,6 +106,7 @@ ResultCard = Annotated[EventCard | RoomCard | OfficeHoursCard, Field(discriminat
 Intent = Literal["find_events", "find_available_rooms", "find_faculty_office_hours"]
 
 class Filters(StrictModel):
+    search_terms: list[str] = Field(default_factory=list)
     event_type: str | None = None
     topic: str | None = None
     student_year: int | None = Field(default=None, ge=1, le=8)

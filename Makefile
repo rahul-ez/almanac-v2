@@ -59,3 +59,9 @@ evaluate:
 
 verify-fresh:
 	python3 scripts/verify_fresh.py
+
+local: bootstrap migrate seed-demo provision-demo seed-events seed-rooms seed-faculty dev
+
+integration-test:
+	cd frontend && ALMANAC_LIVE_TEST=1 npx vitest run tests/unit/live-http.test.ts
+	cd frontend && ALMANAC_LIVE_TEST=1 ALMANAC_APP_ORIGIN=http://127.0.0.1:8000 npx playwright test

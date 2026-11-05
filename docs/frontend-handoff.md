@@ -1,3 +1,5 @@
+**Current local release:** live integration is now implemented via `frontend/src/api/live.ts` and verified against the real backend. Start the combined app with `make local` at the repository root; see `docs/local-demo.md`. The proposal details below remain historical/mock references.
+
 # Person A handoff
 
 The client is independently runnable and has no dependency on a backend for demo development. Live integration remains unverified because this repository has no Person B implementation. All service assumptions are expressed in runtime schemas and the generated `contracts/openapi.json` proposal.
