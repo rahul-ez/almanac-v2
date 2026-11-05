@@ -1,8 +1,9 @@
 import { z } from 'zod';
 import { createHttpTransport, validated, type Transport } from './client';
 import * as s from './schemas';
+import { createLiveAdapter } from './live';
 
-export const apiMode = import.meta.env.VITE_API_MODE || 'mock';
+export const apiMode = import.meta.env.VITE_API_MODE || 'live';
 if (!['mock', 'live'].includes(apiMode)) throw new Error('VITE_API_MODE must be mock or live.');
 const mockTransport =
   apiMode === 'mock'
@@ -10,7 +11,7 @@ const mockTransport =
     : null;
 const transport: Transport = mockTransport
   ? async (path, init) => (await mockTransport)(path, init)
-  : createHttpTransport(import.meta.env.VITE_API_BASE_URL || '/api/v1');
+  : createLiveAdapter(createHttpTransport(import.meta.env.VITE_API_BASE_URL || '/api/v1'));
 const json = (method: string, body?: unknown): RequestInit => ({
   method,
   ...(body === undefined ? {} : { body: JSON.stringify(body) }),

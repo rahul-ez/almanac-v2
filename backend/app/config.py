@@ -11,7 +11,9 @@ class Settings(BaseSettings):
     nlp_mode: Literal["baseline", "hybrid"] = "baseline"
     intent_model_path: str = "/workspace/.local/models/intent.json"
 
-    allowed_origins: list[str] = ["http://localhost:8000", "http://127.0.0.1:8000", "http://localhost:5173", "http://127.0.0.1:5173"]
+    allowed_origins: list[str] = ["http://localhost:8000", "http://127.0.0.1:8000", "http://localhost:5173", "http://127.0.0.1:5173", "http://localhost:5174", "http://127.0.0.1:5174"]
+    now_interval_minutes: int = Field(default=30,ge=1,le=1440)
+    nlp_horizon_days: int = Field(default=30,ge=1,le=30)
     cookie_secure: bool = False
     session_ttl_seconds: int = Field(default=28800, ge=60, le=604800)
     preauth_ttl_seconds: int = Field(default=900, ge=60, le=3600)

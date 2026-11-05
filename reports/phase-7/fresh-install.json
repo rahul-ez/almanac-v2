@@ -1,96 +1,96 @@
 {
   "purpose": "Fresh packaged-image engineering rehearsal, not production deployment or frontend validation",
   "passed": true,
-  "isolated_project": "almanac-verify-f749e5173221",
+  "isolated_project": "almanac-verify-f999b7dc4e4c",
   "host_ports_published": false,
   "source_bind_mounts": false,
   "cleaned_up": true,
-  "elapsed_seconds": 102.78,
+  "elapsed_seconds": 54.965,
   "stages": [
     {
       "stage": "build packaged image",
       "passed": true,
-      "elapsed_seconds": 0.495
+      "elapsed_seconds": 1.615
     },
     {
       "stage": "record image identity",
       "passed": true,
-      "elapsed_seconds": 0.023
+      "elapsed_seconds": 0.03
     },
     {
       "stage": "start fresh isolated database",
       "passed": true,
-      "elapsed_seconds": 2.749
+      "elapsed_seconds": 2.786
     },
     {
       "stage": "migrate empty database",
       "passed": true,
-      "elapsed_seconds": 0.774
+      "elapsed_seconds": 0.663
     },
     {
       "stage": "initial seed",
       "passed": true,
-      "elapsed_seconds": 0.467
+      "elapsed_seconds": 0.683
     },
     {
       "stage": "initial provision",
       "passed": true,
-      "elapsed_seconds": 0.832
+      "elapsed_seconds": 1.012
     },
     {
       "stage": "initial seed_events",
       "passed": true,
-      "elapsed_seconds": 0.531
+      "elapsed_seconds": 0.775
     },
     {
       "stage": "initial seed_rooms",
       "passed": true,
-      "elapsed_seconds": 0.582
+      "elapsed_seconds": 0.546
     },
     {
       "stage": "initial seed_faculty",
       "passed": true,
-      "elapsed_seconds": 0.582
+      "elapsed_seconds": 0.689
     },
     {
       "stage": "repeat insert-only seed",
       "passed": true,
-      "elapsed_seconds": 0.487
+      "elapsed_seconds": 0.581
     },
     {
       "stage": "repeat insert-only provision",
       "passed": true,
-      "elapsed_seconds": 0.568
+      "elapsed_seconds": 0.626
     },
     {
       "stage": "repeat insert-only seed_events",
       "passed": true,
-      "elapsed_seconds": 0.457
+      "elapsed_seconds": 0.536
     },
     {
       "stage": "repeat insert-only seed_rooms",
       "passed": true,
-      "elapsed_seconds": 0.467
+      "elapsed_seconds": 0.504
     },
     {
       "stage": "repeat insert-only seed_faculty",
       "passed": true,
-      "elapsed_seconds": 0.491
+      "elapsed_seconds": 0.575
     },
     {
       "stage": "contract drift and fixtures",
       "passed": true,
-      "elapsed_seconds": 1.005
+      "elapsed_seconds": 1.05
     },
     {
       "stage": "train reproducible prototype",
       "passed": true,
-      "elapsed_seconds": 1.035
+      "elapsed_seconds": 0.985
     },
     {
       "stage": "frozen semantic and retrieval gate",
       "passed": true,
-      "elapsed_seconds": 1.771,
+      "elapsed_seconds": 1.9,
       "metrics": [
         {
           "mode": "baseline",
@@ -113,9 +113,9 @@
           },
           "warm_latency_ms": {
             "count": 72,
-            "median": 1.0297289991285652,
-            "p95": 2.1753274504590085,
-            "max": 2.5562919981894083
+            "median": 0.9995415020966902,
+            "p95": 1.5106105944141746,
+            "max": 1.7938329983735457
           }
         },
         {
@@ -139,9 +139,9 @@
           },
           "warm_latency_ms": {
             "count": 72,
-            "median": 0.1490205031586811,
-            "p95": 1.7136001501057772,
-            "max": 2.587832997960504
+            "median": 0.17989600746659562,
+            "p95": 1.6189499991014604,
+            "max": 2.576166996732354
           }
         }
       ]
@@ -149,34 +149,34 @@
     {
       "stage": "regression suite",
       "passed": true,
-      "elapsed_seconds": 21.851,
-      "passed_tests": 103
+      "elapsed_seconds": 23.723,
+      "passed_tests": 105
     },
     {
       "stage": "API start to ready in baseline",
       "passed": true,
-      "elapsed_seconds": 3.222
+      "elapsed_seconds": 3.215
     },
     {
       "stage": "all HTTP acceptance phases",
       "passed": true,
-      "elapsed_seconds": 59.325
+      "elapsed_seconds": 7.563
     },
     {
       "stage": "API start to ready in hybrid",
       "passed": true,
-      "elapsed_seconds": 3.749
+      "elapsed_seconds": 3.641
     },
     {
       "stage": "hybrid HTTP acceptance",
       "passed": true,
-      "elapsed_seconds": 0.602
+      "elapsed_seconds": 0.577
     },
     {
       "stage": "remove only verification containers and volumes",
       "passed": true,
-      "elapsed_seconds": 0.677
+      "elapsed_seconds": 0.66
     }
   ],
-  "image_id": "sha256:d0e052b911a90c5069ab1096cef6b6080cf9ce5f19dd81f75267e048c4f11739"
+  "image_id": "sha256:f37e0908b95c9aa48029f3c0a52f90e035b5030295bc80e2d3c33d4fb56c4884"
 }

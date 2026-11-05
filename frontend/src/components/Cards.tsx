@@ -195,10 +195,10 @@ export function RecordCard({
         ) : (
           <>
             <div className="card-meta">
-              <span>
+              {card.department && <span>
                 <GraduationCap />
                 {card.department}
-              </span>
+              </span>}
               <span>
                 <MapPin />
                 {card.location || 'Location not published'}

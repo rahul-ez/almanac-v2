@@ -1,6 +1,12 @@
 # Almanac — frontend and backend
 
-The backend is implemented through conversations, history and saved records, with local evaluation and packaged-install checks. The existing frontend is included in `frontend/` and currently defaults to mock mode. Live integration and joint testing remain pending.
+**Local integrated demo:** run `make local`, then open [localhost:8000](http://localhost:8000/). The React frontend and backend share this origin. Use generated backend usernames/passwords from ignored `.local/demo-accounts.json`; explicit frontend mock credentials do not sign into the real API.
+
+[Complete local setup and testing](docs/local-demo.md). The backend test bench is now at [/backend-test](http://localhost:8000/backend-test). The product uses labeled demo data and no OpenAI API key.
+
+
+
+The backend is implemented through conversations, history and saved records, with local evaluation and packaged-install checks. The existing frontend is included in `frontend/` and currently defaults to mock mode. Live integration is implemented through the compatibility boundary and tested against the local API.
 
 Requires Docker Desktop with Compose and Make. Python runs inside Docker (3.13); no host Python installation is needed.
 
@@ -56,6 +62,6 @@ npm ci
 npm run dev
 ```
 
-Open http://127.0.0.1:5173. See [frontend setup](frontend/README.md) and [integration handoff](docs/frontend-handoff.md). Mock accounts and data remain fictional. The backend test bench runs independently at http://localhost:8000/.
+Open http://127.0.0.1:5173. See [frontend setup](frontend/README.md) and [integration handoff](docs/frontend-handoff.md). Mock accounts and data remain fictional. The backend test bench runs independently at http://localhost:8000/backend-test.
 
 The implemented API is [contracts/openapi.json](contracts/openapi.json). The frontend's existing mock proposal and fixtures are preserved separately under [contracts/frontend-proposal](contracts/frontend-proposal/README.md). Align the frontend client/schema with the implemented API before enabling live workflows; merging code does not complete that integration.

@@ -82,7 +82,7 @@ def create_event(conn, payload, actor_id, now):
     return view(row, now)
 
 
-def get_event(conn, event_id, now, admin=False, year=None, department=None, lock=False):
+def get_event(conn, event_id, now, admin=False, year=None, department=None, lock=False, interests=None):
     query = select(Event.__table__).where(Event.id == event_id)
     if not admin:
         query = query.where(Event.status.in_(['published', 'cancelled']))
@@ -114,7 +114,7 @@ def patch_event(conn, event_id, payload, actor_id, now):
     return view(row, now)
 
 
-def search_events(conn, filters: EventSearch, now, year=None, department=None, admin=False):
+def search_events(conn, filters: EventSearch, now, year=None, department=None, admin=False, interests=None):
     year = filters.student_year if filters.student_year is not None else year
     department = filters.department_id if filters.department_id is not None else department
     if filters.topic_id is not None and conn.execute(select(Topic.id).where(Topic.id == filters.topic_id)).first() is None:
@@ -141,20 +141,27 @@ def search_events(conn, filters: EventSearch, now, year=None, department=None, a
         if conn.execute(select(Event.id).where(*conditions, expression == 'unknown').limit(1)).first():
             warnings.append('Some matching events have unknown eligibility and were excluded from eligible-only results.')
         conditions.append(expression == 'eligible')
+    interests=sorted(set(interests or [])) if not admin else []
+    rank=case((Event.topic_id.in_(interests),0),else_=1) if interests else None
     fingerprint = hashlib.sha256(json.dumps({**filters.model_dump(mode='json', exclude={'cursor'}),
-        'start':start.isoformat(), 'end':end.isoformat(), 'year':year, 'department':department, 'admin':admin}, sort_keys=True).encode()).hexdigest()
+        'start':start.isoformat(), 'end':end.isoformat(), 'year':year, 'department':department, 'admin':admin,**({'interests':interests} if interests else {})}, sort_keys=True).encode()).hexdigest()
     if filters.cursor:
         try:
-            stamp, record_id, prior = json.loads(base64.urlsafe_b64decode(filters.cursor.encode()))
+            values=json.loads(base64.urlsafe_b64decode(filters.cursor.encode()))
+            if interests:
+                after_rank,stamp,record_id,prior=values
+                if type(after_rank) is not int or after_rank not in (0,1): raise ValueError()
+            else: stamp,record_id,prior=values
             after = datetime.fromisoformat(stamp)
             if prior != fingerprint or after.tzinfo is None or not isinstance(record_id, str):
                 raise ValueError()
         except (ValueError, TypeError, UnicodeError):
             raise ApiError(422, 'invalid_cursor', 'Cursor does not match this query') from None
-        conditions.append(or_(Event.starts_at > after, and_(Event.starts_at == after, Event.id > record_id)))
-    rows = list(conn.execute(select(Event.__table__).where(*conditions).order_by(Event.starts_at, Event.id).limit(filters.limit+1)).mappings())
+        after_time=or_(Event.starts_at > after, and_(Event.starts_at == after, Event.id > record_id))
+        conditions.append(or_(rank>after_rank,and_(rank==after_rank,after_time)) if interests else after_time)
+    rows = list(conn.execute(select(Event.__table__).where(*conditions).order_by(*([rank] if interests else []),Event.starts_at, Event.id).limit(filters.limit+1)).mappings())
     cursor = None
     if len(rows) > filters.limit:
         last = rows[filters.limit-1]
-        cursor = base64.urlsafe_b64encode(json.dumps([last['starts_at'].isoformat(), last['id'], fingerprint]).encode()).decode()
+        cursor = base64.urlsafe_b64encode(json.dumps(([0 if last['topic_id'] in interests else 1] if interests else [])+[last['starts_at'].isoformat(), last['id'], fingerprint]).encode()).decode()
     return EventList(items=[view(row, now, year, department) for row in rows[:filters.limit]], next_cursor=cursor, warnings=warnings)

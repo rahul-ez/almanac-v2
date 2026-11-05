@@ -211,3 +211,21 @@ def test_baseline_time_and_conservative_grammar():
     assert query.from_at.isoformat() == '2026-11-06T00:00:00+05:30' and query.max_cost_minor == 0
     with pytest.raises(UnsupportedQuestion):
         parse_event_question('events on 2026-02-30',now,'Asia/Kolkata')
+
+
+def test_interest_ranking_is_global_and_cursor_stable(event_env):
+    e=event_env
+    from app.db.models import Topic
+    from sqlalchemy import insert
+    topic='interest-'+uuid4().hex
+    with e['engine'].begin() as conn: conn.execute(insert(Topic).values(id=topic,label='Interest test'))
+    try:
+        early=e['create']().json()
+        later=e['create'](topic_id=topic,starts_at=(e['clock'][0]+timedelta(days=3)).isoformat(),ends_at=(e['clock'][0]+timedelta(days=3,hours=1)).isoformat()).json()
+        query=EventSearch(from_at=e['clock'][0],to_at=e['clock'][0]+timedelta(days=7),limit=1)
+        with e['engine'].connect() as conn:
+            first=search_events(conn,query,e['clock'][0],interests=[topic]);assert first.items[0].id==later['id']
+            second=search_events(conn,query.model_copy(update={'cursor':first.next_cursor}),e['clock'][0],interests=[topic]);assert second.items[0].id==early['id']
+    finally:
+        with e['engine'].begin() as conn:
+            conn.execute(delete(Event).where(Event.topic_id==topic));conn.execute(delete(Topic).where(Topic.id==topic))

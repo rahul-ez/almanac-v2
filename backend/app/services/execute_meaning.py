@@ -6,14 +6,14 @@ from app.services.rooms import available_rooms
 from app.services.faculty import office_hours
 
 
-def execute_interpretation(conn,report,catalog,now):
+def execute_interpretation(conn,report,catalog,now,interests=None):
     if report.status!='ready' or report.execution is None:
         raise ApiError(422,'unsafe_interpretation','An uncertain interpretation cannot execute')
     labels={(entry.kind,entry.id):entry.label for entry in catalog.entries}
     cards=[];warnings=list(report.warnings);coverage='complete'
     execution=report.execution
     if execution.kind=='event':
-        found=search_events(conn,execution.query,now)
+        found=search_events(conn,execution.query,now,interests=interests)
         for item in found.items:
             cards.append(EventCard(kind='event',record_id=item.id,title=item.title,source_label=item.source_label,source_url=item.source_url,
                 record_updated_at=item.updated_at,interval=Interval(start=item.starts_at,end=item.ends_at),venue=item.venue,topic=item.topic_id,

@@ -82,11 +82,11 @@ export function Login() {
             </Notice>
           )}
           <form onSubmit={submit}>
-            <label htmlFor="email">Campus email</label>
+            <label htmlFor="email">Username</label>
             <input
               id="email"
               name="email"
-              type="email"
+              type="text"
               autoComplete="username"
               placeholder="you@college.edu"
               value={email}

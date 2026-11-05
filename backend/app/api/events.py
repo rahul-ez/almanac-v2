@@ -15,8 +15,8 @@ router = APIRouter(prefix='/api/v1', responses={code:{'model':ErrorResponse} for
 Search = Annotated[EventSearch, Query()]
 
 def context(conn, user):
-    profile = read_profile(conn,user['id']) if user['role'] == 'student' else {'year':None,'department_id':None}
-    return {'year':profile['year'],'department':profile['department_id']}
+    profile = read_profile(conn,user['id']) if user['role'] == 'student' else {'year':None,'department_id':None,'interests':[]}
+    return {'year':profile['year'],'department':profile['department_id'],'interests':profile['interests']}
 
 @router.get('/events', response_model=EventList, tags=['events'])
 def events(filters: Search, request: Request, conn: Db, user: CurrentUser):
@@ -49,7 +49,7 @@ def archive(event_id: str, version: Annotated[int,Query(ge=1)], request: Request
 @router.post('/assistant/query', response_model=AssistantResponse, tags=['assistant'])
 def assistant(payload: AssistantRequest, request: Request, conn: Db, user: Student, session: CsrfSession):
     rate_limit(request,'assistant',user['id'],30)
-    return JSONResponse(content=answer_question(conn,payload,user['id'],request.state.request_id,request.app.state.now(),request.app.state.settings.campus_timezone,nlp_mode=request.app.state.settings.nlp_mode,intent_model=request.app.state.intent_model))
+    return JSONResponse(content=answer_question(conn,payload,user['id'],request.state.request_id,request.app.state.now(),request.app.state.settings.campus_timezone,nlp_mode=request.app.state.settings.nlp_mode,intent_model=request.app.state.intent_model,now_minutes=request.app.state.settings.now_interval_minutes,horizon_days=request.app.state.settings.nlp_horizon_days))
 
 @router.post('/assistant/interpret',response_model=Interpretation,tags=['assistant'])
 def inspect_meaning(payload: AssistantRequest,request: Request,conn: Db,user: Student,session: CsrfSession):
@@ -57,5 +57,5 @@ def inspect_meaning(payload: AssistantRequest,request: Request,conn: Db,user: St
         from app.api.errors import ApiError
         raise ApiError(422,'standalone_interpretation','Interpretation inspection accepts standalone questions only')
     rate_limit(request,'interpreter-inspect',user['id'],60)
-    report,_=interpret_question(conn,payload,user['id'],request.app.state.now(),request.app.state.settings.campus_timezone,nlp_mode=request.app.state.settings.nlp_mode,intent_model=request.app.state.intent_model)
+    report,_=interpret_question(conn,payload,user['id'],request.app.state.now(),request.app.state.settings.campus_timezone,nlp_mode=request.app.state.settings.nlp_mode,intent_model=request.app.state.intent_model,now_minutes=request.app.state.settings.now_interval_minutes,horizon_days=request.app.state.settings.nlp_horizon_days)
     return report

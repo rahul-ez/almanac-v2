@@ -177,3 +177,11 @@ def test_request_fingerprint_preserves_explicit_context_clears():
     assert omitted != cleared
     assert '_explicit_null_context' not in omitted
     assert cleared['_explicit_null_context']==['year']
+
+
+def test_configurable_nlp_now_window_and_horizon(catalog):
+    report=interpret('rooms right now',catalog=catalog,now=NOW,campus_timezone='Asia/Kolkata',now_minutes=15,horizon_days=2)
+    assert report.status=='ready' and report.execution.query.to_at-NOW==timedelta(minutes=15)
+    assert any('15 minutes' in warning for warning in report.warnings)
+    far=interpret('rooms on 2026-11-10 from 14:00 to 15:00',catalog=catalog,now=NOW,campus_timezone='Asia/Kolkata',horizon_days=2)
+    assert far.status=='clarification_required' and far.execution is None

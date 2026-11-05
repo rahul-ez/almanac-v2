@@ -54,7 +54,7 @@ def choose_intent(view,matches,selected):
     raise Problem('Ask about events, available rooms, or published faculty office hours.',constraint='missing_supported_intent')
 
 
-def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,selected_intent=None,prior_meaning=None):
+def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,selected_intent=None,prior_meaning=None,now_minutes=30,horizon_days=30):
     """Only injected catalog/context/clock inputs; no database, network or persistence."""
     view=TextView(text);entities=[];values={};origins={};ambiguities=[];warnings=[];intent=None;meaning=None
     profile=profile or {};overrides=overrides or {};date_window=None;time_window=None
@@ -174,7 +174,7 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
         wants_eligible=bool(re.search(r'\b(?:for me|can i attend|eligible)\b',view.available()))
         # Remove known grammar only. Any remaining constraint blocks execution.
         remaining=view.available()
-        grammar=r"\b(?:any|show|find|list|what|which|are|is|there|happening|upcoming|the|on|in|for|please|only|a|an|events?|rooms?|classrooms?|available|free|with|when|can|i|meet|professor|prof|dr|faculty|office|hours?|me|attend|eligible|at)\b"
+        grammar=r"\b(?:refresh|any|show|find|list|what|which|are|is|there|happening|upcoming|the|on|in|for|please|only|a|an|events?|rooms?|classrooms?|available|free|with|when|can|i|meet|professor|prof|dr|faculty|office|hours?|me|attend|eligible|at)\b"
         remaining=re.sub(grammar,' ',remaining)
         remaining=re.sub(r"(?:'s|’s)\b",' ',remaining)
         if intent=='find_available_rooms' and len(values.get('facility_ids',[]))>1: remaining=re.sub(r'\band\b',' ',remaining)
@@ -226,7 +226,7 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
             if old_start.date()==old_end.date() and date_window[1]-date_window[0]==timedelta(days=1):
                 time_window=(old_start.hour*60+old_start.minute,old_end.hour*60+old_end.minute)
         if now_query:
-            start,end=now,now+timedelta(minutes=30);origin='explicit_question';warnings.append('“Now” is interpreted as the next 30 minutes.')
+            start,end=now,now+timedelta(minutes=now_minutes);origin='explicit_question';warnings.append(f'“Now” is interpreted as the next {now_minutes} minutes.')
         elif time_window:
             if date_window is None: raise Problem('Which date is the requested time interval on?',status='clarification_required',field='date')
             if date_window[1]-date_window[0]>timedelta(days=1): raise Problem('Use one date with a daily time interval.',status='clarification_required',field='date')
@@ -243,13 +243,13 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
         elif date_window:
             start,end=date_window;origin='explicit_question'
         else:
-            start,end=now,now+timedelta(days=30 if intent=='find_events' else 7);origin='default'
-            warnings.append('No date supplied; using the next '+('30' if intent=='find_events' else '7')+' days.')
+            start,end=now,now+timedelta(days=30 if intent=='find_events' else min(7,horizon_days));origin='default'
+            warnings.append('No date supplied; using the next '+('30' if intent=='find_events' else str(min(7,horizon_days)))+' days.')
         if intent!='find_events':
             if end<=now or (time_window and start<now): raise Problem('Use a future interval within the next 30 days.',status='clarification_required',field='date_and_time_interval')
             if start<now:
                 start=now;warnings.append('Only the remaining portion of this date range is queried from the current server time.')
-            if end>now+timedelta(days=30): raise Problem('Use a window within the next 30 days.',status='clarification_required',field='date')
+            if end>now+timedelta(days=horizon_days): raise Problem(f'Use a window within the next {horizon_days} days.',status='clarification_required',field='date')
         interval=Interval(start=start,end=end);origins['interval']=origin
         if intent=='find_events': values['eligible_only']=wants_eligible or 'student_year' in explicit or 'department_id' in explicit or bool(prior and prior.eligible_only)
         if intent=='find_available_rooms':

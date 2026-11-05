@@ -1,3 +1,5 @@
+**Current local release:** live integration is now implemented via `frontend/src/api/live.ts` and verified against the real backend. Start the combined app with `make local` at the repository root; see `docs/local-demo.md`. The proposal details below remain historical/mock references.
+
 # Frontend
 
 React, TypeScript, Vite, React Router, Zod, Phosphor icons, and locally hosted Manrope. Exact dependency versions are recorded in `package.json` and `package-lock.json`. Development was verified on Node 24.12.0 and npm 11.6.2; CI uses Node 24.
