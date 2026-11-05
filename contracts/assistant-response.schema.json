@@ -380,6 +380,13 @@
           "default": null,
           "title": "Room Id"
         },
+        "search_terms": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Search Terms",
+          "type": "array"
+        },
         "student_year": {
           "anyOf": [
             {

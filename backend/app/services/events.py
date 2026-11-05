@@ -133,6 +133,8 @@ def search_events(conn, filters: EventSearch, now, year=None, department=None, a
             conditions.append(field == value)
     if filters.q is not None:
         conditions.append(Event.title.icontains(filters.q, autoescape=True))
+    for term in filters.search_terms:
+        conditions.append(Event.title.icontains(term, autoescape=True))
     if filters.max_cost_minor is not None:
         conditions.append(Event.cost_minor <= filters.max_cost_minor)
     warnings = []

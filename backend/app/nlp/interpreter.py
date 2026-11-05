@@ -14,8 +14,8 @@ from app.api.errors import ApiError
 from app.nlp.text import TextView,normalized
 
 VERSION='campus-rules-v1'
-FIELDS={'department':'department_id','topic':'topic','building':'building_id','room':'room_id','facility':'facility_ids','faculty':'faculty_id','venue':'venue'}
-ALLOWED={'find_events':{'department','topic','venue'},'find_available_rooms':{'room','building','facility'},'find_faculty_office_hours':{'faculty','department'}}
+FIELDS={'department':'department_id','topic':'topic','building':'building_id','room':'room_id','facility':'facility_ids','faculty':'faculty_id','venue':'venue','event_keyword':'search_terms'}
+ALLOWED={'find_events':{'department','topic','venue','event_keyword'},'find_available_rooms':{'room','building','facility'},'find_faculty_office_hours':{'faculty','department'}}
 
 class Problem(Exception):
     def __init__(self,message,status='unsupported',field=None,options=None,constraint=None):
@@ -26,7 +26,7 @@ def catalog_matches(view,catalog):
     found={}
     for entry in catalog.entries:
         for alias in {normalized(value) for value in [entry.label,*entry.aliases] if value.strip()}:
-            if alias in {'today','tomorrow','now','right now','this week','next week','monday','tuesday','wednesday','thursday','friday','saturday','sunday','free','available','room','rooms','event','events','faculty'} or re.fullmatch(r'\d{4}-\d{2}-\d{2}',alias):
+            if alias in {'today','tomorrow','now','right now','this week','next week','this month','next month','monday','tuesday','wednesday','thursday','friday','saturday','sunday','free','available','room','rooms','event','events','faculty'} or re.fullmatch(r'\d{4}-\d{2}-\d{2}',alias):
                 continue  # Reserved syntax cannot be swallowed by an entity alias. Use canonical overrides for such names.
             for match in re.finditer(r'(?<!\w)'+re.escape(alias)+r'(?!\w)',view.text):
                 key=(match.start(),match.end(),entry.kind)
@@ -68,7 +68,7 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
         entities.append(ExtractedEntity(label=label,start=start,end=end,text=original,normalized=value,canonical_id=canonical,candidate_ids=candidates or []))
         view.reserve(a,b)
     def assign(field,value):
-        if field=='facility_ids': values.setdefault(field,[]).extend(value);values[field]=sorted(set(values[field]))
+        if field in {'facility_ids','search_terms'}: values.setdefault(field,[]).extend(value);values[field]=sorted(set(values[field]))
         elif field=='max_cost_minor': values[field]=min(values.get(field,value),value)
         elif field in values and values[field]!=value: raise Problem('Use one value for '+field.replace('_',' ')+'.',constraint='contradictory_'+field)
         else: values[field]=value
@@ -103,7 +103,7 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
                 ambiguities.append(Ambiguity(field=field,prompt='Which '+kind+' do you mean?',options=[Option(id=e.id,label=e.label) for e in sorted(candidates,key=lambda e:e.id)]))
                 entity(a,b,kind,None,candidates=ids)
             else:
-                value=ids if kind=='facility' else ids[0];assign(field,value)
+                value=ids if kind in {'facility','event_keyword'} else ids[0];assign(field,value)
                 entity(a,b,kind,ids[0],canonical=ids[0])
         for kind in ('workshop','seminar','hackathon','lecture'):
             consume(r'\b'+kind+r's?\b','event_type','event_type',kind)
@@ -123,6 +123,12 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
         local=now.astimezone(ZoneInfo(campus_timezone));midnight=datetime.combine(local.date(),time.min,tzinfo=local.tzinfo)
         monday=midnight-timedelta(days=local.weekday())
         date_hits=[]
+        month=midnight.replace(day=1)
+        next_month=month.replace(year=month.year+1,month=1) if month.month==12 else month.replace(month=month.month+1)
+        following_month=next_month.replace(year=next_month.year+1,month=1) if next_month.month==12 else next_month.replace(month=next_month.month+1)
+        for phrase,window in [('this month',(month,next_month)),('next month',(next_month,following_month))]:
+            for match in list(re.finditer(r'\b'+phrase+r'\b',view.available())):
+                date_hits.append((window,phrase));entity(match.start(),match.end(),'date',window[0].isoformat()+'/'+window[1].isoformat())
         for phrase,window in [('today',(midnight,midnight+timedelta(days=1))),('tomorrow',(midnight+timedelta(days=1),midnight+timedelta(days=2))),
                               ('this week',(monday,monday+timedelta(days=7))),('next week',(monday+timedelta(days=7),monday+timedelta(days=14)))]:
             for match in list(re.finditer(r'\b'+phrase+r'\b',view.available())):
@@ -181,7 +187,7 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
         remaining=re.sub(r'[?!.,;]',' ',remaining).strip()
         if remaining: raise Problem('This interpreter could not safely interpret every constraint. Rephrase using supported dates, times and campus names.',constraint=remaining)
         explicit=set(values)
-        allowed_fields={'find_events':{'event_type','topic','department_id','venue','student_year','max_cost_minor'},
+        allowed_fields={'find_events':{'event_type','topic','department_id','venue','student_year','max_cost_minor','search_terms'},
                         'find_available_rooms':{'room_id','building_id','facility_ids','capacity'},
                         'find_faculty_office_hours':{'faculty_id','department_id'}}[intent]
         if set(values)-allowed_fields: raise Problem('Some constraints do not apply to this domain.',constraint='invalid_domain_filters')
@@ -256,7 +262,7 @@ def interpret(text,*,catalog,now,campus_timezone,profile=None,overrides=None,sel
             values['capacity']=values.get('capacity') or 1;origins.setdefault('capacity','default');values['facility_ids']=values.get('facility_ids') or []
         filters=Filters(**values,interval=interval);meaning=Meaning(intent=intent,filters=filters)
         if intent=='find_events': execution=EventExecution(query=EventSearch(from_at=start,to_at=end,event_type=filters.event_type,topic_id=filters.topic,venue=filters.venue,
-            student_year=filters.student_year,department_id=filters.department_id,max_cost_minor=filters.max_cost_minor,eligible_only=filters.eligible_only,limit=20))
+            student_year=filters.student_year,department_id=filters.department_id,search_terms=filters.search_terms,max_cost_minor=filters.max_cost_minor,eligible_only=filters.eligible_only,limit=20))
         elif intent=='find_available_rooms': execution=RoomExecution(query=AvailabilityQuery(from_at=start,to_at=end,building_id=filters.building_id,min_capacity=filters.capacity,
             facility_ids=filters.facility_ids,limit=100),room_id=filters.room_id)
         else: execution=FacultyExecution(query=OfficeHoursQuery(from_at=start,to_at=end,limit=20),faculty_id=filters.faculty_id)

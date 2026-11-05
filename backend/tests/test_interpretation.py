@@ -185,3 +185,30 @@ def test_configurable_nlp_now_window_and_horizon(catalog):
     assert any('15 minutes' in warning for warning in report.warnings)
     far=interpret('rooms on 2026-11-10 from 14:00 to 15:00',catalog=catalog,now=NOW,campus_timezone='Asia/Kolkata',horizon_days=2)
     assert far.status=='clarification_required' and far.execution is None
+
+
+def test_calendar_month_boundaries_and_year_rollover(catalog):
+    report=parse(catalog,'is there any event this month')
+    assert report.status=='ready'
+    assert report.meaning.filters.interval.start.isoformat()=='2026-11-01T00:00:00+05:30'
+    assert report.meaning.filters.interval.end.isoformat()=='2026-12-01T00:00:00+05:30'
+    report=interpret('events next month',catalog=catalog,now=datetime.fromisoformat('2026-12-20T10:00:00+05:30'),campus_timezone='Asia/Kolkata')
+    assert report.status=='ready' and report.meaning.filters.interval.start.year==2027
+    assert report.meaning.filters.interval.end.month==2
+
+
+from test_events import event_env
+
+
+def test_user_created_event_title_is_retrievable_without_sample_topic_alias(event_env):
+    e=event_env
+    created=e['create'](title='CP Integration '+uuid4().hex).json()
+    for text in ('is there any cp event this month','any CP events this month?','show cp integration events this month'):
+        result=ask(e,text)
+        assert result.status_code==200,result.text
+        data=result.json()
+        assert data['status']=='answered',data
+        assert created['id'] in [r['record_id'] for r in data['results']]
+        assert 'cp' in data['interpreted_query']['filters']['search_terms']
+    unknown=ask(e,'is there any flarnyx event this month').json()
+    assert unknown['status']=='unsupported' and unknown['results']==[]

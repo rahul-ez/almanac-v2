@@ -1,4 +1,6 @@
 """Catalog acquisition is outside the pure interpreter; no model-generated SQL."""
+import re
+from app.nlp.text import normalized
 from sqlalchemy import select
 from app.api.errors import ApiError
 from app.db.models import Department,Building,Topic,Event
@@ -43,5 +45,12 @@ def load_catalog(conn):
     venues=list(conn.execute(select(Event.venue).where(Event.status=='published').distinct().limit(20001)).scalars())
     if len(venues)>20000: raise ApiError(503,'catalog_limit','Campus venue catalog exceeds the configured bound')
     entries += [CatalogEntry(kind='venue',id=venue,label=venue,aliases=[venue]) for venue in venues]
+    # Vocabulary comes from published event titles, not a hardcoded list of sample questions.
+    known={normalized(name) for entry in entries for name in [entry.label,*entry.aliases]}
+    reserved=set('a an and any are as at be by can demo event events find for free from happening i in is it me next of on or please show the there this to today tomorrow upcoming what when which with workshop workshops seminar seminars lecture lectures hackathon hackathons room rooms faculty office hours week month year second first third fourth'.split())
+    titles=list(conn.execute(select(Event.title).where(Event.status=='published').limit(20001)).scalars())
+    if len(titles)>20000: raise ApiError(503,'catalog_limit','Published event catalog exceeds the configured bound')
+    keywords={term for title in titles for term in re.findall(r"[\w]+(?:[-'][\w]+)*",normalized(title)) if 2<=len(term)<=100 and not term.isdigit() and term not in reserved and term not in known}
+    entries += [CatalogEntry(kind='event_keyword',id=term,label=term,aliases=[term]) for term in sorted(keywords)]
     if len(entries)>20000: raise ApiError(503,'catalog_limit','Campus catalog exceeds the configured bound')
     return CampusCatalog(entries=entries)
